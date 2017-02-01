@@ -40,15 +40,15 @@ public class statprog {
 	
 	/*
 	variable explanations
-		cg			-	CG% counter.  counts the total number of GC pairs in the assembly
-		len			-	Length of assembly
+		cg		-	CG% counter.  counts the total number of GC pairs in the assembly
+		len		-	Length of assembly
 		wind100		-	Windows where they are fewer than 50% N
 		contigs		-	Number of contigs in assembly.
 		bigContigs	-	Number of contigs of large size
 		Nnum		-	Number of Ns found
 		contigArr	-	Array of contig sizes
 		gcWind		-	CG% counter for windows (not the OS)
-		NX			-	Array of NX values
+		NX		-	Array of NX values
 		endOfFile	-	Indicates end of input has been reached
 		WindowSize	-	Constant defining size of windows
 		LargeSize	-	Constant defining minimum size of large contigs
