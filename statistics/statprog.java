@@ -221,29 +221,29 @@ public class statprog {
 	}
 	
 	// this is an improvement to the java Scanner class
-		// Scanner is quite slow on large inputs, and genomes can get large
-		// FastScanner has similar functionality but uses BufferedReader, which is faster
-		public static class FastScanner {
-			BufferedReader br;
-			StringTokenizer st;
-			FastScanner(File f) throws FileNotFoundException {
-				br = new BufferedReader(new FileReader(f));
-				st = new StringTokenizer("");
-			}
-			FastScanner(InputStream in) {
-				br = new BufferedReader(new InputStreamReader(in));
-				st = new StringTokenizer("");
-			}
-			String next() {
-				while (!st.hasMoreTokens()) {
-					try {
-						st = new StringTokenizer(br.readLine());
-					} catch (Exception e) {
-						endOfFile = true;
-						return "";
-					}
-				}
-				return st.nextToken();
-			}
+	// Scanner is quite slow on large inputs, and genomes can get large
+	// FastScanner has similar functionality but uses BufferedReader, which is faster
+	public static class FastScanner {
+		BufferedReader br;
+		StringTokenizer st;
+		FastScanner(File f) throws FileNotFoundException {
+			br = new BufferedReader(new FileReader(f));
+			st = new StringTokenizer("");
 		}
+		FastScanner(InputStream in) {
+			br = new BufferedReader(new InputStreamReader(in));
+			st = new StringTokenizer("");
+		}
+		String next() {
+			while (!st.hasMoreTokens()) {
+				try {
+					st = new StringTokenizer(br.readLine());
+				} catch (Exception e) {
+					endOfFile = true;
+					return "";
+				}
+			}
+			return st.nextToken();
+		}
+	}
 }
