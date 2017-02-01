@@ -4,8 +4,8 @@ import java.nio.file.Path;
 import metagenomePipeline.*;
 
 public class Pipeline<J extends Job>{
-	private Stage[] stages;
-	private Stage initialStage;
+	private Stage<J>[] stages;
+	private Stage<J> initialStage;
 	
 	//get stages and subsequent stages
 	public Pipeline (Stage<J>[] stages, Stage<J> initialStage){
@@ -13,7 +13,7 @@ public class Pipeline<J extends Job>{
 		this.initialStage = initialStage; //TODO error handling for initial stage is not in stages array
 	}
 	
-	public void submitJob(Job newJob){
+	public void submitJob(J newJob){
 		initialStage.addJob(newJob);
 	}
 	
@@ -40,7 +40,7 @@ public class Pipeline<J extends Job>{
 //		s2.init(new Stage[]{});
 //		s3.init(new Stage[]{});
 //		
-//		Job j = new MetagenomeJob("id", null, null, null);
+//		MetagenomeJob j = new MetagenomeJob("id", null, null, null);
 //		
 //		Pipeline<MetagenomeJob> pipe = new Pipeline<MetagenomeJob>(new MetagenomeStage[]{s1, s2, s3}, s1);
 //		
