@@ -1,12 +1,14 @@
 package pipeline;
+import java.nio.file.Path;
+
 import metagenomePipeline.*;
 
-public class Pipeline {
+public class Pipeline<J extends Job>{
 	private Stage[] stages;
 	private Stage initialStage;
 	
 	//get stages and subsequent stages
-	public Pipeline (Stage[] stages, Stage initialStage){
+	public Pipeline (Stage<J>[] stages, Stage<J> initialStage){
 		this.stages = stages;
 		this.initialStage = initialStage; //TODO error handling for initial stage is not in stages array
 	}
@@ -26,20 +28,21 @@ public class Pipeline {
 			stages[i].start();
 		}
 	}
-	
+
+	//testing
 //	public static void main(String[] args){
 //		//create stages
-//		Stage s1 = new TrimmingStage();
-//		Stage s2 = new Stage();
-//		Stage s3 = new Stage();
+//		MetagenomeStage s1 = new TrimmingStage();
+//		MetagenomeStage s2 = new TrimmingStage();
+//		MetagenomeStage s3 = new TrimmingStage();
 //		
 //		s1.init(new Stage[]{s2, s3});
 //		s2.init(new Stage[]{});
 //		s3.init(new Stage[]{});
 //		
-//		Job j = new Job("job");
+//		Job j = new MetagenomeJob("id", null, null, null);
 //		
-//		Pipeline pipe = new Pipeline(new Stage[]{s1, s2, s3}, s1);
+//		Pipeline<MetagenomeJob> pipe = new Pipeline<MetagenomeJob>(new MetagenomeStage[]{s1, s2, s3}, s1);
 //		
 //		pipe.submitJob(j);
 //		pipe.runPipeline();

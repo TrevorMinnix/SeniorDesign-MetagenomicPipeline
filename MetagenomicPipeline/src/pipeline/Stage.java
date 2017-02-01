@@ -2,21 +2,21 @@ package pipeline;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-public class Stage extends Thread{
+public abstract class Stage <J extends Job> extends Thread{
 
-	protected Job currentJob;
-	private ConcurrentLinkedQueue<Job> queue;
-	private Stage nextStage[];
+	protected J currentJob;
+	private ConcurrentLinkedQueue<J> queue;
+	private Stage<J> nextStage[];
 	private boolean abort;
 
-	public Stage(Stage[] nextStage){
-		queue = new ConcurrentLinkedQueue<Job>();
+	public Stage(Stage<J>[] nextStage){
+		queue = new ConcurrentLinkedQueue<J>();
 		this.nextStage = nextStage;
 		abort = false;
 	}
 	
 	public Stage(){
-		queue = new ConcurrentLinkedQueue<Job>();
+		queue = new ConcurrentLinkedQueue<J>();
 		abort = false;
 	}
 	
@@ -35,22 +35,21 @@ public class Stage extends Thread{
 	}
 	
 	//assigns subsequent stages
-	public void init(Stage nextStage[]){
+	public void init(Stage<J> nextStage[]){
 		this.nextStage = nextStage;
 	}
 	
 	//adds job to queue
-	protected <J extends Job> void addJob(J job){
+	protected void addJob(J job){
 		queue.add(job);
 	}
 	
 	//to be overridden by subclass
-	protected void process(){
-	}
+	protected abstract void process();
 	
 	//sends job to next stage(s)
 	private void emit(){
-		for(Stage s : nextStage)
+		for(Stage<J> s : nextStage)
 		{
 			s.addJob(currentJob);
 		}

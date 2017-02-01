@@ -7,7 +7,7 @@ public class TrimmingStage extends MetagenomeStage{
 		super();
 	}
 	
-	public TrimmingStage(Stage[] nextStage, DatabaseConnection database) {
+	public TrimmingStage(Stage<MetagenomeJob>[] nextStage, DatabaseConnection database) {
 		super(nextStage, database);
 	}
 
