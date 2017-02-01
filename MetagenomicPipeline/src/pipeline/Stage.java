@@ -4,7 +4,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class Stage extends Thread{
 
-	private Job currentJob;
+	protected Job currentJob;
 	private ConcurrentLinkedQueue<Job> queue;
 	private Stage nextStage[];
 	private boolean abort;
@@ -15,6 +15,11 @@ public class Stage extends Thread{
 		abort = false;
 	}
 	
+	public Stage(){
+		queue = new ConcurrentLinkedQueue<Job>();
+		abort = false;
+	}
+	
 	public void run(){
 		while(!abort)
 		{
@@ -22,6 +27,8 @@ public class Stage extends Thread{
 			{
 				process();
 				emit();
+
+			}else{
 				nextJob();
 			}
 		}
@@ -33,13 +40,12 @@ public class Stage extends Thread{
 	}
 	
 	//adds job to queue
-	protected void addJob(Job job){
-		currentJob = job;
+	protected <J extends Job> void addJob(J job){
+		queue.add(job);
 	}
 	
 	//to be overridden by subclass
-	private void process(){
-		
+	protected void process(){
 	}
 	
 	//sends job to next stage(s)
