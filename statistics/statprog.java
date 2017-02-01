@@ -1,5 +1,5 @@
 /*
-statprog.java v0.2
+statprog.java v0.3
 senior design group 8
 
 VERSION NOTES:
@@ -14,6 +14,10 @@ finished up, standardized input to work with fasta and tested basic stats
 everything works as desired so far
 code still needs to be cleaned up and unspaghetti-fied
 
+0.3
+updated code so it is more readable, less spaghetti code
+
+
 program description:
 takes the data from a genome assembler and provides statistics on it for a particular data set
 further details will be provided throughout the program
@@ -24,15 +28,33 @@ program input will end when the string "$" is entered
 please follow fasta format when debugging save for the terminating string
 output will be provided via system.out
 
- */
+*/
 
-import java.util.*; // ArrayList
+import java.util.*; // ArrayList, StringTokenizer
 import java.math.*; // BigInteger
 import java.io.*;   // BufferedReader, FileReader, File, FileNotFoundException
 public class statprog {
 	
 	// i am using BigIntegers to be safe, because i'm not quite sure how big some genomes might get
 	// a long probably works, but whatever
+	
+	/*
+	variable explanations
+		cg			-	CG% counter.  counts the total number of GC pairs in the assembly
+		len			-	Length of assembly
+		wind100		-	Windows where they are fewer than 50% N
+		contigs		-	Number of contigs in assembly.
+		bigContigs	-	Number of contigs of large size
+		Nnum		-	Number of Ns found
+		contigArr	-	Array of contig sizes
+		gcWind		-	CG% counter for windows (not the OS)
+		NX			-	Array of NX values
+		endOfFile	-	Indicates end of input has been reached
+		WindowSize	-	Constant defining size of windows
+		LargeSize	-	Constant defining minimum size of large contigs
+		NSize		-	Constant defining for what size the expected number of Ns will be
+		DebugMode	-	Constant determining if program will run in debug mode
+	 */
 	public static BigInteger len, cg, wind100, contigs, bigContigs, largestContig, Nnum;
 	public static ArrayList<BigInteger> contigArr, gcWind;
 	public static BigInteger[] NX;
@@ -47,34 +69,7 @@ public class statprog {
 	
 	public static void main(String[] args) throws FileNotFoundException {
 		
-		endOfFile = false;
-		
-		// cg - CG% counter.  counts the total number of GC pairs in the assembly
-		cg = BigInteger.ZERO;
-		
-		// len - Length of assembly.
-		len = BigInteger.ZERO;
-		
-		// wind100 - Windows of size 100bp where the exact pairings are known for half or more of the window
-		wind100 = BigInteger.ZERO;
-		
-		// contigs - Number of contigs in assembly.
-		// for now, program assumes assembly is in multiFASTA format.  this can be altered if necessary
-		contigs = BigInteger.ZERO;
-		
-		// bigContigs - Number of contigs of size > 1000
-		bigContigs = BigInteger.ZERO;
-		
-		Nnum = BigInteger.ZERO;
-		
-		// contigArr - List of contig sizes.  This is not a statistic, but values used to obtain a later one
-		contigArr = new ArrayList<BigInteger>();
-		
-		// gcWind - GC% counter for windows.  counts the number of GC base pairs in windows of size 100.
-		gcWind = new ArrayList<BigInteger>();
-		
-		// NX - NX array.  calculates all NX values for 0 < X <= 100
-		NX = new BigInteger[101];
+		init();
 		
 		FastScanner in;
 		if (DebugMode)
@@ -83,44 +78,24 @@ public class statprog {
 			in = new FastScanner(new File("assembly.fasta"));
 		read(in);
 		
-		// sort contigs by size to calculate NX array
-		Collections.sort(contigArr);
-		BigInteger sum = contigArr.get(contigArr.size() - 1);
-		int ind = contigArr.size() - 2;
-		
-		for (int i = 1; i <= 100; ++i) {
-			while (((double) sum.longValue()) / ((double) len.longValue()) < ((double) i) / 100.0)
-				sum = sum.add(contigArr.get(ind--));
-			NX[i] = contigArr.get(ind + 1);
-		}
+		calculateNX();
 		
 		if (DebugMode)
 			sysprint();
 		
 	}
 	
-	public static class FastScanner {
-		BufferedReader br;
-		StringTokenizer st;
-		FastScanner(File f) throws FileNotFoundException {
-			br = new BufferedReader(new FileReader(f));
-			st = new StringTokenizer("");
-		}
-		FastScanner(InputStream in) {
-			br = new BufferedReader(new InputStreamReader(in));
-			st = new StringTokenizer("");
-		}
-		String next() {
-			while (!st.hasMoreTokens()) {
-				try {
-					st = new StringTokenizer(br.readLine());
-				} catch (Exception e) {
-					endOfFile = true;
-					return "";
-				}
-			}
-			return st.nextToken();
-		}
+	public static void init() {
+		endOfFile = false;
+		cg = BigInteger.ZERO;
+		len = BigInteger.ZERO;
+		wind100 = BigInteger.ZERO;
+		contigs = BigInteger.ZERO;
+		bigContigs = BigInteger.ZERO;
+		Nnum = BigInteger.ZERO;
+		contigArr = new ArrayList<BigInteger>();
+		gcWind = new ArrayList<BigInteger>();
+		NX = new BigInteger[101];
 	}
 	
 	// splitting the reading into its own function
@@ -134,10 +109,10 @@ public class statprog {
 		
 		// N counts the number of N nucleotides found in a given window of 100
 		// QUAST does this, not sure if that's relevant for this project
-		int N = 0;
+		long N = 0;
 		
 		// ind marks how far in the window of 100 we have gone
-		int ind = 0;
+		long ind = 0;
 		
 		// prev will mark the number of cumulative GCs found in previous windows of 100
 		BigInteger prev = BigInteger.ZERO;
@@ -168,27 +143,23 @@ public class statprog {
 				
 				len = len.add(BigInteger.ONE);
 				
-				if (str.charAt(idx) == 'C' || str.charAt(idx) == 'G')
+				if (isCG(str.charAt(idx)))
 					cg = cg.add(BigInteger.ONE);
 				
+				// end of window has been reached
 				if (ind % WindowSize == 0) {
-					ind = 0;
+					updateWindows(N, prev);
 					
-					if (N >= (WindowSize + 1) / 2)
-						wind100 = wind100.add(BigInteger.ONE);
-					
-					N = 0;
-					gcWind.add(cg.subtract(prev));
 					prev = cg;
+					ind = 0;
+					N = 0;
 				}
 			}
+			
+			// this executes when we are finished with the current contig
 			else if (inContig) {
 				inContig = false;
-				contigs = contigs.add(BigInteger.ONE);
-				contigArr.add(size);
-				
-				if (size.compareTo(BigInteger.valueOf(LargeSize)) >= 0)
-					bigContigs = bigContigs.add(BigInteger.ONE);
+				updateContigs(size);
 				
 				size = BigInteger.ZERO;
 			}
@@ -196,6 +167,41 @@ public class statprog {
 		} while (!endOfFile);
 	}
 	
+	public static void updateWindows(long N, BigInteger prev) {
+		if (N >= (WindowSize + 1) / 2)
+			wind100 = wind100.add(BigInteger.ONE);
+		
+		gcWind.add(cg.subtract(prev));
+	}
+	
+	public static void updateContigs(BigInteger size) {
+		contigs = contigs.add(BigInteger.ONE);
+		contigArr.add(size);
+		
+		if (size.compareTo(BigInteger.valueOf(LargeSize)) >= 0)
+			bigContigs = bigContigs.add(BigInteger.ONE);
+	}
+	
+	public static boolean isCG(char c) {
+		return c == 'C' || c == 'G';
+	}
+	
+	public static void calculateNX() {
+		Collections.sort(contigArr);
+		
+		BigInteger sum = contigArr.get(contigArr.size() - 1);
+		int ind = contigArr.size() - 2;
+		
+		for (int i = 1; i <= 100; ++i) {
+			
+			while (((double) sum.longValue()) / ((double) len.longValue()) < ((double) i) / 100.0)
+				sum = sum.add(contigArr.get(ind--));
+			
+			NX[i] = contigArr.get(ind + 1);
+		}
+	}
+	
+	// this might look ugly, but it's for debug purposes only
 	public static void sysprint() {
 		System.out.printf("Assembly Length: %s\n", len.toString());
 		System.out.printf("Number of contigs: %s\n", contigs.toString());
@@ -213,4 +219,31 @@ public class statprog {
 			System.out.printf("%s ", NX[i].toString());
 		System.out.printf("\nNumber of N per %dbp:  %.9f\n", NSize, ((double) Nnum.longValue()) / ((double) len.longValue()) * NSize);
 	}
+	
+	// this is an improvement to the java Scanner class
+		// Scanner is quite slow on large inputs, and genomes can get large
+		// FastScanner has similar functionality but uses BufferedReader, which is faster
+		public static class FastScanner {
+			BufferedReader br;
+			StringTokenizer st;
+			FastScanner(File f) throws FileNotFoundException {
+				br = new BufferedReader(new FileReader(f));
+				st = new StringTokenizer("");
+			}
+			FastScanner(InputStream in) {
+				br = new BufferedReader(new InputStreamReader(in));
+				st = new StringTokenizer("");
+			}
+			String next() {
+				while (!st.hasMoreTokens()) {
+					try {
+						st = new StringTokenizer(br.readLine());
+					} catch (Exception e) {
+						endOfFile = true;
+						return "";
+					}
+				}
+				return st.nextToken();
+			}
+		}
 }
