@@ -1,5 +1,5 @@
 /*
-statprog.java v0.1
+statprog.java v0.2
 senior design group 8
 
 VERSION NOTES:
