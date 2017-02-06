@@ -6,8 +6,8 @@ import java.sql.*;
 public class DatabaseConnection{
 	// JDBC driver name and database URL
 	private static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";  
-	private static final String DB_URL = "jdbc:mysql://localhost";
-	private static final String CRED = "~/mysql_credentials.txt";
+	private static final String DB_URL = "jdbc:mysql://10.171.204.144:3306/pipeline";
+	private static final String CRED = "D:/GoogleDrive/UCF/SeniorDesign/SeniorDesign-MetagenomicPipeline/mysql_credentials.txt";
 	
 	//database credentials
 	private String user;
@@ -36,7 +36,9 @@ public class DatabaseConnection{
 			Class.forName(JDBC_DRIVER);
 			
 			//open connection
+			System.out.println("Openning connection to database.");
 			con = DriverManager.getConnection(DB_URL, user, pass);
+			System.out.println("Connected.");
 		}catch(SQLException e){
 			e.printStackTrace();
 		}catch(Exception e){
