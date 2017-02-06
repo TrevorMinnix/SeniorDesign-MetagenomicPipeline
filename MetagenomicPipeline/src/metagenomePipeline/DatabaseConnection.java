@@ -6,7 +6,7 @@ import java.sql.*;
 public class DatabaseConnection{
 	// JDBC driver name and database URL
 	private static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";  
-	private static final String DB_URL = "jdbc:mysql://10.171.204.144:3306/pipeline";
+	private static final String DB_URL = "jdbc:mysql://localhost:3306/pipeline";
 	private static final String CRED = "/home/student/mysql_credentials.txt";
 	
 	//database credentials
