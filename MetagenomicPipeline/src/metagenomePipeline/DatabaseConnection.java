@@ -12,8 +12,10 @@ public class DatabaseConnection{
 	//database credentials
 	private String user;
 	private String pass;
-	 
-	Connection con;
+	
+	//database connect and sql statement
+	private Connection con;
+	private Statement statement;
 	
 	public DatabaseConnection(){
 		//get user and pass from text file
@@ -39,10 +41,15 @@ public class DatabaseConnection{
 			System.out.println("Openning connection to database.");
 			con = DriverManager.getConnection(DB_URL, user, pass);
 			System.out.println("Connected.");
+			
+			//instantiate statement
+			statement = con.createStatement();
 		}catch(SQLException e){
 			e.printStackTrace();
 		}catch(Exception e){
 			e.printStackTrace();
 		}
 	}
+	
+	
 }
