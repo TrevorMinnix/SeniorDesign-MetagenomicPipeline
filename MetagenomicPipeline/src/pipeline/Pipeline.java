@@ -1,5 +1,4 @@
 package pipeline;
-import java.nio.file.Path;
 
 import metagenomePipeline.*;
 
@@ -30,29 +29,37 @@ public class Pipeline<J extends Job>{
 	}
 
 	//testing
-//	public static void main(String[] args){
-//		//create stages
+	public static void main(String[] args){
+		//create stages
 //		MetagenomeStage s1 = new TrimmingStage();
 //		MetagenomeStage s2 = new TrimmingStage();
 //		MetagenomeStage s3 = new TrimmingStage();
 //		
-//		s1.init(new Stage[]{s2, s3});
-//		s2.init(new Stage[]{});
-//		s3.init(new Stage[]{});
+//		//initialize nextStage for each
+//		s1.init(new MetagenomeStage[]{s2, s3});
+//		s2.init(new MetagenomeStage[]{});	//empty array is a terminal stage
+//		s3.init(new MetagenomeStage[]{});
 //		
+//		//initialize a job
 //		MetagenomeJob j = new MetagenomeJob("id", null, null, null);
 //		
+//		//create pipeline parameterized to correct job subclass
 //		Pipeline<MetagenomeJob> pipe = new Pipeline<MetagenomeJob>(new MetagenomeStage[]{s1, s2, s3}, s1);
 //		
+//		//submit job and run pipeline
 //		pipe.submitJob(j);
 //		pipe.runPipeline();
 //		
+//		//sleep
 //		try {
 //			Thread.sleep(100);
 //		} catch (InterruptedException e) {
 //			e.printStackTrace();
 //		}
 //		
+//		//abort pipeline to end execution
 //		pipe.abortPipeline();
-//	}
+		
+		DatabaseConnection db = new DatabaseConnection();
+	}
 }
