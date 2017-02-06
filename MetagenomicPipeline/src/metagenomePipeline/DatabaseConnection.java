@@ -7,7 +7,7 @@ public class DatabaseConnection{
 	// JDBC driver name and database URL
 	private static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";  
 	private static final String DB_URL = "jdbc:mysql://10.171.204.144:3306/pipeline";
-	private static final String CRED = "D:/GoogleDrive/UCF/SeniorDesign/SeniorDesign-MetagenomicPipeline/mysql_credentials.txt";
+	private static final String CRED = "~/mysql_credentials.txt";
 	
 	//database credentials
 	private String user;
