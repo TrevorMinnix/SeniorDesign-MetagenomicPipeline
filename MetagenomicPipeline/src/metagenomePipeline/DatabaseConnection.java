@@ -15,7 +15,6 @@ public class DatabaseConnection{
 	
 	//database connect and sql statement
 	private Connection con;
-	private Statement statement;
 	
 	public DatabaseConnection(){
 		//get user and pass from text file
@@ -41,9 +40,6 @@ public class DatabaseConnection{
 			System.out.println("Openning connection to database.");
 			con = DriverManager.getConnection(DB_URL, user, pass);
 			System.out.println("Connected.");
-			
-			//instantiate statement
-			statement = con.createStatement();
 		}catch(SQLException e){
 			e.printStackTrace();
 		}catch(Exception e){
@@ -51,5 +47,26 @@ public class DatabaseConnection{
 		}
 	}
 	
+	public ResultSet execQuery(String query){
+		Statement statement;
+		try {
+			statement = con.createStatement();
+			ResultSet rs = statement.executeQuery(query);
+			statement.close();
+			return rs;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+	}
 	
+	public void closeDatabaseConnection(){
+		try {
+			con.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 }

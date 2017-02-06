@@ -1,5 +1,8 @@
 package pipeline;
 
+import java.io.IOException;
+import java.sql.SQLException;
+
 import metagenomePipeline.*;
 
 public class Pipeline<J extends Job>{
@@ -60,6 +63,9 @@ public class Pipeline<J extends Job>{
 //		//abort pipeline to end execution
 //		pipe.abortPipeline();
 		
-		DatabaseConnection db = new DatabaseConnection();
+		DatabaseConnection db;
+		
+		db = new DatabaseConnection();
+		db.execQuery("INSERT INTO `job` (`jobID`, `email`, `timestamp`, `input`, `trimParam`, `trimStatus`, `trimmed`) VALUES ('1cbed4d9-ecb3-11e6-be4f-00155dcc8a23', '', CURRENT_TIMESTAMP, '', '', '0', '');");
 	}
 }
