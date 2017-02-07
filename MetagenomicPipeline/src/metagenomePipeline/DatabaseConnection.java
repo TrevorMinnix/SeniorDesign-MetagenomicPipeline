@@ -47,17 +47,17 @@ public class DatabaseConnection{
 		}
 	}
 	
-	public ResultSet execQuery(String query){
+	public int execUpdate(String query){
 		Statement statement;
 		try {
 			statement = con.createStatement();
-			ResultSet rs = statement.executeQuery(query);
+			int result = statement.executeUpdate(query);
 			statement.close();
-			return rs;
+			return result;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			return null;
+			return 0;
 		}
 	}
 	
