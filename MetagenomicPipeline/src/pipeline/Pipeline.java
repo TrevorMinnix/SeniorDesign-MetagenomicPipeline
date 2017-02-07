@@ -28,9 +28,9 @@ public class Pipeline<J extends Job>{
 		}
 	}
 
-	//testing
-	public static void main(String[] args){
-		//create stages
+//	//testing
+//	public static void main(String[] args){
+//		//create stages
 //		MetagenomeStage s1 = new TrimmingStage();
 //		MetagenomeStage s2 = new TrimmingStage();
 //		MetagenomeStage s3 = new TrimmingStage();
@@ -59,7 +59,5 @@ public class Pipeline<J extends Job>{
 //		
 //		//abort pipeline to end execution
 //		pipe.abortPipeline();
-		
-		DatabaseConnection db = new DatabaseConnection();
-	}
+//	}
 }

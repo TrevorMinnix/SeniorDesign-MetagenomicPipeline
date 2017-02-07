@@ -6,14 +6,15 @@ import java.sql.*;
 public class DatabaseConnection{
 	// JDBC driver name and database URL
 	private static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";  
-	private static final String DB_URL = "jdbc:mysql://localhost";
-	private static final String CRED = "~/mysql_credentials.txt";
+	private static final String DB_URL = "jdbc:mysql://localhost:3306/pipeline?useSSL=false";
+	private static final String CRED = "/home/student/mysql_credentials.txt";
 	
 	//database credentials
 	private String user;
 	private String pass;
-	 
-	Connection con;
+	
+	//database connect and sql statement
+	private Connection con;
 	
 	public DatabaseConnection(){
 		//get user and pass from text file
@@ -36,10 +37,35 @@ public class DatabaseConnection{
 			Class.forName(JDBC_DRIVER);
 			
 			//open connection
+			System.out.println("Openning connection to database.");
 			con = DriverManager.getConnection(DB_URL, user, pass);
+			System.out.println("Connected.");
 		}catch(SQLException e){
 			e.printStackTrace();
 		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	
+	public int execUpdate(String query){
+		Statement statement;
+		try {
+			statement = con.createStatement();
+			int result = statement.executeUpdate(query);
+			statement.close();
+			return result;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return 0;
+		}
+	}
+	
+	public void closeDatabaseConnection(){
+		try {
+			con.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
