@@ -29,7 +29,7 @@ public class Pipeline<J extends Job>{
 	}
 
 //	//testing
-//	public static void main(String[] args){
+	public static void main(String[] args){
 //		//create stages
 //		MetagenomeStage s1 = new TrimmingStage();
 //		MetagenomeStage s2 = new TrimmingStage();
@@ -59,5 +59,10 @@ public class Pipeline<J extends Job>{
 //		
 //		//abort pipeline to end execution
 //		pipe.abortPipeline();
-//	}
+		
+		DatabaseConnection db = new DatabaseConnection();
+		db.updateTrimming("47969b89-ee3d-11e6-be4f-00155dcc8a23", true);
+		db.updateAssembly("47969b89-ee3d-11e6-be4f-00155dcc8a23", "idba", true);
+		db.closeDatabaseConnection();
+	}
 }

@@ -47,7 +47,31 @@ public class DatabaseConnection{
 		}
 	}
 	
-	public int execUpdate(String query){
+	public void updateTrimming(String jobID, boolean status){
+		execUpdate("UPDATE `job` SET `trimStatus` = '" + (status ? 1 : 0) + 
+				"' WHERE `job`.`jobID` = '" + jobID + "';");
+	}
+	
+	public void updateAssembly(String jobID, String assembler, boolean status){
+		execUpdate("UPDATE `" + assembler + "` SET `assemblyStatus` = '" + 
+				(status ? 1 : 0) + "' WHERE `idba`.`jobID` = '" + jobID + "';");
+	}
+	
+	public void updateReadMapping(String jobID, String assembler, boolean status){
+		execUpdate("UPDATE `" + assembler + "` SET `readmapStatus` = '" + 
+				(status ? 1 : 0) + "' WHERE `idba`.`jobID` = '" + jobID + "';");
+	}
+	
+	public void updateStatistics(String jobID, String assembler, boolean status){
+		execUpdate("UPDATE `" + assembler + "` SET `statStatus` = '" + 
+				(status ? 1 : 0) + "' WHERE `idba`.`jobID` = '" + jobID + "';");
+	}
+	
+	public void updateVisualization(String jobID, String assembler, boolean status){
+		execUpdate("UPDATE `" + assembler + "` SET `visualStatus` = '" + 
+				(status ? 1 : 0) + "' WHERE `idba`.`jobID` = '" + jobID + "';");
+	}
+	private int execUpdate(String query){
 		Statement statement;
 		try {
 			statement = con.createStatement();
