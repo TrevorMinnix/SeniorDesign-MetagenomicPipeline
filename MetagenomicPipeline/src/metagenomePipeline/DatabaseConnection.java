@@ -71,6 +71,7 @@ public class DatabaseConnection{
 		execUpdate("UPDATE `" + assembler + "` SET `visualStatus` = '" + 
 				(status ? 1 : 0) + "' WHERE `idba`.`jobID` = '" + jobID + "';");
 	}
+	
 	private int execUpdate(String query){
 		Statement statement;
 		try {
