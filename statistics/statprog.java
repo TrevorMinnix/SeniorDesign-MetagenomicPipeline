@@ -24,6 +24,9 @@ needs some commentation but i'll do that later
 1.1
 add some basic output, right now just a text file
 
+1.2
+correcting error in picard tool syntax
+
 
 program description:
 takes the data from a genome assembler and provides statistics on it for a particular data set
@@ -107,10 +110,10 @@ public class statprog {
 		
 		
 		if (calculateReference) {
-			ProcessBuilder pb = new ProcessBuilder("java", "-Xmx2g", "-jar", "picard.jar", "FastqToSam", "F1="+ref_file, "O=pout.bam");
+			ProcessBuilder pb = new ProcessBuilder("java", "-Xmx2g", "-jar", "picard.jar", "FastqToSam", "F1="+(input_file.replace(".fasta", ".fastq")), "O="+(input_file.replace(".fasta", ".bam")));
 			Process p = pb.start();
 			p.waitFor();
-			pb = new ProcessBuilder("java", "-Xmx2g", "-jar", "picard.jar", "CollectMultipleMetrics", "I=pout.bam", "O="+out_files, "R=reference_sequence.fasta");
+			pb = new ProcessBuilder("java", "-Xmx2g", "-jar", "picard.jar", "CollectMultipleMetrics", "I="+(input_file.replace(".fasta", ".bam")), "O="+out_files, "R="+ref_file);
 			p = pb.start();
 			p.waitFor();
 		}
