@@ -1,5 +1,5 @@
 /*
-statprog.java v0.3
+statprog.java v1.0
 senior design group 8
 
 VERSION NOTES:
@@ -16,6 +16,10 @@ code still needs to be cleaned up and unspaghetti-fied
 
 0.3
 updated code so it is more readable, less spaghetti code
+
+1.0
+finished reference statistics, needs testing to make sure i'm calling picard right and parsing the input
+needs some commentation but i'll do that later
 
 
 program description:
@@ -40,45 +44,71 @@ public class statprog {
 	
 	/*
 	variable explanations
-		cg		-	CG% counter.  counts the total number of GC pairs in the assembly
-		len		-	Length of assembly
-		wind100		-	Windows where they are fewer than 50% N
-		contigs		-	Number of contigs in assembly.
-		bigContigs	-	Number of contigs of large size
-		Nnum		-	Number of Ns found
-		contigArr	-	Array of contig sizes
-		gcWind		-	CG% counter for windows (not the OS)
-		NX		-	Array of NX values
-		endOfFile	-	Indicates end of input has been reached
-		WindowSize	-	Constant defining size of windows
-		LargeSize	-	Constant defining minimum size of large contigs
-		NSize		-	Constant defining for what size the expected number of Ns will be
-		DebugMode	-	Constant determining if program will run in debug mode
+		cg					-		CG% counter.  counts the total number of GC pairs in the assembly
+		len					-		Length of assembly
+		wind100				-	Windows where they are fewer than 50% N
+		contigs				-	Number of contigs in assembly.
+		bigContigs			-	Number of contigs of large size
+		Nnum				-	Number of Ns found
+		contigArr			-	Array of contig sizes
+		gcWind				-	CG% counter for windows (not the OS)
+		NX					-	Array of NX values
+		calculateReference	- 
+		endOfFile			-	Indicates end of input has been reached
+		WindowSize			-	Constant defining size of windows
+		LargeSize			-	Constant defining minimum size of large contigs
+		NSize				-	Constant defining for what size the expected number of Ns will be
+		DebugMode			-	Constant determining if program will run in debug mode
 	 */
 	public static BigInteger len, cg, wind100, contigs, bigContigs, largestContig, Nnum;
 	public static ArrayList<BigInteger> contigArr, gcWind;
 	public static BigInteger[] NX;
+	public static boolean calculateReference;
 	public static boolean endOfFile;
 	
-	public static final long WindowSize = 100;
-	public static final long LargeSize = 1000;
-	public static final long NSize = 100000;
+	public static long WindowSize = 100;
+	public static long LargeSize = 1000;
+	public static long NSize = 100000;
 	
 	public static final boolean DebugMode = true;
 	
 	
-	public static void main(String[] args) throws FileNotFoundException {
+	public static void main(String[] args) throws IOException, InterruptedException {
 		
 		init();
+		String input_file = "";
+		String ref_file = "";
+		for (int i = 0; i < args.length; ++i)
+			switch(args[i].charAt(0)) {
+			case 'I': input_file = args[i].substring(2); break;
+			case 'R':
+				calculateReference = true;
+				ref_file = args[i].substring(2);
+				break;
+			case 'W': WindowSize = Long.parseLong(args[i].substring(2)); break;
+			case 'L': LargeSize = Long.parseLong(args[i].substring(2)); break;
+			case 'N': NSize = Long.parseLong(args[i].substring(2)); break;
+			}
+		
 		
 		FastScanner in;
 		if (DebugMode)
 			in = new FastScanner(System.in);
 		else
-			in = new FastScanner(new File("assembly.fasta"));
+			in = new FastScanner(new File(input_file));
 		read(in);
 		
 		calculateNX();
+		
+		
+		if (calculateReference) {
+			ProcessBuilder pb = new ProcessBuilder("java", "-Xmx2g", "-jar", "picard.jar", "FastqToSam", "F1="+ref_file, "O=pout.bam");
+			Process p = pb.start();
+			p.waitFor();
+			pb = new ProcessBuilder("java", "-Xmx2g", "-jar", "picard.jar", "CollectMultipleMetrics", "I=pout.bam", "O=multiple_metrics", "R=reference_sequence.fasta");
+			p = pb.start();
+			p.waitFor();
+		}
 		
 		if (DebugMode)
 			sysprint();
@@ -96,6 +126,9 @@ public class statprog {
 		contigArr = new ArrayList<BigInteger>();
 		gcWind = new ArrayList<BigInteger>();
 		NX = new BigInteger[101];
+		WindowSize = 100;
+		LargeSize = 1000;
+		NSize = 100000;
 	}
 	
 	// splitting the reading into its own function
