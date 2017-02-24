@@ -21,6 +21,9 @@ updated code so it is more readable, less spaghetti code
 finished reference statistics, needs testing to make sure i'm calling picard right and parsing the input
 needs some commentation but i'll do that later
 
+1.1
+add some basic output, right now just a text file
+
 
 program description:
 takes the data from a genome assembler and provides statistics on it for a particular data set
@@ -70,7 +73,7 @@ public class statprog {
 	public static long LargeSize = 1000;
 	public static long NSize = 100000;
 	
-	public static final boolean DebugMode = true;
+	public static final boolean DebugMode = false;
 	
 	
 	public static void main(String[] args) throws IOException, InterruptedException {
@@ -78,6 +81,7 @@ public class statprog {
 		init();
 		String input_file = "";
 		String ref_file = "";
+		String out_files = "stat_out";
 		for (int i = 0; i < args.length; ++i)
 			switch(args[i].charAt(0)) {
 			case 'I': input_file = args[i].substring(2); break;
@@ -88,6 +92,7 @@ public class statprog {
 			case 'W': WindowSize = Long.parseLong(args[i].substring(2)); break;
 			case 'L': LargeSize = Long.parseLong(args[i].substring(2)); break;
 			case 'N': NSize = Long.parseLong(args[i].substring(2)); break;
+			case 'O': out_files = args[i].substring(2); break;
 			}
 		
 		
@@ -105,13 +110,32 @@ public class statprog {
 			ProcessBuilder pb = new ProcessBuilder("java", "-Xmx2g", "-jar", "picard.jar", "FastqToSam", "F1="+ref_file, "O=pout.bam");
 			Process p = pb.start();
 			p.waitFor();
-			pb = new ProcessBuilder("java", "-Xmx2g", "-jar", "picard.jar", "CollectMultipleMetrics", "I=pout.bam", "O=multiple_metrics", "R=reference_sequence.fasta");
+			pb = new ProcessBuilder("java", "-Xmx2g", "-jar", "picard.jar", "CollectMultipleMetrics", "I=pout.bam", "O="+out_files, "R=reference_sequence.fasta");
 			p = pb.start();
 			p.waitFor();
 		}
 		
 		if (DebugMode)
 			sysprint();
+		else {
+			PrintWriter out = new PrintWriter(new File("norm_"+out_files+".txt"));
+			out.printf("Assembly Length: %s\n", len.toString());
+			out.printf("Number of contigs: %s\n", contigs.toString());
+			out.printf("Number of clean windows of size %d:  %s\n", WindowSize, wind100.toString());
+			out.printf("Number of large contigs:  %s\n", bigContigs.toString());
+			out.printf("List of contig sizes: %d\n", contigArr.size());
+			for (int i = 0; i < contigArr.size(); ++i)
+				out.printf("%s ", contigArr.get(i).toString());
+			out.printf("\nGC comp:  %.9f\n", ((double) cg.longValue()) / ((double) len.longValue()));
+			out.printf("CG content per windows of size %d: %d\n", WindowSize, gcWind.size());
+			for (int i = 0; i < gcWind.size(); ++i)
+				out.printf("%.9f ", ((double) gcWind.get(i).longValue()) / 100.0);
+			out.printf("\nNX array:\n");
+			for (int i = 1; i < NX.length; ++i)
+				out.printf("%s ", NX[i].toString());
+			out.printf("\nNumber of N per %dbp:  %.9f\n", NSize, ((double) Nnum.longValue()) / ((double) len.longValue()) * NSize);
+			out.close();
+		}
 		
 	}
 	
