@@ -6,8 +6,9 @@ Where input_file_name is the name of the assembly being provided
 O=output_file_names
 Give a desired name for the output files (there are multiple).  Default is stat_out
 
-R=reference_file_name.fastq
+R=reference_file_name.fasta
 Provide the reference data for a genome.  If not provided, reference statistics will not be provided.
+Please note, if this is provided, a fastq file with the same name as the input_file_name should also be present.
 
 W=window_size
 Where window_size is an integer specifying the desired length of windows to calculate GC% in, by base pairs.  Default is 100.
