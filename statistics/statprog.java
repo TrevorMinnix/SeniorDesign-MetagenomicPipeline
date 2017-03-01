@@ -88,7 +88,7 @@ public class statprog {
 		String input_file = "";
 		String ref_file = "";
 		String out_files = "stat_out";
-		/*for (int i = 0; i < args.length; ++i)
+		for (int i = 0; i < args.length && !DebugMode; ++i)
 			switch(args[i].charAt(0)) {
 			case 'I': input_file = args[i].substring(2); break;
 			case 'R':
@@ -99,7 +99,7 @@ public class statprog {
 			case 'L': LargeSize = Long.parseLong(args[i].substring(2)); break;
 			case 'N': NSize = Long.parseLong(args[i].substring(2)); break;
 			case 'O': out_files = args[i].substring(2); break;
-			}*/
+			}
 		if (DebugMode) {
 			out_files = "sample";
 			calculateReference = true;
