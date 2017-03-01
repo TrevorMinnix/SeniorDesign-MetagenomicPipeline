@@ -1,7 +1,7 @@
 Run the java file statprog with the following arguments in any order (arguments with a * are required):
 
-I=input_file_name.fastq*
-Where input_file_name is the name of the assembly being provided.  Must be in fastq format.
+I=input_file_name.fasta*
+Where input_file_name is the name of the assembly being provided.
 
 O=output_file_names
 Give a desired name for the output files (there are multiple).  Default is stat_out
