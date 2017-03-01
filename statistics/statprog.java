@@ -1,5 +1,5 @@
 /*
-statprog.java v1.2
+statprog.java v1.3
 senior design group 8
 
 VERSION NOTES:
@@ -26,6 +26,9 @@ add some basic output, right now just a text file
 
 1.2
 correcting error in picard tool syntax
+
+1.3
+correcting picard use so thread does not deadlock
 
 
 program description:
@@ -85,7 +88,7 @@ public class statprog {
 		String input_file = "";
 		String ref_file = "";
 		String out_files = "stat_out";
-		for (int i = 0; i < args.length; ++i)
+		for (int i = 0; i < args.length && !DebugMode; ++i)
 			switch(args[i].charAt(0)) {
 			case 'I': input_file = args[i].substring(2); break;
 			case 'R':
@@ -97,24 +100,41 @@ public class statprog {
 			case 'N': NSize = Long.parseLong(args[i].substring(2)); break;
 			case 'O': out_files = args[i].substring(2); break;
 			}
+		if (DebugMode) {
+			out_files = "sample";
+			calculateReference = true;
+			ref_file = "sample.fasta";
+			input_file = "sample.fastq";
+		}
 		
 		
 		FastScanner in;
-		if (DebugMode)
-			in = new FastScanner(System.in);
-		else
+//		if (DebugMode)
+//			in = new FastScanner(System.in);
+//		else
 			in = new FastScanner(new File(input_file));
 		read(in);
 		
 		calculateNX();
 		
+
+		
 		
 		if (calculateReference) {
-			ProcessBuilder pb = new ProcessBuilder("java", "-Xmx2g", "-jar", "picard.jar", "FastqToSam", "F1="+(input_file.replace(".fasta", ".fastq")), "O="+(input_file.replace(".fasta", ".bam")));
+			ProcessBuilder pb = new ProcessBuilder("java", "-Xmx2g", "-jar", "picard.jar", "FastqToSam", "F1="+(input_file.replace(".fasta", ".fastq")), "O="+(input_file.replace(".fasta", ".bam")), "SM=filler");
+			pb.redirectErrorStream(true);
 			Process p = pb.start();
+			BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
+			String line;
+			while ((line = reader.readLine()) != null)
+			    System.out.println("tasklist: " + line);
 			p.waitFor();
 			pb = new ProcessBuilder("java", "-Xmx2g", "-jar", "picard.jar", "CollectMultipleMetrics", "I="+(input_file.replace(".fasta", ".bam")), "O="+out_files, "R="+ref_file);
+			pb.redirectErrorStream(true);
 			p = pb.start();
+			reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
+			while ((line = reader.readLine()) != null)
+			    System.out.println("tasklist: " + line);
 			p.waitFor();
 		}
 		
@@ -184,8 +204,8 @@ public class statprog {
 			if (idx == str.length()) {
 				idx = 0;
 				str = in.next();
-				if (DebugMode && str.charAt(0) == '$')
-					endOfFile = true;
+//				if (DebugMode && str.charAt(0) == '$')
+//					endOfFile = true;
 			}
 			
 			if (!endOfFile && str.charAt(0) != '>') {
