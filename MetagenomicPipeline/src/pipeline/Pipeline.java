@@ -5,6 +5,7 @@ import metagenomePipeline.*;
 public class Pipeline<J extends Job>{
 	private Stage<J>[] stages;
 	private Stage<J> initialStage;
+	protected DatabaseConnection db;
 	
 	//get stages and subsequent stages
 	public Pipeline (Stage<J>[] stages, Stage<J> initialStage){
