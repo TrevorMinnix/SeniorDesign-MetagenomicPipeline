@@ -1,4 +1,5 @@
-As I will remove Picard and simplify the input for the program, the previous README was out of date.  Please disregard previous instructions, and ignore Picard's presence in this project, it will soon be removed.
+As I will remove Picard and simplify the input for the program, the previous README was out of date.
+Please disregard previous instructions, and ignore Picard's presence in this project, it will soon be removed.
 
 Current statistics included in this program:
 
