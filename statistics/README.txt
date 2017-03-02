@@ -12,3 +12,5 @@ GC% composition
 GC% composition of windows of a given size (default 100bp).
 NX values (1-100)
 Expected number of 'N' pairs per a given number of nucleotides (default 10000bp).
+
+I will examine the professor's document and add any other statistics that can be calculated within the same sweep as these.
