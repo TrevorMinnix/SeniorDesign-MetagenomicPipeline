@@ -1,20 +1,16 @@
-Run the java file statprog with the following arguments in any order (arguments with a * are required):
+As I will remove Picard and simplify the input for the program, the previous README was out of date.
+Please disregard previous instructions, and ignore Picard's presence in this project, it will soon be removed.
 
-I=input_file_name.fasta*
-Where input_file_name is the name of the assembly being provided.
+Current statistics included in this program:
 
-O=output_file_names
-Give a desired name for the output files (there are multiple).  Default is stat_out
+Assembly length
+Number of contigs
+Number of "clean" windows of a given size (default 100bp).  A "clean" window is defined as one with <50% 'N' base pairs.
+Number of "large" contigs.  A "large" contig is one above a given size (default 1000bp).
+List of contig sizes
+GC% composition
+GC% composition of windows of a given size (default 100bp).
+NX values (1-100)
+Expected number of 'N' pairs per a given number of nucleotides (default 10000bp).
 
-R=reference_file_name.fasta
-Provide the reference data for a genome.  If not provided, reference statistics will not be provided.
-Please note, if this is provided, a fastq file with the same name as the input_file_name should also be present.
-
-W=window_size
-Where window_size is an integer specifying the desired length of windows to calculate GC% in, by base pairs.  Default is 100.
-
-L=large_contig_size
-Where contig_size is an integer specifying the smallest length of a contig that will be considered a "large" one, by base pairs.  Default is 1000.
-
-N=n_size
-Where n_size is the desired size of the genome where the average number of N characters in the assembly will be calculated, in base pairs.  Default is 100000.
+I will examine the professor's document and add any other statistics that can be calculated within the same sweep as these.
