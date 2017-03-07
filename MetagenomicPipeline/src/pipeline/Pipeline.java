@@ -69,7 +69,8 @@ public class Pipeline<J extends Job>{
 		DatabaseConnection db = new DatabaseConnection();
 		ResultSet rs = db.newJobs();
 		Array s = rs.getArray("JobID");
-		System.out.println(s.toString());
+		String[] ss = (String[]) s.getArray();
+		System.out.println(ss.toString());
 		db.closeDatabaseConnection();
 	}
 }
