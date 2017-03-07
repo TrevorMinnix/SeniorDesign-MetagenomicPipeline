@@ -1,6 +1,9 @@
 package pipeline;
 
+import java.sql.Array;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Arrays;
 
 import metagenomePipeline.*;
 
@@ -32,7 +35,7 @@ public class Pipeline<J extends Job>{
 	}
 
 //	//testing
-	public static void main(String[] args){
+	public static void main(String[] args) throws SQLException{
 //		//create stages
 //		MetagenomeStage s1 = new TrimmingStage();
 //		MetagenomeStage s2 = new TrimmingStage();
@@ -65,7 +68,8 @@ public class Pipeline<J extends Job>{
 //		
 		DatabaseConnection db = new DatabaseConnection();
 		ResultSet rs = db.newJobs();
-		System.out.println(rs.toString());
+		Array s = rs.getArray("JobID");
+		System.out.println(s.toString());
 		db.closeDatabaseConnection();
 	}
 }
