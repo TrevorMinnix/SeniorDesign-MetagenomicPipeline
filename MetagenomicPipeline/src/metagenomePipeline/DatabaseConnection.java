@@ -97,6 +97,7 @@ public class DatabaseConnection{
 			statement = con.createStatement();
 			result = statement.executeQuery(query);
 			statement.close();
+			result.close();
 			return result;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
