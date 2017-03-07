@@ -72,6 +72,10 @@ public class DatabaseConnection{
 				(status ? 1 : 0) + "' WHERE `idba`.`jobID` = '" + jobID + "';");
 	}
 	
+	public ResultSet newJobs(){
+		return execQuery("SELECT * FROM `job` WHERE `newJob` = true ORDER BY `timestamp` ASC");
+	}
+	
 	private int execUpdate(String query){
 		Statement statement;
 		try {
@@ -83,6 +87,21 @@ public class DatabaseConnection{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return 0;
+		}
+	}
+	
+	private ResultSet execQuery(String query){
+		Statement statement;
+		ResultSet result;
+		try {
+			statement = con.createStatement();
+			result = statement.executeQuery(query);
+			statement.close();
+			return result;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
 		}
 	}
 	
