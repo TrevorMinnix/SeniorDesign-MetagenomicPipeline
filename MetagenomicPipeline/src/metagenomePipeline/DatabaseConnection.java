@@ -3,6 +3,9 @@ package metagenomePipeline;
 import java.io.*;
 import java.sql.*;
 
+import javax.sql.rowset.CachedRowSet;
+import com.sun.rowset.CachedRowSetImpl;
+
 public class DatabaseConnection{
 	// JDBC driver name and database URL
 	private static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";  
@@ -90,15 +93,18 @@ public class DatabaseConnection{
 		}
 	}
 	
-	private ResultSet execQuery(String query){
+	private CachedRowSet execQuery(String query){
 		Statement statement;
 		ResultSet result;
+		CachedRowSet crs;
 		try {
+			crs = new CachedRowSetImpl();
 			statement = con.createStatement();
 			result = statement.executeQuery(query);
+			crs.populate(result);
 			statement.close();
 			result.close();
-			return result;
+			return crs;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

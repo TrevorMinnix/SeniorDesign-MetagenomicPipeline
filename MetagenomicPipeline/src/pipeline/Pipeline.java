@@ -3,6 +3,7 @@ package pipeline;
 import java.sql.Array;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Arrays;
 
 import metagenomePipeline.*;
