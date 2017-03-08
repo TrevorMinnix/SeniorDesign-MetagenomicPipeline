@@ -75,6 +75,11 @@ public class DatabaseConnection{
 				(status ? 1 : 0) + "' WHERE `idba`.`jobID` = '" + jobID + "';");
 	}
 	
+	public void updateNewJob(String jobID, boolean status){
+		execUpdate("UPDATE `job` SET `newJob` = '" + (status ? 1 : 0) + 
+				"' WHERE `job`.`jobID` = '" + jobID +"'");
+	}
+	
 	public ResultSet newJobs(){
 		return execQuery("SELECT * FROM `job` WHERE `newJob` = true ORDER BY `timestamp` ASC");
 	}

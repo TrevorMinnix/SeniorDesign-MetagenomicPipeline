@@ -1,17 +1,16 @@
 package pipeline;
 
-import java.sql.Array;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.Arrays;
+//import java.sql.Array;
+//import java.sql.ResultSet;
+//import java.sql.SQLException;
+//import java.sql.Statement;
+//import java.util.Arrays;
 
-import metagenomePipeline.*;
+//import metagenomePipeline.*;
 
 public class Pipeline<J extends Job>{
 	private Stage<J>[] stages;
 	private Stage<J> initialStage;
-	protected DatabaseConnection db;
 	
 	//get stages and subsequent stages
 	public Pipeline (Stage<J>[] stages, Stage<J> initialStage){
@@ -36,7 +35,7 @@ public class Pipeline<J extends Job>{
 	}
 
 //	//testing
-	public static void main(String[] args) throws SQLException{
+//	public static void main(String[] args) throws SQLException{
 //		//create stages
 //		MetagenomeStage s1 = new TrimmingStage();
 //		MetagenomeStage s2 = new TrimmingStage();
@@ -67,10 +66,10 @@ public class Pipeline<J extends Job>{
 //		//abort pipeline to end execution
 //		pipe.abortPipeline();
 //		
-		DatabaseConnection db = new DatabaseConnection();
-		ResultSet rs = db.newJobs();
-		rs.next();
-		System.out.println(rs.getString(1));
-		db.closeDatabaseConnection();
-	}
+//		DatabaseConnection db = new DatabaseConnection();
+//		ResultSet rs = db.newJobs();
+//		rs.next();
+//		System.out.println(rs.getString(1));
+//		db.closeDatabaseConnection();
+//	}
 }
