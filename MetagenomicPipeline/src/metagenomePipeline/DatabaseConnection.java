@@ -75,13 +75,22 @@ public class DatabaseConnection{
 				(status ? 1 : 0) + "' WHERE `idba`.`jobID` = '" + jobID + "';");
 	}
 	
-	public void updateNewJob(String jobID, boolean status){
-		execUpdate("UPDATE `job` SET `newJob` = '" + (status ? 1 : 0) + 
-				"' WHERE `job`.`jobID` = '" + jobID +"'");
+	public void updateJobStatus(String jobID, int i){
+		execUpdate("UPDATE `job` SET `jobStatus` = '" + i + "' WHERE `job`.`jobID` = '" + jobID +"'");
 	}
 	
 	public ResultSet newJobs(){
-		return execQuery("SELECT * FROM `job` WHERE `newJob` = true ORDER BY `timestamp` ASC");
+		return execQuery("SELECT job.jobID, job.input, job.inputPE, "
+				+ "job.trimParam, job.trimmed, job.idba, job.megahit, "
+				+ "job.metaspades, job.pairedEnd, idba.param, idba.assembly, "
+				+ "idba.readmap, idba.stat, idba.visual, megahit.param, "
+				+ "megahit.assembly, megahit.readmap, megahit.stat, "
+				+ "megahit.visual, metaspades.param, metaspades.assembly, "
+				+ "metaspades.readmap, metaspades.stat, metaspades.visual FROM "
+				+ "job INNER JOIN idba ON job.jobID = idba.jobID INNER JOIN "
+				+ "megahit ON job.jobID = megahit.jobID INNER JOIN metaspades "
+				+ "ON job.jobID = metaspades.jobID WHERE job.jobStatus = 1 "
+				+ "ORDER BY `timestamp` ASC");
 	}
 	
 	private int execUpdate(String query){
@@ -107,8 +116,8 @@ public class DatabaseConnection{
 			statement = con.createStatement();
 			result = statement.executeQuery(query);
 			crs.populate(result);
-			statement.close();
 			result.close();
+			statement.close();
 			return crs;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

@@ -6,6 +6,6 @@
 			<accessrule kind="accessible" pattern="com/sun/rowset/CachedRowSetImpl/**"/>
 		</accessrules>
 	</classpathentry>
-	<classpathentry kind="lib" path="D:/GoogleDrive/UCF/SeniorDesign/SeniorDesign-MetagenomicPipeline/mysql-connector-java-5.1.40/mysql-connector-java-5.1.40-bin.jar"/>
+	<classpathentry kind="lib" path="lib/mysql-connector-java-5.1.40-bin.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

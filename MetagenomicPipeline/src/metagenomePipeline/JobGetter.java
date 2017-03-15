@@ -20,9 +20,24 @@ public class JobGetter extends Thread{
 			
 			//add jobs to pipeline and update database
 			try {
-				while(rs.next()){	//while there are rows in set
-					//TODO: extract information necessary for MetagenomeJob
-					//db.updateNewJob(jobID, false);
+				while(rs.next()){
+					//metadata
+					String jobID;
+					Boolean pairedEnd, idba, megahit, metaspades;
+					
+					//tool parameters
+					String trimParam, idbaParam, megahitParam, metaspadesParam;
+					
+					//file paths
+					String trimmed;
+					String idbaAssembly, idbaReadMap, idbaStats, idbaVisual;
+					String megahitAssembly, megahitReadMap, megahitStats, megahitVisual;
+					String metaspadesAssembly, metaspadesReadMap, metaspadesStats, metaspadesVisual;
+					
+					//get info from query results
+					jobID = rs.get();
+					
+					db.updateJobStatus(jobID, 2);
 				}
 			} catch (SQLException e1) {
 				e1.printStackTrace();
