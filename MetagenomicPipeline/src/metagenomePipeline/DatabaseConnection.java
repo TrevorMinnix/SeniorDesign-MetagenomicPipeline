@@ -50,33 +50,33 @@ public class DatabaseConnection{
 		}
 	}
 	
-	public void updateTrimming(String jobID, boolean status){
-		execUpdate("UPDATE `job` SET `trimStatus` = '" + (status ? 1 : 0) + 
+	public int updateTrimming(String jobID, boolean status){
+		return execUpdate("UPDATE `job` SET `trimStatus` = '" + (status ? 1 : 0) + 
 				"' WHERE `job`.`jobID` = '" + jobID + "';");
 	}
 	
-	public void updateAssembly(String jobID, String assembler, boolean status){
-		execUpdate("UPDATE `" + assembler + "` SET `assemblyStatus` = '" + 
+	public int updateAssembly(String jobID, String assembler, boolean status){
+		return execUpdate("UPDATE `" + assembler + "` SET `assemblyStatus` = '" + 
 				(status ? 1 : 0) + "' WHERE `idba`.`jobID` = '" + jobID + "';");
 	}
 	
-	public void updateReadMapping(String jobID, String assembler, boolean status){
-		execUpdate("UPDATE `" + assembler + "` SET `readmapStatus` = '" + 
+	public int updateReadMapping(String jobID, String assembler, boolean status){
+		return execUpdate("UPDATE `" + assembler + "` SET `readmapStatus` = '" + 
 				(status ? 1 : 0) + "' WHERE `idba`.`jobID` = '" + jobID + "';");
 	}
 	
-	public void updateStatistics(String jobID, String assembler, boolean status){
-		execUpdate("UPDATE `" + assembler + "` SET `statStatus` = '" + 
+	public int updateStatistics(String jobID, String assembler, boolean status){
+		return execUpdate("UPDATE `" + assembler + "` SET `statStatus` = '" + 
 				(status ? 1 : 0) + "' WHERE `idba`.`jobID` = '" + jobID + "';");
 	}
 	
-	public void updateVisualization(String jobID, String assembler, boolean status){
-		execUpdate("UPDATE `" + assembler + "` SET `visualStatus` = '" + 
+	public int updateVisualization(String jobID, String assembler, boolean status){
+		return execUpdate("UPDATE `" + assembler + "` SET `visualStatus` = '" + 
 				(status ? 1 : 0) + "' WHERE `idba`.`jobID` = '" + jobID + "';");
 	}
 	
-	public void updateJobStatus(String jobID, int i){
-		execUpdate("UPDATE `job` SET `jobStatus` = '" + i + "' WHERE `job`.`jobID` = '" + jobID +"'");
+	public int updateJobStatus(String jobID, int i){
+		return execUpdate("UPDATE `job` SET `jobStatus` = '" + i + "' WHERE `job`.`jobID` = '" + jobID +"'");
 	}
 	
 	public ResultSet newJobs(){
