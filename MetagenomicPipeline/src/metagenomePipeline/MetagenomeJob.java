@@ -3,7 +3,7 @@ package metagenomePipeline;
 public class MetagenomeJob extends pipeline.Job{
 	//metadata
 	String jobID;
-	Boolean pairedEnd, idba, megahit, metaspades;
+	public Boolean pairedEnd, idba, megahit, metaspades;
 	
 	//tool parameters
 	String trimParam, idbaParam, megahitParam, metaspadesParam;

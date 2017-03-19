@@ -8,8 +8,8 @@ public class JobGetter extends Thread{
 	protected boolean abort = false;
 	private Pipeline<MetagenomeJob> pipeline;
 	
-	public JobGetter(Pipeline<MetagenomeJob> pipeline){
-		db = new DatabaseConnection();
+	public JobGetter(Pipeline<MetagenomeJob> pipeline, DatabaseConnection db){
+		this.db = db;
 		this.pipeline = pipeline;
 	}
 	
@@ -82,7 +82,7 @@ public class JobGetter extends Thread{
 			
 			//wait before repeating
 			try {
-				Thread.sleep(60000);
+				Thread.sleep(5000);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
