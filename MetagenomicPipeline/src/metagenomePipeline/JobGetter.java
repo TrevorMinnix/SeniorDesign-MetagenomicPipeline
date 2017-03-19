@@ -38,18 +38,18 @@ public class JobGetter extends Thread{
 					String metaspadesAssembly, metaspadesReadMap, metaspadesStats, metaspadesVisual;
 					
 					//get info from query results
-					jobID = rs.getString("jobID");
-					pairedEnd = rs.getBoolean("pairedEnd");
-					idba = rs.getBoolean("idba");
-					megahit = rs.getBoolean("megahit");
-					metaspades = rs.getBoolean("metaspades");
+					jobID = rs.getString("job.jobID");
+					pairedEnd = rs.getBoolean("job.pairedEnd");
+					idba = rs.getBoolean("job.idba");
+					megahit = rs.getBoolean("job.megahit");
+					metaspades = rs.getBoolean("job.metaspades");
 					
-					trimParam = rs.getString("trimParam");
-					idbaParam = rs.getString("idbaParam");
-					megahitParam = rs.getString("megahitParam");
-					metaspadesParam = rs.getString("metaspadesParam");
+					trimParam = rs.getString("job.trimParam");
+					idbaParam = rs.getString("idba.param");
+					megahitParam = rs.getString("megahit.param");
+					metaspadesParam = rs.getString("metaspades.param");
 					
-					trimmed = rs.getString("trimmed");
+					trimmed = rs.getString("job.trimmed");
 					
 					idbaAssembly = rs.getString("idba.assembly");
 					idbaReadMap = rs.getString("idba.readMap");
