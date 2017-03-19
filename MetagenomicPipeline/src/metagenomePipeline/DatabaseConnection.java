@@ -3,6 +3,9 @@ package metagenomePipeline;
 import java.io.*;
 import java.sql.*;
 
+import javax.sql.rowset.CachedRowSet;
+import com.sun.rowset.CachedRowSetImpl;
+
 public class DatabaseConnection{
 	// JDBC driver name and database URL
 	private static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";  
@@ -47,29 +50,47 @@ public class DatabaseConnection{
 		}
 	}
 	
-	public void updateTrimming(String jobID, boolean status){
-		execUpdate("UPDATE `job` SET `trimStatus` = '" + (status ? 1 : 0) + 
+	public int updateTrimming(String jobID, boolean status){
+		return execUpdate("UPDATE `job` SET `trimStatus` = '" + (status ? 1 : 0) + 
 				"' WHERE `job`.`jobID` = '" + jobID + "';");
 	}
 	
-	public void updateAssembly(String jobID, String assembler, boolean status){
-		execUpdate("UPDATE `" + assembler + "` SET `assemblyStatus` = '" + 
+	public int updateAssembly(String jobID, String assembler, boolean status){
+		return execUpdate("UPDATE `" + assembler + "` SET `assemblyStatus` = '" + 
 				(status ? 1 : 0) + "' WHERE `idba`.`jobID` = '" + jobID + "';");
 	}
 	
-	public void updateReadMapping(String jobID, String assembler, boolean status){
-		execUpdate("UPDATE `" + assembler + "` SET `readmapStatus` = '" + 
+	public int updateReadMapping(String jobID, String assembler, boolean status){
+		return execUpdate("UPDATE `" + assembler + "` SET `readmapStatus` = '" + 
 				(status ? 1 : 0) + "' WHERE `idba`.`jobID` = '" + jobID + "';");
 	}
 	
-	public void updateStatistics(String jobID, String assembler, boolean status){
-		execUpdate("UPDATE `" + assembler + "` SET `statStatus` = '" + 
+	public int updateStatistics(String jobID, String assembler, boolean status){
+		return execUpdate("UPDATE `" + assembler + "` SET `statStatus` = '" + 
 				(status ? 1 : 0) + "' WHERE `idba`.`jobID` = '" + jobID + "';");
 	}
 	
-	public void updateVisualization(String jobID, String assembler, boolean status){
-		execUpdate("UPDATE `" + assembler + "` SET `visualStatus` = '" + 
+	public int updateVisualization(String jobID, String assembler, boolean status){
+		return execUpdate("UPDATE `" + assembler + "` SET `visualStatus` = '" + 
 				(status ? 1 : 0) + "' WHERE `idba`.`jobID` = '" + jobID + "';");
+	}
+	
+	public int updateJobStatus(String jobID, int i){
+		return execUpdate("UPDATE `job` SET `jobStatus` = '" + i + "' WHERE `job`.`jobID` = '" + jobID +"'");
+	}
+	
+	public ResultSet newJobs(){
+		return execQuery("SELECT job.jobID, job.input, job.inputPE, "
+				+ "job.trimParam, job.trimmed, job.idba, job.megahit, "
+				+ "job.metaspades, job.pairedEnd, idba.param, idba.assembly, "
+				+ "idba.readmap, idba.stat, idba.visual, megahit.param, "
+				+ "megahit.assembly, megahit.readmap, megahit.stat, "
+				+ "megahit.visual, metaspades.param, metaspades.assembly, "
+				+ "metaspades.readmap, metaspades.stat, metaspades.visual FROM "
+				+ "job INNER JOIN idba ON job.jobID = idba.jobID INNER JOIN "
+				+ "megahit ON job.jobID = megahit.jobID INNER JOIN metaspades "
+				+ "ON job.jobID = metaspades.jobID WHERE job.jobStatus = 1 "
+				+ "ORDER BY `timestamp` ASC");
 	}
 	
 	private int execUpdate(String query){
@@ -83,6 +104,25 @@ public class DatabaseConnection{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return 0;
+		}
+	}
+	
+	private CachedRowSet execQuery(String query){
+		Statement statement;
+		ResultSet result;
+		CachedRowSet crs;
+		try {
+			crs = new CachedRowSetImpl();
+			statement = con.createStatement();
+			result = statement.executeQuery(query);
+			crs.populate(result);
+			result.close();
+			statement.close();
+			return crs;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
 		}
 	}
 	

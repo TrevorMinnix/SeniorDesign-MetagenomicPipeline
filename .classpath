@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="MetagenomicPipeline/src"/>
+	<classpathentry kind="src" path="mysql-connector-java-5.1.40/src"/>
+	<classpathentry kind="src" path="statistics"/>
+	<classpathentry kind="lib" path="mysql-connector-java-5.1.40/mysql-connector-java-5.1.40-bin.jar"/>
+	<classpathentry kind="lib" path="Trimmomatic-0.36/trimmomatic-0.36.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="output" path="MetagenomicPipeline/bin"/>
+</classpath>
