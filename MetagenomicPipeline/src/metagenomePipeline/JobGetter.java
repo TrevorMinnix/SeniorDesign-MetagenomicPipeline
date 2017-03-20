@@ -32,7 +32,7 @@ public class JobGetter extends Thread{
 					String trimParam, idbaParam, megahitParam, metaspadesParam;
 					
 					//file paths
-					String trimmed;
+					String input, inputPE, trimmed;
 					String idbaAssembly, idbaReadMap, idbaStats, idbaVisual;
 					String megahitAssembly, megahitReadMap, megahitStats, megahitVisual;
 					String metaspadesAssembly, metaspadesReadMap, metaspadesStats, metaspadesVisual;
@@ -49,6 +49,8 @@ public class JobGetter extends Thread{
 					megahitParam = rs.getString("megahitParam");
 					metaspadesParam = rs.getString("metaspadesParam");
 					
+					input = rs.getString("input");
+					inputPE = rs.getString("inputPE");
 					trimmed = rs.getString("trimmed");
 					
 					idbaAssembly = rs.getString("idbaAssembly");
@@ -68,9 +70,9 @@ public class JobGetter extends Thread{
 					
 					//instantiate new job and enqueue in pipeline
 					MetagenomeJob j = new MetagenomeJob(jobID, pairedEnd, idba, megahit, metaspades, trimParam, 
-							idbaParam, megahitParam, metaspadesParam, trimmed, idbaAssembly, idbaReadMap, idbaStats, 
-							idbaVisual, megahitAssembly, megahitReadMap, megahitStats, megahitVisual, 
-							metaspadesAssembly, metaspadesReadMap, metaspadesStats, metaspadesVisual);
+							idbaParam, megahitParam, metaspadesParam, input, inputPE, trimmed, idbaAssembly, 
+							idbaReadMap, idbaStats, idbaVisual, megahitAssembly, megahitReadMap, megahitStats, 
+							megahitVisual, metaspadesAssembly, metaspadesReadMap, metaspadesStats, metaspadesVisual);
 					db.updateJobStatus(jobID, 2);
 					pipeline.submitJob(j);
 					
