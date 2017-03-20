@@ -69,12 +69,8 @@ public class Pipeline<J extends Job>{
 		Pipeline<MetagenomeJob> p = new Pipeline<MetagenomeJob>(new MetagenomeStage[]{s}, s);
 		
 		JobGetter jg = new JobGetter(p, db);
-		jg.run();
+		jg.start();
 		
-		try {
-			Thread.sleep(60000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+		p.runPipeline();
 	}
 }
