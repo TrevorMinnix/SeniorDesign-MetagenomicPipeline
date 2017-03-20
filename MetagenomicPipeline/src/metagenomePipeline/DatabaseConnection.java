@@ -41,7 +41,7 @@ public class DatabaseConnection{
 			
 			//open connection
 			System.out.println("Openning connection to database.");
-			con = DriverManager.getConnection(DB_URL, user, pass);
+			con = DriverManager.getConnection(DB_URL + "&useOldAliasMetadataBehavior=true", user, pass);
 			System.out.println("Connected.");
 		}catch(SQLException e){
 			e.printStackTrace();
