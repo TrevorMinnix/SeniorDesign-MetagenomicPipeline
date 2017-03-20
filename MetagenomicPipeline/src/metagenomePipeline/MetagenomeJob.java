@@ -3,13 +3,13 @@ package metagenomePipeline;
 public class MetagenomeJob extends pipeline.Job{
 	//metadata
 	String jobID;
-	Boolean pairedEnd, idba, megahit, metaspades;
+	public Boolean pairedEnd, idba, megahit, metaspades;
 	
 	//tool parameters
 	String trimParam, idbaParam, megahitParam, metaspadesParam;
 	
 	//file paths
-	String trimmed;
+	String input, inputPE, trimmed;
 	String idbaAssembly, idbaReadMap, idbaStats, idbaVisual;
 	String megahitAssembly, megahitReadMap, megahitStats, megahitVisual;
 	String metaspadesAssembly, metaspadesReadMap, metaspadesStats, metaspadesVisual;
@@ -20,7 +20,7 @@ public class MetagenomeJob extends pipeline.Job{
 	}
 	
 	public MetagenomeJob(String jobID, Boolean pairedEnd, Boolean idba, Boolean megahit, 
-			Boolean metaspades, String trimParam, String idbaParam, String megahitParam, String metaspadesParam, String trimmed, 
+			Boolean metaspades, String trimParam, String idbaParam, String megahitParam, String metaspadesParam, String input, String inputPE, String trimmed, 
 			String idbaAssembly, String idbaReadMap, String idbaStats, String idbaVisual,
 			String megahitAssembly, String megahitReadMap, String megahitStats, String megahitVisual,
 			String metaspadesAssembly, String metaspadesReadMap, String metaspadesStats, String metaspadesVisual) {
@@ -34,6 +34,9 @@ public class MetagenomeJob extends pipeline.Job{
 		this.idbaParam = idbaParam;
 		this.megahitParam = megahitParam;
 		this.metaspadesParam = metaspadesParam;
+		this.input = input;
+		this.inputPE = inputPE;
+		this.trimmed = trimmed;
 		this.idbaAssembly = idbaAssembly;
 		this.idbaReadMap = idbaReadMap;
 		this.idbaStats = idbaStats;

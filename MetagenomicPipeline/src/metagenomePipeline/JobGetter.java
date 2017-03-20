@@ -8,8 +8,8 @@ public class JobGetter extends Thread{
 	protected boolean abort = false;
 	private Pipeline<MetagenomeJob> pipeline;
 	
-	public JobGetter(Pipeline<MetagenomeJob> pipeline){
-		db = new DatabaseConnection();
+	public JobGetter(Pipeline<MetagenomeJob> pipeline, DatabaseConnection db){
+		this.db = db;
 		this.pipeline = pipeline;
 	}
 	
@@ -32,7 +32,7 @@ public class JobGetter extends Thread{
 					String trimParam, idbaParam, megahitParam, metaspadesParam;
 					
 					//file paths
-					String trimmed;
+					String input, inputPE, trimmed;
 					String idbaAssembly, idbaReadMap, idbaStats, idbaVisual;
 					String megahitAssembly, megahitReadMap, megahitStats, megahitVisual;
 					String metaspadesAssembly, metaspadesReadMap, metaspadesStats, metaspadesVisual;
@@ -49,28 +49,30 @@ public class JobGetter extends Thread{
 					megahitParam = rs.getString("megahitParam");
 					metaspadesParam = rs.getString("metaspadesParam");
 					
+					input = rs.getString("input");
+					inputPE = rs.getString("inputPE");
 					trimmed = rs.getString("trimmed");
 					
-					idbaAssembly = rs.getString("idba.assembly");
-					idbaReadMap = rs.getString("idba.readMap");
-					idbaStats = rs.getString("idba.stats");
-					idbaVisual = rs.getString("idba.visual");
+					idbaAssembly = rs.getString("idbaAssembly");
+					idbaReadMap = rs.getString("idbaReadmap");
+					idbaStats = rs.getString("idbaStat");
+					idbaVisual = rs.getString("idbaVisual");
 					
-					megahitAssembly = rs.getString("megahit.assembly");
-					megahitReadMap = rs.getString("megahit.readMap");
-					megahitStats = rs.getString("megahit.stats");
-					megahitVisual = rs.getString("megahit.visual");
+					megahitAssembly = rs.getString("megahitAssembly");
+					megahitReadMap = rs.getString("megahitReadmap");
+					megahitStats = rs.getString("megahitStat");
+					megahitVisual = rs.getString("megahitVisual");
 					
-					metaspadesAssembly = rs.getString("metaspades.assembly");
-					metaspadesReadMap = rs.getString("metaspades.readMap");
-					metaspadesStats = rs.getString("metaspades.stats");
-					metaspadesVisual = rs.getString("metaspades.visual");
+					metaspadesAssembly = rs.getString("metaspadesAssembly");
+					metaspadesReadMap = rs.getString("metaspadesReadmap");
+					metaspadesStats = rs.getString("metaspadesStat");
+					metaspadesVisual = rs.getString("metaspadesVisual");
 					
 					//instantiate new job and enqueue in pipeline
 					MetagenomeJob j = new MetagenomeJob(jobID, pairedEnd, idba, megahit, metaspades, trimParam, 
-							idbaParam, megahitParam, metaspadesParam, trimmed, idbaAssembly, idbaReadMap, idbaStats, 
-							idbaVisual, megahitAssembly, megahitReadMap, megahitStats, megahitVisual, 
-							metaspadesAssembly, metaspadesReadMap, metaspadesStats, metaspadesVisual);
+							idbaParam, megahitParam, metaspadesParam, input, inputPE, trimmed, idbaAssembly, 
+							idbaReadMap, idbaStats, idbaVisual, megahitAssembly, megahitReadMap, megahitStats, 
+							megahitVisual, metaspadesAssembly, metaspadesReadMap, metaspadesStats, metaspadesVisual);
 					db.updateJobStatus(jobID, 2);
 					pipeline.submitJob(j);
 					
@@ -82,7 +84,7 @@ public class JobGetter extends Thread{
 			
 			//wait before repeating
 			try {
-				Thread.sleep(60000);
+				Thread.sleep(5000);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
