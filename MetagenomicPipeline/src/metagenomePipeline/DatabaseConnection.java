@@ -1,8 +1,11 @@
 package metagenomePipeline;
 
-import java.io.*;
 import java.sql.*;
-
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
 import javax.sql.rowset.CachedRowSet;
 import com.sun.rowset.CachedRowSetImpl;
 
@@ -21,14 +24,15 @@ public class DatabaseConnection{
 	
 	public DatabaseConnection(){
 		//get user and pass from text file
-		FileReader fileReader = null;
-		BufferedReader bufferedReader = null;
+		Properties config = new Properties();
+		InputStream input;
 		try{
-			fileReader = new FileReader(new File(CRED));
-			bufferedReader = new BufferedReader(fileReader);
-			user = bufferedReader.readLine();
-			pass = bufferedReader.readLine();
-			bufferedReader.close();
+			input = new FileInputStream(CRED);
+			config.load(input);
+			
+			//get properties
+			user = config.getProperty(user);
+			pass = config.getProperty(pass);
 		}catch(FileNotFoundException e){
 			e.printStackTrace();
 		}catch(IOException e){
