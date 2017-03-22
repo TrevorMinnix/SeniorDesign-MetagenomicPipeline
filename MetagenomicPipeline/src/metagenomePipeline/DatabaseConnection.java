@@ -31,8 +31,8 @@ public class DatabaseConnection{
 			config.load(input);
 			
 			//get properties
-			user = config.getProperty(user);
-			pass = config.getProperty(pass);
+			user = config.getProperty("user");
+			pass = config.getProperty("pass");
 		}catch(FileNotFoundException e){
 			e.printStackTrace();
 		}catch(IOException e){
