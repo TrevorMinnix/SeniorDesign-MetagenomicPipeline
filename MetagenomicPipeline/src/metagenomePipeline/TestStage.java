@@ -1,5 +1,9 @@
 package metagenomePipeline;
 
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.util.Properties;
+
 import pipeline.Stage;
 
 public class TestStage extends MetagenomeStage{

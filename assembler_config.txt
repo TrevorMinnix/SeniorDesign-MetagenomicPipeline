@@ -1,0 +1,6 @@
+idbaPath=/home/student/SeniorDesign-MetagenomicPipeline/ibda-master/bin/idba
+idbaDefault=
+megahitPath=/home/student/SeniorDesign-MetagenomicPipeline/megahit-master/megahit
+megahitDefault=
+spadesPath=/home/student/SeniorDesign-MetagenomicPipeline/SPAdes-3.9.1-Linux/bin/spades
+spadesDefault=
