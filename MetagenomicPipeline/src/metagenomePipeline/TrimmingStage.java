@@ -1,30 +1,19 @@
 package metagenomePipeline;
 
-import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-import pipeline.Stage;
-
 public class TrimmingStage extends MetagenomeStage{
-	private Assembler assembler;
-	private static final String CONFIG = "/home/student/SeniorDesign-MetagenomicPipeline/assembler_config.txt";
+	private static final String CONFIG = "/home/student/SeniorDesign-MetagenomicPipeline/pipeline_config.txt";
 	
-	private String idbaPath;
-	private String idbaDefault;
-	private String megahitPath;
-	private String megahitDefault;
-	private String spadesPath;
-	private String spadesDefault;
-	
-	private enum Assembler{
-		IDBA, MEGAHIT, SPADES;
-	}
+	private final String prefix = "java -jar -phred33 ";
+	private String trimPath;
+	private String trimSEDefault;
+	private String trimPEDefault;
+	private String command;
 	
 	public TrimmingStage(){
 		super();
@@ -32,26 +21,6 @@ public class TrimmingStage extends MetagenomeStage{
 	
 	public TrimmingStage(MetagenomeStage[] nextStage, DatabaseConnection db, String assembler) throws Exception{
 		super(nextStage, db);
-		
-		//set assembler
-		switch(assembler) {
-		case "idba":
-		case "IDBA":
-			this.assembler = Assembler.IDBA;
-			break;
-		case "megahit":
-		case "MEGAHIT":
-		case "Megahit":
-			this.assembler = Assembler.MEGAHIT;
-			break;
-		case "spades":
-		case "SPAdes":
-		case "SPADES":
-			this.assembler = Assembler.SPADES;
-			break;
-		default:
-			throw new Exception("Invalid assembler.");
-		}
 		
 		//get assembler locations and defaults from text file
 		Properties config = new Properties();
@@ -61,30 +30,47 @@ public class TrimmingStage extends MetagenomeStage{
 			config.load(input);
 			
 			//get properties
-			idbaPath = config.getProperty(idbaPath);
-			idbaDefault = config.getProperty(idbaDefault);
-			megahitPath = config.getProperty(megahitPath);
-			megahitDefault = config.getProperty(megahitDefault);
-			spadesPath = config.getProperty(spadesPath);
-			spadesDefault = config.getProperty(spadesDefault);
+			trimPath = config.getProperty(trimPath);
+			trimSEDefault = config.getProperty(trimSEDefault);
+			trimPEDefault = config.getProperty(trimPEDefault);
 		}catch(FileNotFoundException e){
 			e.printStackTrace();
 		}catch(IOException e){
 			e.printStackTrace();
 		}
+		if(currentJob.pairedEnd){
+			command = prefix + trimPEDefault;
+			addPEFilePaths(command, currentJob.inputForward, currentJob.inputReverse, 
+					currentJob.trimmedForwardPaired, currentJob.trimmedForwardUnpaired, currentJob.trimmedReversePaired, currentJob.trimmedReverseUnpaired);
+		}else{
+			command = prefix + trimSEDefault;
+			addSEFilePaths(command, currentJob.inputForward, currentJob.trimmedSE);
+		}
 	}
 
 	private void trim(){
-//		switch(assembler){
-//		case IDBA:
-//		case MEGAHIT:
-//		case SPADES:
-//		}
-//		RunTool.runProgramAndWait(args);
+		
 	}
 	
 	@Override
 	protected void process(){
 		trim();
+	}
+	
+	private static String addSEFilePaths(String original, String input, String output){
+		original = original.replace("input.fq.gz", input);
+		original = original.replace("output.fq.gz", output);
+		return original;
+	}
+	
+	private String addPEFilePaths(String original, String inputForward, String inputReverse, String outputForwardPaired, 
+			String outputForwardUnpaired, String outputReversePaired, String outputReverseUnpaired){
+		original = original.replace("input_foward.fq.gz", inputForward);
+		original = original.replace("input_reverse.fq.gz", inputReverse);
+		original = original.replace("output_forward_paired.fq.gz", outputForwardPaired);
+		original = original.replace("output_forward_unpaired.fq.gz", outputForwardUnpaired);
+		original = original.replace("output_reverse_paired.fq.gz", outputReversePaired);
+		original = original.replace("output_reverse_unpaired.fq.gz", outputReverseUnpaired);
+		return original;
 	}
 }
