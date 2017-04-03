@@ -1,3 +1,7 @@
+trimPath=/home/student/workspace/SeniorDesign-MetagenomicPipeline/Trimmomatic-0.36/trimmomatic-0.36.jar
+trimPrefix=java -jar -phred33git 
+trimSEDefault=ILLUMINACLIP:TruSeq3-SE:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36
+trimPEDefault=ILLUMINACLIP:TruSeq3-PE.fa:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36
 idbaPath=/home/student/SeniorDesign-MetagenomicPipeline/ibda-master/bin/idba
 idbaDefault=
 megahitPath=/home/student/SeniorDesign-MetagenomicPipeline/megahit-master/megahit
