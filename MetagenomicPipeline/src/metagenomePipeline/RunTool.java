@@ -7,4 +7,9 @@ public class RunTool {
 		Process p = Runtime.getRuntime().exec(program + " " + args);
 		p.waitFor();
 	}
+	
+	static void runProgramAndWait(String command) throws IOException, InterruptedException{
+		Process p = Runtime.getRuntime().exec(command);
+		p.waitFor();
+	}
 }

@@ -3,7 +3,7 @@ package metagenomePipeline;
 import pipeline.Stage;
 
 public abstract class MetagenomeStage extends pipeline.Stage<MetagenomeJob>{
-	private DatabaseConnection db;
+	protected DatabaseConnection db;
 	
 	public MetagenomeStage(){
 		super();

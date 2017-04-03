@@ -9,7 +9,7 @@ import java.util.Properties;
 public class TrimmingStage extends MetagenomeStage{
 	private static final String CONFIG = "/home/student/SeniorDesign-MetagenomicPipeline/assembler_config.txt";
 	
-	private final String prefix = "java -jar -phred33 ";
+	private String trimPrefix;
 	private String trimPath;
 	private String trimSEDefault;
 	private String trimPEDefault;
@@ -30,31 +30,38 @@ public class TrimmingStage extends MetagenomeStage{
 			config.load(input);
 			
 			//get properties
-			trimPath = config.getProperty(trimPath);
-			trimSEDefault = config.getProperty(trimSEDefault);
-			trimPEDefault = config.getProperty(trimPEDefault);
+			trimPrefix = config.getProperty("trimPrefix");
+			trimPath = config.getProperty("trimPath");
+			trimSEDefault = config.getProperty("trimSEDefault");
+			trimPEDefault = config.getProperty("trimPEDefault");
 		}catch(FileNotFoundException e){
 			e.printStackTrace();
 		}catch(IOException e){
 			e.printStackTrace();
 		}
 		if(currentJob.pairedEnd){
-			command = prefix + trimPEDefault;
+			command = trimPath + trimPEDefault;
 			addPEFilePaths(command, currentJob.inputForward, currentJob.inputReverse, 
 					currentJob.trimmedForwardPaired, currentJob.trimmedForwardUnpaired, currentJob.trimmedReversePaired, currentJob.trimmedReverseUnpaired);
 		}else{
-			command = prefix + trimSEDefault;
+			command = trimPath + trimSEDefault;
 			addSEFilePaths(command, currentJob.inputForward, currentJob.trimmedSE);
 		}
 	}
 
 	private void trim(){
-		
+		try {
+			RunTool.runProgramAndWait(command);
+		} catch (IOException | InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	@Override
 	protected void process(){
 		trim();
+		db.updateTrimming(currentJob.jobID, true);
 	}
 	
 	private static String addSEFilePaths(String original, String input, String output){
