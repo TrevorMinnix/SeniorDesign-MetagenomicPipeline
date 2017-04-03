@@ -7,7 +7,7 @@ import java.io.InputStream;
 import java.util.Properties;
 
 public class TrimmingStage extends MetagenomeStage{
-	private static final String CONFIG = "/home/student/SeniorDesign-MetagenomicPipeline/pipeline_config.txt";
+	private static final String CONFIG = "/home/student/SeniorDesign-MetagenomicPipeline/assembler_config.txt";
 	
 	private final String prefix = "java -jar -phred33 ";
 	private String trimPath;
