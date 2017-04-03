@@ -38,7 +38,13 @@ public class TrimmingStage extends MetagenomeStage{
 		}catch(IOException e){
 			e.printStackTrace();
 		}
-			addSEFilePaths(command, currentJob.input, currentJob.trimmed);
+		if(currentJob.pairedEnd){
+			command = prefix + trimPEDefault;
+			addPEFilePaths(command, currentJob.inputForward, currentJob.inputReverse, 
+					currentJob.trimmedForwardPaired, currentJob.trimmedForwardUnpaired, currentJob.trimmedReversePaired, currentJob.trimmedReverseUnpaired);
+		}else{
+			command = prefix + trimSEDefault;
+			addSEFilePaths(command, currentJob.inputForward, currentJob.trimmedSE);
 		}
 	}
 
@@ -52,7 +58,6 @@ public class TrimmingStage extends MetagenomeStage{
 	}
 	
 	private static String addSEFilePaths(String original, String input, String output){
-		
 		original = original.replace("input.fq.gz", input);
 		original = original.replace("output.fq.gz", output);
 		return original;

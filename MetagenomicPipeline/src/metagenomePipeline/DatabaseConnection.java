@@ -84,15 +84,7 @@ public class DatabaseConnection{
 	}
 	
 	public ResultSet newJobs(){
-		return execQuery("SELECT job.jobID, job.input, job.inputPE, job.trimParam, job.trimmed, job.idba, job.megahit, "
-				+ "job.metaspades, job.pairedEnd, idba.param AS idbaParam, idba.assembly AS idbaAssembly, idba.readmap "
-				+ "AS idbaReadmap, idba.stat AS idbaStat, idba.visual AS idbaVisual, megahit.param AS megahitParam, "
-				+ "megahit.assembly AS megahitAssembly, megahit.readmap AS megahitReadmap, megahit.stat AS megahitStat, "
-				+ "megahit.visual AS megahitVisual, metaspades.param AS metaspadesParam, metaspades.assembly AS "
-				+ "metaspadesAssembly, metaspades.readmap AS metaspadesReadmap, metaspades.stat AS metaspadesStat, "
-				+ "metaspades.visual AS metaspadesVisual FROM job INNER JOIN idba ON job.jobID = idba.jobID INNER JOIN "
-				+ "megahit ON job.jobID =  megahit.jobID INNER JOIN metaspades ON job.jobID = metaspades.jobID WHERE "
-				+ "job.jobStatus = 1 ORDER BY `timestamp` ASC");
+		return execQuery("SELECT * FROM readyJobs");
 	}
 	
 	private int execUpdate(String query){
