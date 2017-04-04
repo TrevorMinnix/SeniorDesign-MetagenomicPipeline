@@ -40,11 +40,11 @@ public class TrimmingStage extends MetagenomeStage{
 			e.printStackTrace();
 		}
 		if(currentJob.pairedEnd){
-			command = trimPath + trimPEDefault;
+			command = trimPrefix + " " + trimPath + " " + trimPEDefault;
 			addPEFilePaths(command, currentJob.inputForward, currentJob.inputReverse, 
 					currentJob.trimmedForwardPaired, currentJob.trimmedForwardUnpaired, currentJob.trimmedReversePaired, currentJob.trimmedReverseUnpaired);
 		}else{
-			command = trimPath + trimSEDefault;
+			command = trimPrefix + " " + trimPath + " " + trimSEDefault;
 			addSEFilePaths(command, currentJob.inputForward, currentJob.trimmedSE);
 		}
 	}
