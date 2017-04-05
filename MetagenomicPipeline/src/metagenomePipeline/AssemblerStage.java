@@ -101,16 +101,16 @@ public class AssemblerStage extends MetagenomeStage{
 			
 			//assembly command
 			command = "." + idbaPath + " " + idbaPEDefault;
-			replaceIdbaPE(command, currentJob.trimmedCombined);
+			replaceIdbaPE(command, currentJob.trimmedCombined, currentJob.idbaAssembly);
 			break;
 		case MEGAHIT:
 			//single end command
 			if(currentJob.pairedEnd){
 				command = "." + megahitPath + " " + megahitSEDefault;
-				replaceMegahitSE(command, currentJob.trimmedSE);
+				replaceMegahitSE(command, currentJob.trimmedSE, currentJob.megahitAssembly);
 			}else{	//paired end command
 				command = "." + megahitPath + " " + megahitPEDefault;
-				replaceMegahitPE(command, currentJob.trimmedForwardPaired, currentJob.trimmedReversePaired);
+				replaceMegahitPE(command, currentJob.trimmedForwardPaired, currentJob.trimmedReversePaired, currentJob.megahitAssembly);
 			}
 			break;
 		case SPADES:
@@ -122,7 +122,7 @@ public class AssemblerStage extends MetagenomeStage{
 			
 			//assembly command
 			command = "." + spadesPath + " " + spadesPEDefault;
-			replaceSpadesPE(command, currentJob.trimmedForwardPaired, currentJob.trimmedReversePaired);
+			replaceSpadesPE(command, currentJob.trimmedForwardPaired, currentJob.trimmedReversePaired, currentJob.metaspadesAssembly);
 			break;
 		default:
 		}
@@ -149,21 +149,25 @@ public class AssemblerStage extends MetagenomeStage{
 		original = original.replace("pe_combined.fa", combined);
 	}
 	
-	private static void replaceIdbaPE(String original, String combined){
+	private static void replaceIdbaPE(String original, String combined, String assembled){
 		original = original.replace("pe_combined.fa", combined);
+		original = original.replace("idba_assembled", assembled);
 	}
 	
-	private static void replaceMegahitSE(String original, String reads){
+	private static void replaceMegahitSE(String original, String reads, String assembled){
 		original = original.replace("se.fq", reads);
+		original = original.replace("megahit_se_assembled", assembled);
 	}
 	
-	private static void replaceMegahitPE(String original, String forward, String reverse){
+	private static void replaceMegahitPE(String original, String forward, String reverse, String assembled){
 		original = original.replace("pe_1.fq", forward);
 		original = original.replace("pe_2.fq", reverse);
+		original = original.replace("megahit_pe_assembled", assembled);
 	}
 	
-	private static void replaceSpadesPE(String original, String forward, String reverse){
+	private static void replaceSpadesPE(String original, String forward, String reverse, String assembled){
 		original = original.replace("pe_1.fq", forward);
 		original = original.replace("pe_2.fq", reverse);
+		original = original.replace("spades_assembled", assembled);
 	}
 }
