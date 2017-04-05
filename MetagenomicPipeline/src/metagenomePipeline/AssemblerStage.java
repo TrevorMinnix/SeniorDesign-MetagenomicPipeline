@@ -8,14 +8,17 @@ import java.util.Properties;
 
 public class AssemblerStage extends MetagenomeStage{
 	private Assembler assembler;
-	private static final String CONFIG = "/home/student/SeniorDesign-MetagenomicPipeline/pipeline_config.txt";
+	private static final String CONFIG = "/home/student/SeniorDesign-MetagenomicPipeline/assembler_config.txt";
 	
 	private String idbaPath;
-	private String idbaDefault;
+	private String idbaConvertPath;
+	private String idbaPEDefault;
+	private String idbaConvert;
 	private String megahitPath;
-	private String megahitDefault;
+	private String megahitSEDefault;
+	private String megahitPEDefault;
 	private String spadesPath;
-	private String spadesDefault;
+	private String spadesPEDefault;
 	
 	private enum Assembler{
 		IDBA, MEGAHIT, SPADES;
@@ -56,12 +59,15 @@ public class AssemblerStage extends MetagenomeStage{
 			config.load(input);
 			
 			//get properties
-			idbaPath = config.getProperty(idbaPath);
-			idbaDefault = config.getProperty(idbaDefault);
-			megahitPath = config.getProperty(megahitPath);
-			megahitDefault = config.getProperty(megahitDefault);
-			spadesPath = config.getProperty(spadesPath);
-			spadesDefault = config.getProperty(spadesDefault);
+			idbaPath = config.getProperty("idbaPath");
+			idbaConvertPath = config.getProperty("idbaConvertPath");
+			idbaPEDefault = config.getProperty("idbaPEDefault");
+			idbaConvert = config.getProperty("idbaConvert");
+			megahitPath = config.getProperty("megahitPath");
+			megahitSEDefault = config.getProperty("megahitSEDefault");
+			megahitPEDefault = config.getProperty("megahitPEDefault");
+			spadesPath = config.getProperty("spadesPath");
+			spadesPEDefault = config.getProperty("spadesPEDefault");
 		}catch(FileNotFoundException e){
 			e.printStackTrace();
 		}catch(IOException e){
@@ -70,16 +76,94 @@ public class AssemblerStage extends MetagenomeStage{
 	}
 
 	private void assemble(){
-//		switch(assembler){
-//		case IDBA:
-//		case MEGAHIT:
-//		case SPADES:
-//		}
-//		RunTool.runProgramAndWait(args);
+		String command  = "";
+		
+		switch(assembler){
+		case IDBA:
+			//ensure paired end
+			if(!currentJob.pairedEnd){
+				//TODO: assembly failure
+				break;
+			}
+			
+			//combine input reads into single FASTA file
+			command = "." + idbaConvertPath + " " + idbaConvert;
+			replaceIdbaConvert(command, currentJob.trimmedForwardPaired, currentJob.trimmedReversePaired, currentJob.trimmedCombined);
+			try {
+				RunTool.runProgramAndWait(command);
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (InterruptedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			
+			//assembly command
+			command = "." + idbaPath + " " + idbaPEDefault;
+			replaceIdbaPE(command, currentJob.trimmedCombined);
+			break;
+		case MEGAHIT:
+			//single end command
+			if(currentJob.pairedEnd){
+				command = "." + megahitPath + " " + megahitSEDefault;
+				replaceMegahitSE(command, currentJob.trimmedSE);
+			}else{	//paired end command
+				command = "." + megahitPath + " " + megahitPEDefault;
+				replaceMegahitPE(command, currentJob.trimmedForwardPaired, currentJob.trimmedReversePaired);
+			}
+			break;
+		case SPADES:
+			//ensure paired end
+			if(!currentJob.pairedEnd){
+				//TODO: assembly failure
+				break;
+			}
+			
+			//assembly command
+			command = "." + spadesPath + " " + spadesPEDefault;
+			replaceSpadesPE(command, currentJob.trimmedForwardPaired, currentJob.trimmedReversePaired);
+			break;
+		default:
+		}
+		
+		try {
+			RunTool.runProgramAndWait(command);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	@Override
 	protected void process(){
 		assemble();
+	}
+	
+	private static void replaceIdbaConvert(String original, String forward, String reverse, String combined){
+		original = original.replace("pe_1.fq", forward);
+		original = original.replace("pe_2.fq", reverse);
+		original = original.replace("pe_combined.fa", combined);
+	}
+	
+	private static void replaceIdbaPE(String original, String combined){
+		original = original.replace("pe_combined.fa", combined);
+	}
+	
+	private static void replaceMegahitSE(String original, String reads){
+		original = original.replace("se.fq", reads);
+	}
+	
+	private static void replaceMegahitPE(String original, String forward, String reverse){
+		original = original.replace("pe_1.fq", forward);
+		original = original.replace("pe_2.fq", reverse);
+	}
+	
+	private static void replaceSpadesPE(String original, String forward, String reverse){
+		original = original.replace("pe_1.fq", forward);
+		original = original.replace("pe_2.fq", reverse);
 	}
 }

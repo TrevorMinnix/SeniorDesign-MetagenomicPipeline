@@ -29,7 +29,7 @@ public class JobGetter extends Thread{
 					Boolean pairedEnd, idba, megahit, metaspades;
 					
 					//file paths
-					String inputF, inputR, trimmedSE, trimmedFP, trimmedFU, trimmedRP, trimmedRU;
+					String inputF, inputR, trimmedSE, trimmedFP, trimmedFU, trimmedRP, trimmedRU, trimmedC;
 					String idbaAssembly, idbaReadMap, idbaStats, idbaVisual;
 					String megahitAssembly, megahitReadMap, megahitStats, megahitVisual;
 					String metaspadesAssembly, metaspadesReadMap, metaspadesStats, metaspadesVisual;
@@ -48,6 +48,7 @@ public class JobGetter extends Thread{
 					trimmedFU = rs.getString("trimmedForwardUnpaired");
 					trimmedRP = rs.getString("trimmedReversePaired");
 					trimmedRU = rs.getString("trimmedReverseUnpaired");
+					trimmedC = rs.getString("trimmedCombined");
 					
 					idbaAssembly = rs.getString("idbaAssembly");
 					idbaReadMap = rs.getString("idbaReadmap");
@@ -66,7 +67,7 @@ public class JobGetter extends Thread{
 					
 					//instantiate new job and enqueue in pipeline
 					MetagenomeJob j = new MetagenomeJob(jobID, pairedEnd, idba, megahit, metaspades, inputF, inputR, trimmedSE,
-							trimmedFP, trimmedFU, trimmedRP, trimmedRU, idbaAssembly, idbaReadMap, idbaStats, idbaVisual, megahitAssembly, megahitReadMap, 
+							trimmedFP, trimmedFU, trimmedRP, trimmedRU, trimmedC, idbaAssembly, idbaReadMap, idbaStats, idbaVisual, megahitAssembly, megahitReadMap, 
 							megahitStats, megahitVisual, metaspadesAssembly, metaspadesReadMap, metaspadesStats, 
 							metaspadesVisual);
 					db.updateJobStatus(jobID, 2);

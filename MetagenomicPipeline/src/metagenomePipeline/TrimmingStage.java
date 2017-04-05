@@ -41,11 +41,11 @@ public class TrimmingStage extends MetagenomeStage{
 		}
 		if(currentJob.pairedEnd){
 			command = trimPrefix + " " + trimPath + " " + trimPEDefault;
-			addPEFilePaths(command, currentJob.inputForward, currentJob.inputReverse, 
+			replacePEFilePaths(command, currentJob.inputForward, currentJob.inputReverse, 
 					currentJob.trimmedForwardPaired, currentJob.trimmedForwardUnpaired, currentJob.trimmedReversePaired, currentJob.trimmedReverseUnpaired);
 		}else{
 			command = trimPrefix + " " + trimPath + " " + trimSEDefault;
-			addSEFilePaths(command, currentJob.inputForward, currentJob.trimmedSE);
+			replaceSEFilePaths(command, currentJob.inputForward, currentJob.trimmedSE);
 		}
 	}
 
@@ -64,13 +64,12 @@ public class TrimmingStage extends MetagenomeStage{
 		db.updateTrimming(currentJob.jobID, true);
 	}
 	
-	private static String addSEFilePaths(String original, String input, String output){
+	private static void replaceSEFilePaths(String original, String input, String output){
 		original = original.replace("input.fq.gz", input);
 		original = original.replace("output.fq.gz", output);
-		return original;
 	}
 	
-	private String addPEFilePaths(String original, String inputForward, String inputReverse, String outputForwardPaired, 
+	private static void replacePEFilePaths(String original, String inputForward, String inputReverse, String outputForwardPaired, 
 			String outputForwardUnpaired, String outputReversePaired, String outputReverseUnpaired){
 		original = original.replace("input_foward.fq.gz", inputForward);
 		original = original.replace("input_reverse.fq.gz", inputReverse);
@@ -78,6 +77,5 @@ public class TrimmingStage extends MetagenomeStage{
 		original = original.replace("output_forward_unpaired.fq.gz", outputForwardUnpaired);
 		original = original.replace("output_reverse_paired.fq.gz", outputReversePaired);
 		original = original.replace("output_reverse_unpaired.fq.gz", outputReverseUnpaired);
-		return original;
 	}
 }

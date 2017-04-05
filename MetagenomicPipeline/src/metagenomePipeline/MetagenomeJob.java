@@ -6,7 +6,7 @@ public class MetagenomeJob extends pipeline.Job{
 	public Boolean pairedEnd, idba, megahit, metaspades;
 	
 	//file paths
-	String inputForward, inputReverse, trimmedSE, trimmedForwardPaired, trimmedForwardUnpaired, trimmedReversePaired, trimmedReverseUnpaired;
+	String inputForward, inputReverse, trimmedSE, trimmedForwardPaired, trimmedForwardUnpaired, trimmedReversePaired, trimmedReverseUnpaired, trimmedCombined;
 	String idbaAssembly, idbaReadMap, idbaStats, idbaVisual;
 	String megahitAssembly, megahitReadMap, megahitStats, megahitVisual;
 	String metaspadesAssembly, metaspadesReadMap, metaspadesStats, metaspadesVisual;
@@ -17,7 +17,7 @@ public class MetagenomeJob extends pipeline.Job{
 	}
 	
 	public MetagenomeJob(String jobID, Boolean pairedEnd, Boolean idba, Boolean megahit, 
-			Boolean metaspades, String inputForward, String inputReverse, String trimmedSE, String trimmedForwardPaired, String trimmedForwardUnpaired, String trimmedReversePaired, String trimmedReverseUnpaired, 
+			Boolean metaspades, String inputForward, String inputReverse, String trimmedSE, String trimmedForwardPaired, String trimmedForwardUnpaired, String trimmedReversePaired, String trimmedReverseUnpaired, String trimmedCombined,
 			String idbaAssembly, String idbaReadMap, String idbaStats, String idbaVisual,
 			String megahitAssembly, String megahitReadMap, String megahitStats, String megahitVisual,
 			String metaspadesAssembly, String metaspadesReadMap, String metaspadesStats, String metaspadesVisual) {
@@ -34,6 +34,7 @@ public class MetagenomeJob extends pipeline.Job{
 		this.trimmedForwardUnpaired = trimmedForwardUnpaired;
 		this.trimmedReversePaired = trimmedReversePaired;
 		this.trimmedReverseUnpaired = trimmedReverseUnpaired;
+		this.trimmedCombined = trimmedCombined;
 		this.idbaAssembly = idbaAssembly;
 		this.idbaReadMap = idbaReadMap;
 		this.idbaStats = idbaStats;
