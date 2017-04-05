@@ -1,0 +1,5 @@
+-r
+../TestData/simulatedReads1.fq
+-o
+../TestData/assembledReads
+MEGAHIT_TEMP_DIR: ../TestData/assembledReads/tmp/
