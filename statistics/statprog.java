@@ -1,5 +1,5 @@
 /*
-statprog.java v2.0
+statprog.java v2.1
 senior design group 8
 
 VERSION NOTES:
@@ -30,6 +30,10 @@ correcting error in picard tool syntax
 2.0
 removed picard
 created basic read mapping code (untested) - a whole lot of it
+
+2.1
+finally got the read-mapping to work on my small tests
+(the research paper lies)
 
 
 program description:
@@ -161,6 +165,7 @@ public class statprog {
 		
 		// store the SAs for each contig once found, they will be needed again later
 		ArrayList<Suf[]> suffixArrays = new ArrayList<Suf[]>();
+		ArrayList<Suf[]> rsuffixArrays = new ArrayList<Suf[]>();
 		
 		// iterate through each contig
 		for (int i = 0; i < genome.size(); ++i) {
@@ -206,15 +211,18 @@ public class statprog {
 			
 			// iterate through each read and see if the range at which it matches in this contig (if it matches at all)
 			for (int j = 0; j < reads.size(); ++j) {
-				Trip p = presearch(reads.get(j), C, O, OP, AllowedError);
-				if (p != null && p.a <= p.b) {
-					p.c = i;
-					locs[j].add(p);
-				}
+				
+				// okay whatever i explained previously, if i did fully explain, was a lie - i'll go back and edit the comments later
+				// but we're instead generating matchings for the reversed reference, and also we're generating a list of intervals for each contig
+				// that defines the range of indices where we match on the reversed suffix array
+				ArrayList<Trip> ap = unify(presearch(reads.get(j), C, O, OP, AllowedError), i);
+				for (int k = 0; k < ap.size(); ++k)
+					locs[j].add(ap.get(k));
 			}
 			
 			// store the SA we found, we will need it later
 			suffixArrays.add(suffixArray);
+			rsuffixArrays.add(rSuffixArray);
 		}
 		
 		// The read mappings are a triplet:  the contig number, the location in the contig, and the length of the read
@@ -258,8 +266,8 @@ public class statprog {
 		
 		// next add each mapping start and end
 		for (int i = 0; i < map.length; ++i) if (map[i] != null) {
-			q.add(new Event(map[i].cont, suffixArrays.get(map[i].cont)[map[i].loc].ind, 1));
-			q.add(new Event(map[i].cont, suffixArrays.get(map[i].cont)[map[i].loc].ind + map[i].len, 2));
+			q.add(new Event(map[i].cont, genome.get(map[i].cont).length() - 1 - rsuffixArrays.get(map[i].cont)[map[i].loc].ind - map[i].len, 1));
+			q.add(new Event(map[i].cont, genome.get(map[i].cont).length() - 1 - rsuffixArrays.get(map[i].cont)[map[i].loc].ind, 2));
 		}
 		
 		// now here comes the fun part, we need to pull out the events and keep track of a lot of info to calculate the stats
@@ -269,11 +277,11 @@ public class statprog {
 		
 		// first count the number of reads that are not aligned at all, as well as the longest part of the assembly that is aligned
 		for (int i = 0; i < map.length; ++i) {
-			if (map[i] == null)
+			if (map[i] == null || map[i].loc + map[i].len < 0 || map[i].loc >= genome.get(map[i].cont).length())
 				++fullUnalign;
 			else
 				longestAlign = Math.max(longestAlign, Math.min(genome.get(map[i].cont).length(),
-						suffixArrays.get(map[i].cont)[map[i].loc].ind + map[i].len) - suffixArrays.get(map[i].cont)[map[i].loc].ind);
+						rsuffixArrays.get(map[i].cont)[map[i].loc].ind + map[i].len) - rsuffixArrays.get(map[i].cont)[map[i].loc].ind);
 		}
 		
 		// now go through all "events" (start/ends of reads and contigs)
@@ -293,7 +301,7 @@ public class statprog {
 			// check the event type we are on
 			switch (e.type) {
 			case 0: // this is the beginning of a contig
-				partUnalign += stack; // this should never do anything based on how the read mapping works, but i included it regardless
+				partUnalign += stack;
 				inContig = true; // we are now in a contig
 				break;
 				
@@ -603,30 +611,34 @@ public class statprog {
 			b = y;
 			c = z;
 		}
-		Trip union(Trip t) {
-			Trip ret = new Trip(0, 0, -1);
-			if (t == null)
-				return new Trip(a, b, -1);
-			ret.a = Math.min(a, t.a);
-			ret.b = Math.max(b, t.b);
-			return ret;
-		}
 	}
 	
-	public static Trip presearch(String s, int[] C, int[][] O, int[][] OP, int e) {
+	public static ArrayList<Trip> union(ArrayList<Trip> a, ArrayList<Trip> b) {
+		if (a == null && b == null)
+			return null;
+		if (a == null)
+			return b;
+		if (b == null)
+			return a;
+		for (int i = 0; i < b.size(); ++i)
+			a.addAll(b);
+		return a;
+	}
+	
+	public static ArrayList<Trip> presearch(String s, int[] C, int[][] O, int[][] OP, int e) {
 		int[] D = calcD(s, C, OP);
-		return search(D, C, O, s, s.length() - 1, e, 1, C.length - 1);
+		return search(D, C, OP, s, s.length() - 1, e, 1, O[0].length - 1);
 	}
 	
 	public static int[] calcD(String s, int[] C, int[][] O) {
-		int z = 0, k = 1, l = C.length - 1;
+		int z = 0, k = 1, l = O[0].length - 1;
 		int[] ret = new int[s.length()];
 		for (int i = 0; i < s.length(); ++i) {
 			k = C[charCode(s.charAt(i))] + O[charCode(s.charAt(i))][k - 1] + 1;
 			l = C[charCode(s.charAt(i))] + O[charCode(s.charAt(i))][l];
 			if (k > l) {
 				k = 1;
-				l = C.length - 1;
+				l = O[0].length - 1;
 				z++;
 			}
 			ret[i] = z;
@@ -634,21 +646,26 @@ public class statprog {
 		return ret;
 	}
 	
-	public static Trip search(int[] D, int[] C, int[][] O, String s, int i, int z, int k, int l) {
+	public static ArrayList<Trip> search(int[] D, int[] C, int[][] O, String s, int i, int z, int k, int l) {
+		if (i < 0) {
+			if (k > l)
+				return null;
+			ArrayList<Trip> ret = new ArrayList<Trip>();
+			ret.add(new Trip(k, l, z));
+			return ret;
+		}
 		if (z < D[i])
 			return null;
-		if (i < 0)
-			return new Trip(k, l, -1);
-		Trip temp = search(D, C, O, s, i - 1, z - 1, k, l);
+		ArrayList<Trip> temp = search(D, C, O, s, i - 1, z - 1, k, l);
 		for (char c : new char[]{'A', 'C', 'G', 'T'}) {
-			k = C[charCode(c)] + O[charCode(c)][k - 1] + 1;
-			l = C[charCode(c)] + O[charCode(c)][l];
-			if (k <= l) {
-				temp = temp.union(search(D, C, O, s, i, z - 1, k, l));
+			int tk = C[charCode(c)] + O[charCode(c)][k - 1] + 1;
+			int tl = C[charCode(c)] + O[charCode(c)][l];
+			if (tk <= tl) {
+				temp = union(temp, search(D, C, O, s, i, z - 1, tk, tl));
 				if (c == s.charAt(i))
-					temp = temp.union(search(D, C, O, s, i - 1, z, k, l));
+					temp = union(temp, search(D, C, O, s, i - 1, z, tk, tl));
 				else
-					temp = temp.union(search(D, C, O, s, i - 1, z - 1, k, l));
+					temp = union(temp, search(D, C, O, s, i - 1, z - 1, tk, tl));
 			}
 		}
 		return temp;
@@ -657,7 +674,9 @@ public class statprog {
 	public static StringBuilder reverse(StringBuilder s) {
 		StringBuilder ret = new StringBuilder("");
 		for (int i = s.length() - 1; i >= 0; --i)
-			ret = ret.append(s.charAt(i));
+			if (s.charAt(i) != '$')
+				ret = ret.append(s.charAt(i));
+		ret = ret.append("$");
 		return ret;
 	}
 	
@@ -750,5 +769,38 @@ public class statprog {
 			}
 			return cont - e.cont;
 		}
+	}
+	
+	public static ArrayList<Trip> unify(ArrayList<Trip> a, int cont) {
+		ArrayList<Trip> ret = new ArrayList<Trip>();
+		PriorityQueue<Event> q = new PriorityQueue<Event>();
+		for (int i = 0; i < a.size(); ++i) {
+			q.add(new Event(cont, a.get(i).a, 1));
+			q.add(new Event(cont, a.get(i).b, 2));
+		}
+		Trip curTrip = null;
+		int depth = 0;
+		while (!q.isEmpty()) {
+			Event cur = q.poll();
+			if (cur.type == 1) {
+				if (curTrip == null)
+					curTrip = new Trip(cur.loc, cur.loc, cur.cont);
+				else if (depth == 0 && curTrip.b + 1 == cur.loc)
+					curTrip.b = cur.loc;
+				else if (depth == 0) {
+					ret.add(curTrip);
+					curTrip = new Trip(cur.loc, cur.loc, cur.cont);
+				}
+				else
+					curTrip.b = cur.loc;
+				++depth;
+			}
+			else {
+				curTrip.b = cur.loc;
+				--depth;
+			}
+		}
+		ret.add(curTrip);
+		return ret;
 	}
 }
