@@ -203,7 +203,7 @@ public class statprog {
 				if (j != 0)
 					for (int k = 0; k < 6; ++k) {
 						O[k][j] = O[k][j - 1];
-						OP[k][j] = O[k][j - 1];
+						OP[k][j] = OP[k][j - 1];
 					}
 				O[charCode(BWT.charAt(j))][j]++;
 				OP[charCode(rBWT.charAt(j))][j]++;
