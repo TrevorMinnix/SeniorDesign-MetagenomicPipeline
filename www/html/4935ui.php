@@ -129,7 +129,7 @@
 					</li>
 
 					<li style="padding-top: 11px;">
-						<input type="checkbox" id="ca1">
+						<input type="checkbox" id="ca1" name="idbaCheck">
 					</li>
 				</ul>
 			</li>
@@ -141,7 +141,7 @@
 					</li>
 
 					<li style="padding-top: 11px;">
-						<input type="checkbox" id="ca2">
+						<input type="checkbox" id="ca2" name="megahitCheck">
 					</li>
 				</ul>
 
@@ -154,7 +154,7 @@
 					</li>
 
 					<li style="padding-top: 11px;">
-						<input type="checkbox" id="ca3">
+						<input type="checkbox" id="ca3" name="metaspadesCheck">
 					</li>
 				</ul>
 			</li>
@@ -185,7 +185,7 @@
 						 </li>
 					</ul>
 					<div style="padding-top: 50px; padding-right: 100px"> 
-						<input type="submit" value="Submit Job" style="height: 50px; width: 150px; border-radius: 10px; font-size: 18px;" onclick="checkReady();">
+						<input type="submit" value="Submit Job" name="submitButton" style="height: 50px; width: 150px; border-radius: 10px; font-size: 18px;" onclick="checkReady();">
 					</div>
 				</form>
 			</li>
@@ -193,11 +193,32 @@
 	</div>
 
 	<?php
-		echo "<p>test</p>";
+		include "mysqli_con.php"
+
+		$jobID = 'test';
+
+		if(isset($_POST['submitButton'])){
+			//get check box values
+			$idbaCheck = $_POST[idbaCheck] ? 1 : 0;
+			$megahitCheck = $_POST[megahitCheck] ? 1 : 0;
+			$metaspadesCheck = $_POST[metaspadesCheck] ? 1 : 0;
+
+			//get radio button value
+			$pairedEnd = 0;
+			if($_POST['end'] == "paired-end"){
+				$pairedEnd = 1;
+			}
+{
+			//sql query
+			//single end
+			if($pairedEnd == 0){
+				$query = "INSERT INTO job (jobID, email, inputForward, idba, megahit, metaspades, pairedEnd, jobStatus) VALUES ('{$test}', '{$_POST['email']}', '{$_POST['my_file']}', {$idba}, {$megahit}, {$metaspades}, {$pairedEnd}, 1)"
+			}
+
+			$con->query($query);
+		}
 	?>
 
  </body>
-
- 
 
  </html>
