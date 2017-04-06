@@ -193,7 +193,7 @@
 	</div>
 
 	<?php
-		include "mysqli_con.php"
+		include "mysqli_con.php";
 
 		$jobID = 'test';
 
