@@ -119,20 +119,9 @@
 		<h1>Metagenomic Assembly and Evaluation Pipeline - Job Submission</h1>
 	</div>
 
-	<div class="page-header">
-		<h3>Trimmomatic Settings</h3>
-		<form>
-			<p>Input Parameter List: <input type="text" name="plist">
-		</form>
-	</div>
-
-	<div class="page-header" style="height: 220px;">
-		<h3>Assembler Settings</h3>
-		<ul style="padding-left: 200px;">
-			<li style="padding-right: 25px; padding-top: 40px;">
-				<p>Assembler parameters:</p>
-			</li>
-
+	<div class="page-header" style="height: 200px;">
+		<h3>Assembler Selection</h3>
+		<ul style="padding-left: 350px; padding-bottom:100;">
 			<li>
 				<ul>
 					<li> 
@@ -143,7 +132,6 @@
 						<input type="checkbox" id="ca1">
 					</li>
 				</ul>
-				<input type="text" name="a1">
 			</li>
 
 			<li style="padding-left: 40px;">
@@ -156,21 +144,19 @@
 						<input type="checkbox" id="ca2">
 					</li>
 				</ul>
-				<input type="text" name="a1">
 
 			</li>
 
 			<li style="padding-left: 40px;">
 				<ul>
 					<li> 
-						<h4>MetaSPAde</h4>
+						<h4>MetaSPAdes</h4>
 					</li>
 
 					<li style="padding-top: 11px;">
 						<input type="checkbox" id="ca3">
 					</li>
 				</ul>
-				<input type="text" name="a1">
 			</li>
 		</ul>
 	</div>
@@ -183,13 +169,21 @@
 			</li>
 
 			<li>
-				<h3>FASTQ Reads File</h3>
+				<h3 style="padding-left:125px;">FASTQ Reads File</h3>
 				<form action="upload.php" method="post" enctype="multipart/form-data" onsubmit="return verify(this);">
-					<input type="file" name="my_file" id="my_file"/>
-					
-					<input type="radio" name="end" value="single-end">Single-end Data<br>
-					<input type="radio" name="end" value="paired-end">Paired-end Data<br>
-				
+					<ul>
+						 <li>
+							<input type="radio" name="end" value="single-end">Single-end Data<br>
+							<input type="file" name="my_file" id="my_file"/>
+						 </li>
+						 <li>
+							<input type="radio" name="end" value="paired-end">Paired-end Data<br>
+							<p>Forward:</p>
+						    <input type="file" name="fmy_file" id="fmy_file"/>
+							<p>Reverse:</p>
+							<input type="file" name="rmy_file" id="rmy_file"/>
+						 </li>
+					</ul>
 					<div style="padding-top: 50px; padding-right: 100px"> 
 						<input type="submit" value="Submit Job" style="height: 50px; width: 150px; border-radius: 10px; font-size: 18px;" onclick="checkReady();">
 					</div>
