@@ -20,8 +20,3 @@ if ($uploadOk == 0) {
 }
 
 ?>
-=======
-if(!file_exists($target_dir."/".$target_file)){
-	mkdir($target_dir."/".$target_file, 0777, true);
-}
-?>
