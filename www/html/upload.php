@@ -14,17 +14,11 @@ if ($uploadOk == 0) {
 
 // if everything is ok, try to upload file
 } else {
+    mkdir($target_file, 0777, true);
     if (move_uploaded_file($_FILES["my_file"]["tmp_name"], $target_file)) {
         echo "The file ". basename( $_FILES["my_file"]["name"]). " has been uploaded.";
     } else {
         echo "Sorry, there was an error uploading your file.";
     }
 }
-
-$new_name = "/home/student/SeniorDesign-MetagenomicPipeline/FASTQ".$_FILES["my_file"]["name"];
-
-if(!is_dir($new_name)){
-	mkdir('/home/student/SeniorDesign-MetagenomicPipeline/FASTQ.$_FILES["my_file"]["name"]', 0777, true);
-}
-
 ?>
