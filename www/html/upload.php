@@ -24,7 +24,7 @@ if ($uploadOk == 0) {
 $new_name = "/home/student/SeniorDesign-MetagenomicPipeline/FASTQ".$_FILES["my_file"]["name"];
 
 if(!is_dir($new_name)){
-	mkdir('/home/student/SeniorDesign-MetagenomicPipeline/FASTQ.$_FILES["my_file"]["name"]', 0777, true)
+	mkdir('/home/student/SeniorDesign-MetagenomicPipeline/FASTQ.$_FILES["my_file"]["name"]', 0777, true);
 }
 
 ?>
