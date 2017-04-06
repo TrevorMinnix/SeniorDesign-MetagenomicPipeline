@@ -8,6 +8,6 @@ if(!$con){
   exit;
 }
 
-//echo "Success!" . PHP_EOL;
-//echo "Host information: " . mysqli_get_host_info($con) . PHP_EOL;
+echo "Success!" . PHP_EOL;
+echo "Host information: " . mysqli_get_host_info($con) . PHP_EOL;
 ?>
