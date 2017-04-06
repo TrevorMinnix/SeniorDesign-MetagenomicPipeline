@@ -1,5 +1,5 @@
 <?php
-$target_dir ="/home/student/SeniorDesign-MetagenomicPipeline/FASTQ/Jobs";
+$target_dir ="/home/student/SeniorDesign-MetagenomicPipeline/FASTQ";
 $target_file = $target_dir . basename($_FILES["my_file"]["name"]);
 $uploadOk = 1;
 
@@ -20,4 +20,11 @@ if ($uploadOk == 0) {
         echo "Sorry, there was an error uploading your file.";
     }
 }
+
+$new_name = "/home/student/SeniorDesign-MetagenomicPipeline/FASTQ".$_FILES["my_file"]["name"];
+
+if(!is_dir($new_name)){
+	mkdir('/home/student/SeniorDesign-MetagenomicPipeline/FASTQ.$_FILES["my_file"]["name"]', 0777, true)
+}
+
 ?>
