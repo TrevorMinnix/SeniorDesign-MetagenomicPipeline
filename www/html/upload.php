@@ -1,8 +1,10 @@
 <?php
-session_start();
-
 //test
-echo $_POST['email'];
+if(isset($_POST['email'])){
+	echo 'Post set.';
+}else{
+	echo 'Post not set.';
+}
 
 $chunk = isset($_REQUEST["chunk"]) ? intval($_REQUEST["chunk"]) : 0;
 $chunks = isset($_REQUEST["chunks"]) ? intval($_REQUEST["chunks"]) : 0;

@@ -1,7 +1,3 @@
-<?php 
-	session_start();
-	$_SESSION['post'] = $_POST;
-?>
 <!DOCTYPE html>
 
  <html lang="en">
