@@ -2,7 +2,7 @@
 session_start();
 
 //test
-echo $_SESSION['post']['email'];
+echo $_POST['email'];
 
 $chunk = isset($_REQUEST["chunk"]) ? intval($_REQUEST["chunk"]) : 0;
 $chunks = isset($_REQUEST["chunks"]) ? intval($_REQUEST["chunks"]) : 0;
