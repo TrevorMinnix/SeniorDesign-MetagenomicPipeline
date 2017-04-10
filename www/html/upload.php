@@ -18,11 +18,11 @@ if($_POST['end'] == "paired-end"){
 //sql query
 //single end
 if($pairedEnd == 0){
-	$query = "INSERT INTO job (jobID, email, inputForward, idba, megahit, metaspades, pairedEnd, jobStatus) VALUES ('{$jobID}', '{$_POST['email']}', '{$_POST['my_file']}', '{$idbaCheck}', '{$megahitCheck}', '{$metaspadesCheck}', '{$pairedEnd}', '1')";
+	$query = "INSERT INTO job (jobID, email, inputForward, idba, megahit, metaspades, pairedEnd, jobStatus) VALUES ('{$jobID}', '{$_POST['email']}', '{$_FILES['my_file']['name']}', '{$idbaCheck}', '{$megahitCheck}', '{$metaspadesCheck}', '{$pairedEnd}', '1')";
 } 
 //paired end
 else{
-	$query = "INSERT INTO job (jobID, email, inputForward, inputReverse, idba, megahit, metaspades, pairedEnd, jobStatus) VALUES ('{$test}', '{$_POST['email']}', '{$_POST['fmy_file']}', '{$_POST['rmy_file']}', '{$idba}', '{$megahit}', '{$metaspades}', '{$pairedEnd}', '1')";
+	$query = "INSERT INTO job (jobID, email, inputForward, inputReverse, idba, megahit, metaspades, pairedEnd, jobStatus) VALUES ('{$test}', '{$_POST['email']}', '{$_FILES['fmy_file']['name']}', '{$_FILES['rmy_file']['name']}', '{$idba}', '{$megahit}', '{$metaspades}', '{$pairedEnd}', '1')";
 }
 
 echo $query;
