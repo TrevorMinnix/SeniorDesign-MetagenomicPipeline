@@ -17,7 +17,7 @@ if(isset($_POST['submitButton'])){
 	//sql query
 	//single end
 	if($pairedEnd == 0){
-		$query = "INSERT INTO job (jobID, email, inputForward, idba, megahit, metaspades, pairedEnd, jobStatus) VALUES ('{$test}', '{$_POST['email']}', '{$_POST['my_file']}', '{$idba}', '{$megahit}', '{$metaspades}', '{$pairedEnd}', '1')";
+		$query = "INSERT INTO job (jobID, email, inputForward, idba, megahit, metaspades, pairedEnd, jobStatus) VALUES ('{$test}', '{$_POST['email']}', '{$_POST['my_file']}', '{$idbaCheck}', '{$megahitCheck}', '{$metaspadesCheck}', '{$pairedEnd}', '1')";
 	} 
 	//paired end
 	else{
