@@ -178,7 +178,6 @@
 							<input type="file" name="my_file" id="my_file"/>
 						 </li>
 						 <li>
-							//<input type="radio" name="end" value="paired-end">Paired-end Data<br>
 							<p>Forward:</p>
 						    <input type="file" name="fmy_file" id="fmy_file"/>
 							<p>Reverse:</p>
