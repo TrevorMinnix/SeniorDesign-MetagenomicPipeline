@@ -2,10 +2,7 @@
 include "mysqli_con.php";
  
 //get uuid
-$uuidQuery = $con->query("SELECT UUID()");
-$jobIDRS = $uuidQuery->fetch_field();
-$jobID = $jobIDRS->UUID();
-$uuidQuery->close();
+$jobID = $jobIDRS->uniqid("", true);
 echo $jobID;
 
 //get check box values
