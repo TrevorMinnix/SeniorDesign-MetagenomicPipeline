@@ -1,3 +1,7 @@
+<?php 
+	session_start();
+	$_SESSION['post'] = $_POST;
+?>
 <!DOCTYPE html>
 
  <html lang="en">
@@ -192,7 +196,7 @@
 		</ul>
 	</div>
 
-	<?php
+	/*<?php
 		include "mysqli_con.php";
 
 		$jobID = 'test';
@@ -212,13 +216,15 @@
 			//single end
 			if($pairedEnd == 0){
 				$query = "INSERT INTO job (jobID, email, inputForward, idba, megahit, metaspades, pairedEnd, jobStatus) VALUES ('{$test}', '{$_POST['email']}', '{$_POST['my_file']}', '{$idba}', '{$megahit}', '{$metaspades}', '{$pairedEnd}', '1')";
-			} else{
+			} 
+			//paired end
+			else{
 				$query = "INSERT INTO job (jobID, email, inputForward, inputReverse, idba, megahit, metaspades, pairedEnd, jobStatus) VALUES ('{$test}', '{$_POST['email']}', '{$_POST['fmy_file']}', '{$_POST['rmy_file']}', '{$idba}', '{$megahit}', '{$metaspades}', '{$pairedEnd}', '1')";
 			}
 
 			$con->query($query);
 		}
-	?>
+	?>*/
 
  </body>
 
