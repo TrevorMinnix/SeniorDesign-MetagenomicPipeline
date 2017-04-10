@@ -3,7 +3,6 @@ include "mysqli_con.php";
  
 //get uuid
 $jobID = uniqid("", true);
-echo $jobID;
 
 //get check box values
 $idbaCheck = $_POST[idbaCheck] ? 1 : 0;
@@ -12,6 +11,7 @@ $metaspadesCheck = $_POST[metaspadesCheck] ? 1 : 0;
 
 //get radio button value
 $pairedEnd = 0;
+echo $_POST['end'];
 if($_POST['end'] == "paired-end"){
 	$pairedEnd = 1;
 }
