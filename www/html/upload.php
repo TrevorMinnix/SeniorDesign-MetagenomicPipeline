@@ -2,7 +2,7 @@
 include "mysqli_con.php";
  
 //get uuid
-$jobID = $jobIDRS->uniqid("", true);
+$jobID = uniqid("", true);
 echo $jobID;
 
 //get check box values
