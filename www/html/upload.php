@@ -15,6 +15,7 @@ $pairedEnd = 0;
 if($_POST['end'] == "paired-end"){
 	$pairedEnd = 1;
 }
+
 //sql query
 //single end
 if($pairedEnd == 0){
@@ -22,7 +23,7 @@ if($pairedEnd == 0){
 } 
 //paired end
 else{
-	$query = "INSERT INTO job (jobID, email, inputForward, inputReverse, idba, megahit, metaspades, pairedEnd, jobStatus) VALUES ('{$test}', '{$_POST['email']}', '{$_FILES['fmy_file']['name']}', '{$_FILES['rmy_file']['name']}', '{$idba}', '{$megahit}', '{$metaspades}', '{$pairedEnd}', '1')";
+	$query = "INSERT INTO job (jobID, email, inputForward, inputReverse, idba, megahit, metaspades, pairedEnd, jobStatus) VALUES ('{$jobID}', '{$_POST['email']}', '{$_FILES['fmy_file']['name']}', '{$_FILES['rmy_file']['name']}', '{$idbaCheck}', '{$megahitCheck}', '{$metaspadesCheck}', '{$pairedEnd}', '1')";
 }
 
 echo $query;
