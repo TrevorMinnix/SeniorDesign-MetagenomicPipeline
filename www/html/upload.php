@@ -24,7 +24,7 @@ if(isset($_POST['submitButton'])){
 		$query = "INSERT INTO job (jobID, email, inputForward, inputReverse, idba, megahit, metaspades, pairedEnd, jobStatus) VALUES ('{$test}', '{$_POST['email']}', '{$_POST['fmy_file']}', '{$_POST['rmy_file']}', '{$idba}', '{$megahit}', '{$metaspades}', '{$pairedEnd}', '1')";
 	}
 
-	echo query;
+	echo $query;
 
 	$con->query($query);
 }
