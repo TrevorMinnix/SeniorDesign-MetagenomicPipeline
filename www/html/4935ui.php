@@ -196,36 +196,6 @@
 		</ul>
 	</div>
 
-	/*<?php
-		include "mysqli_con.php";
-
-		$jobID = 'test';
-
-		if(isset($_POST['submitButton'])){
-			//get check box values
-			$idbaCheck = $_POST[idbaCheck] ? 1 : 0;
-			$megahitCheck = $_POST[megahitCheck] ? 1 : 0;
-			$metaspadesCheck = $_POST[metaspadesCheck] ? 1 : 0;
-
-			//get radio button value
-			$pairedEnd = 0;
-			if($_POST['end'] == "paired-end"){
-				$pairedEnd = 1;
-			}
-			//sql query
-			//single end
-			if($pairedEnd == 0){
-				$query = "INSERT INTO job (jobID, email, inputForward, idba, megahit, metaspades, pairedEnd, jobStatus) VALUES ('{$test}', '{$_POST['email']}', '{$_POST['my_file']}', '{$idba}', '{$megahit}', '{$metaspades}', '{$pairedEnd}', '1')";
-			} 
-			//paired end
-			else{
-				$query = "INSERT INTO job (jobID, email, inputForward, inputReverse, idba, megahit, metaspades, pairedEnd, jobStatus) VALUES ('{$test}', '{$_POST['email']}', '{$_POST['fmy_file']}', '{$_POST['rmy_file']}', '{$idba}', '{$megahit}', '{$metaspades}', '{$pairedEnd}', '1')";
-			}
-
-			$con->query($query);
-		}
-	?>*/
-
  </body>
 
  </html>
