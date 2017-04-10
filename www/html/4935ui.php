@@ -119,6 +119,7 @@
 		<h1>Metagenomic Assembly and Evaluation Pipeline - Job Submission</h1>
 	</div>
 
+	<form action="upload.php" method="post" enctype="multipart/form-data" onsubmit="return verify(this);">
 	<div class="page-header" style="height: 200px;">
 		<h3>Assembler Selection</h3>
 		<ul style="padding-left: 350px; padding-bottom:100;">
@@ -170,7 +171,6 @@
 
 			<li>
 				<h3 style="padding-left:125px;">FASTQ Reads File</h3>
-				<form action="upload.php" method="post" enctype="multipart/form-data" onsubmit="return verify(this);">
 					<ul>
 						 <li>
 							<input type="radio" name="end" value="single-end">Single-end Data<br>
@@ -191,7 +191,7 @@
 			</li>
 		</ul>
 	</div>
-
+	</form>
  </body>
 
  </html>
