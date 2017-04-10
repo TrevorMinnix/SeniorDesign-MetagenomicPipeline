@@ -2,7 +2,7 @@
 include "mysqli_con.php";
  
 //get uuid
-$jobID = uniqid("", true);
+$jobID = str_replace(".", "-", uniqid("", true));
 
 //get check box values
 $idbaCheck = $_POST[idbaCheck] ? 1 : 0;
