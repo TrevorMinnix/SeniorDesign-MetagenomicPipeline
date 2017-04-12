@@ -5,9 +5,9 @@ include "mysqli_con.php";
 $jobID = str_replace(".", "-", uniqid("", true));
 
 //get check box values
-$idbaCheck = $_POST[idbaCheck] ? 1 : 0;
-$megahitCheck = $_POST[megahitCheck] ? 1 : 0;
-$metaspadesCheck = $_POST[metaspadesCheck] ? 1 : 0;
+$idbaCheck = $_POST['idba'] ? 1 : 0;
+$megahitCheck = $_POST['megahit'] ? 1 : 0;
+$metaspadesCheck = $_POST['metaspades'] ? 1 : 0;
 
 //get radio button value
 $pairedEnd = 0;
@@ -39,7 +39,8 @@ $con->close();
 $chunk = isset($_REQUEST["chunk"]) ? intval($_REQUEST["chunk"]) : 0;
 $chunks = isset($_REQUEST["chunks"]) ? intval($_REQUEST["chunks"]) : 0;
 
-$target_dir ="/home/student/SeniorDesign-MetagenomicPipeline/Jobs/";
+mkdir("/home/student/SeniorDesign-MetagenomicPipeline/Jobs/" . $jobID . "/");
+$target_dir = "/home/student/SeniorDesign-MetagenomicPipeline/Jobs/" . $jobID . "/";
 $target_file = $target_dir . basename($_FILES["my_file"]["name"]); 
 $uploadOk = 1;
 
@@ -54,6 +55,7 @@ if ($uploadOk == 0) {
 } else {
     if (move_uploaded_file($_FILES["my_file"]["tmp_name"], $target_file)) {
         echo "The file ". basename( $_FILES["my_file"]["name"]). " has been uploaded.";
+	
     } else {
         echo "Sorry, there was an error uploading your file.";
     }
