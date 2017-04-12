@@ -5,9 +5,9 @@ include "mysqli_con.php";
 $jobID = str_replace(".", "-", uniqid("", true));
 
 //get check box values
-$idbaCheck = $_POST['idba'] ? 1 : 0;
-$megahitCheck = $_POST['megahit'] ? 1 : 0;
-$metaspadesCheck = $_POST['metaspades'] ? 1 : 0;
+$idbaCheck = $_POST['idbaCheck'] ? 1 : 0;
+$megahitCheck = $_POST['megahitCheck'] ? 1 : 0;
+$metaspadesCheck = $_POST['metaspadesCheck'] ? 1 : 0;
 
 //get radio button value
 $pairedEnd = 0;
