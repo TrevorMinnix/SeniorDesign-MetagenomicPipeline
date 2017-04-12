@@ -1,5 +1,5 @@
 /*
-statprog.java v2.1
+statprog.java v2.2
 senior design group 8
 
 VERSION NOTES:
@@ -34,6 +34,10 @@ created basic read mapping code (untested) - a whole lot of it
 2.1
 finally got the read-mapping to work on my small tests
 (the research paper lies)
+
+2.2
+finally got the read-mapping to work on real tests
+it's really slow though
 
 
 program description:
@@ -83,18 +87,22 @@ public class statprog {
 	public static long WindowSize = 100;
 	public static long LargeSize = 1000;
 	public static long NSize = 100000;
+	public static int seedLength = 27;
+	public static int seedError = 2;
 	
-	public static int AllowedError = 5;
+	public static int AllowedError = 4;
+	public static int tempLen;
 	
 	public static final boolean DebugMode = false;
 	
 	public static Random r;
+	public static boolean calculateReadMapping;
 	
 	
 	public static void main(String[] args) throws IOException, InterruptedException {
 		
 		init();
-		String input_file = "";
+		String input_file = "", read_file = "";
 		String out_files = "stat_out"; // default
 		
 		// processing command-line arguments
@@ -107,6 +115,12 @@ public class statprog {
 			case 'N': NSize = Long.parseLong(args[i].substring(2)); break;
 			case 'O': out_files = args[i].substring(2); break;
 			case 'E': AllowedError = Integer.parseInt(args[i].substring(2)); break;
+			case 'R':
+				read_file = args[i].substring(2); 
+				calculateReadMapping = true;
+				break;
+			case 'S': seedLength = Integer.parseInt(args[i].substring(2)); break;
+			case 'D': seedError = Integer.parseInt(args[i].substring(2)); break;
 			}
 		
 		
@@ -150,208 +164,230 @@ public class statprog {
 		testing this is going to be quite a bundle of fun
 		if i can't prove the mapping works properly in time for us to be finished, i'll just remove the mapping and work with the basics
 		 */
-		
-		// assume there exists the read file with the same name as the assembly (aside from file type)
-		ArrayList<String> reads = new ArrayList<String>();
-		FastScanner newIn = new FastScanner(new File(input_file.replace(".fasta", ".fastq")));
-		
-		// collect all the reads (account for FASTQ format)
-		read2(newIn, reads);
-		
-		// Create an array of arrays of triplets, storing, for each read, the SA interval and contig it was found in
-		ArrayList<Trip>[] locs = new ArrayList[reads.size()];
-		for (int i = 0; i < reads.size(); ++i)
-			locs[i] = new ArrayList<Trip>();
-		
-		// store the SAs for each contig once found, they will be needed again later
-		ArrayList<Suf[]> suffixArrays = new ArrayList<Suf[]>();
-		ArrayList<Suf[]> rsuffixArrays = new ArrayList<Suf[]>();
-		
-		// iterate through each contig
-		for (int i = 0; i < genome.size(); ++i) {
-			
-			// generate a suffix array on the contig, and also on the reversed contig (yes, we need that)
-			Suf[] suffixArray = buildSuffixArray(genome.get(i));
-			Suf[] rSuffixArray = buildSuffixArray(reverse(genome.get(i)));
-			
-			// create the BWT string for the SA, and the BWT string for the SA of the reversed contig
-			StringBuilder BWT = new StringBuilder("");
-			StringBuilder rBWT = new StringBuilder("");
-			
-			// go through and build the strings based on the SAs
-			for (int j = 0; j < genome.get(i).length(); ++j) {
-				BWT = BWT.append((suffixArray[j].ind + genome.get(i).length() - 1) % genome.get(i).length());
-				rBWT = rBWT.append((rSuffixArray[j].ind + genome.get(i).length() - 1) % genome.get(i).length());
-			}
-			
-			// precalc the C, O, and O' arrays for this contig
-			// C[c]			-		Array containing the number of letters smaller than the given letter c in the contig
-			// O[c][i]		-		Array containing the number of matches to the letter c in the prefix of length i in the BWT string
-			// O'			-		Same as O, but on the rBWT string.  Called OP in code.
-			
-			// calculate C
-			int[] C = new int[6]; // i am assuming only 6 relevant characters:  C, G, N, A, T, $
-			for (int j = 0; j < genome.get(i).length(); ++j)
-				for (int k = charCode(genome.get(i).charAt(j)) + 1; k < 6; ++k)
-					++C[k];
-			
-			// calculate O and O'
-			int[][] O = new int[6][genome.get(i).length()];
-			int[][] OP = new int[6][genome.get(i).length()];
-			
-			for (int j = 0; j < BWT.length(); ++j) {
-				if (j != 0)
-					for (int k = 0; k < 6; ++k) {
-						O[k][j] = O[k][j - 1];
-						OP[k][j] = OP[k][j - 1];
-					}
-				O[charCode(BWT.charAt(j))][j]++;
-				OP[charCode(rBWT.charAt(j))][j]++;
-			}
-			
-			// iterate through each read and see if the range at which it matches in this contig (if it matches at all)
-			for (int j = 0; j < reads.size(); ++j) {
-				
-				// okay whatever i explained previously, if i did fully explain, was a lie - i'll go back and edit the comments later
-				// but we're instead generating matchings for the reversed reference, and also we're generating a list of intervals for each contig
-				// that defines the range of indices where we match on the reversed suffix array
-				ArrayList<Trip> ap = unify(presearch(reads.get(j), C, O, OP, AllowedError), i);
-				for (int k = 0; k < ap.size(); ++k)
-					locs[j].add(ap.get(k));
-			}
-			
-			// store the SA we found, we will need it later
-			suffixArrays.add(suffixArray);
-			rsuffixArrays.add(rSuffixArray);
-		}
-		
-		// The read mappings are a triplet:  the contig number, the location in the contig, and the length of the read
-		// null indicates that a read was not mapped (this can happen)
-		Map[] map = new Map[reads.size()];
-		Arrays.fill(map, null);
-		
-		// find a mapping for each read from among its potential mappings
-		for (int i = 0; i < locs.length; ++i) {
-			
-			// first find out the number of possible locations the read could be mapped to
-			int sum = 0;
-			for (int j = 0; j < locs[i].size(); ++j)
-				if (locs[i].get(j) != null) {
-					Trip temp = locs[i].get(j);
-					sum += temp.b - temp.a + 1;
-				}
-			
-			// randomly pick one of these locations and map the read to it
-			int ind = r.nextInt(sum);
-			for (int j = 0; j < locs[i].size(); ++j)
-				if (locs[i].get(j) != null) {
-					Trip temp = locs[i].get(j);
-					if (ind < temp.b - temp.a + 1) {
-						map[i] = new Map(temp.c, temp.a + ind, reads.get(i).length());
-						break;
-					}
-					ind -= temp.b - temp.a + 1;
-				}
-		}
-		
-		// we're going to treat the alignment statistics evaluation as a sweep on intervals
-		// since this requires all "events" to be sorted, we'll use a priority queue to pull out events in order
-		PriorityQueue<Event> q = new PriorityQueue<Event>();
-		
-		// first add each contig start and end
-		for (int i = 0; i < genome.size(); ++i) {
-			q.add(new Event(i, 0, 0));
-			q.add(new Event(i, genome.get(i).length(), 3));
-		}
-		
-		// next add each mapping start and end
-		for (int i = 0; i < map.length; ++i) if (map[i] != null) {
-			q.add(new Event(map[i].cont, genome.get(map[i].cont).length() - 1 - rsuffixArrays.get(map[i].cont)[map[i].loc].ind - map[i].len, 1));
-			q.add(new Event(map[i].cont, genome.get(map[i].cont).length() - 1 - rsuffixArrays.get(map[i].cont)[map[i].loc].ind, 2));
-		}
-		
-		// now here comes the fun part, we need to pull out the events and keep track of a lot of info to calculate the stats
 		long align = 0, dupalign = 0, numGaps = 0, longestAlign = 0, fullUnalign = 0, partUnalign = 0;
-		int prev = 0, prev2 = 0, curContig = -1, stack = 0, prevEnd = 0;
+		int prev = 0, prev2 = 0, curContig = -1, stack = 0, prevEnd = 0, maps = 0;
 		boolean inContig = false;
-		
-		// first count the number of reads that are not aligned at all, as well as the longest part of the assembly that is aligned
-		for (int i = 0; i < map.length; ++i) {
-			if (map[i] == null || map[i].loc + map[i].len < 0 || map[i].loc >= genome.get(map[i].cont).length())
-				++fullUnalign;
-			else
-				longestAlign = Math.max(longestAlign, Math.min(genome.get(map[i].cont).length(),
-						rsuffixArrays.get(map[i].cont)[map[i].loc].ind + map[i].len) - rsuffixArrays.get(map[i].cont)[map[i].loc].ind);
-		}
-		
-		// now go through all "events" (start/ends of reads and contigs)
-		while (!q.isEmpty()) {
-			Event e = q.poll();
+		if (calculateReadMapping) {
+			// assume there exists the read file with the same name as the assembly (aside from file type)
+			ArrayList<String> reads = new ArrayList<String>();
+			endOfFile = false;
 			
-			// we have moved on to a new contig, update everything - some of this is redundant but just for peace of mind and safety
-			if (e.cont != curContig) {
-				prev = 0;
-				prev2 = 0;
-				stack = 0;
-				prevEnd = 0;
-				curContig = e.cont;
-				inContig = false;
+			// collect all the reads (account for FASTQ format)
+			read2(new FastScanner(new File(read_file)), reads);
+			boolean[] readuse = new boolean[reads.size()];
+			int readusenum = 0;
+
+			// Create an array of arrays of triplets, storing, for each read, the SA interval and contig it was found in
+			ArrayList<Trip>[] locs = new ArrayList[reads.size()];
+			for (int i = 0; i < reads.size(); ++i)
+				locs[i] = new ArrayList<Trip>();
+			
+			// store the SAs for each contig once found, they will be needed again later
+			ArrayList<Suf[]> suffixArrays = new ArrayList<Suf[]>();
+			ArrayList<Suf[]> rsuffixArrays = new ArrayList<Suf[]>();
+			
+			// iterate through each contig
+			for (int i = 0; i < genome.size(); ++i) if (genome.get(i).length() > 0) {
+				
+				String ts = genome.get(i).toString();
+				String rts = new StringBuilder(ts.substring(0, ts.length() - 1)).reverse().toString() + "$";
+				// generate a suffix array on the contig, and also on the reversed contig (yes, we need that)
+				Suf[] suffixArray = buildSuffixArray(genome.get(i));
+				Suf[] rSuffixArray = buildSuffixArray(new StringBuilder(rts));
+												
+				// create the BWT string for the SA, and the BWT string for the SA of the reversed contig
+				StringBuilder BWT = new StringBuilder("");
+				StringBuilder rBWT = new StringBuilder("");
+				
+				// go through and build the strings based on the SAs
+				for (int j = 0; j < genome.get(i).length(); ++j) {
+					BWT = BWT.append(genome.get(i).charAt((suffixArray[j].ind + genome.get(i).length() - 1) % genome.get(i).length()));
+					rBWT = rBWT.append(rts.charAt((rSuffixArray[j].ind + genome.get(i).length() - 1) % genome.get(i).length()));
+				}
+				
+				// precalc the C, O, and O' arrays for this contig
+				// C[c]			-		Array containing the number of letters smaller than the given letter c in the contig
+				// O[c][i]		-		Array containing the number of matches to the letter c in the prefix of length i in the BWT string
+				// O'			-		Same as O, but on the rBWT string.  Called OP in code.
+				
+				// calculate C
+				int[] C = new int[6]; // i am assuming only 6 relevant characters:  C, G, N, A, T, $
+				for (int j = 0; j < genome.get(i).length() - 1; ++j)
+					for (int k = charCode(genome.get(i).charAt(j)) + 1; k < 6; ++k)
+						++C[k];
+				
+				// calculate O and O'
+				int[][] O = new int[6][genome.get(i).length()];
+				int[][] OP = new int[6][genome.get(i).length()];
+				
+				for (int j = 0; j < BWT.length(); ++j) {
+					if (j != 0)
+						for (int k = 0; k < 6; ++k) {
+							O[k][j] = O[k][j - 1];
+							OP[k][j] = OP[k][j - 1];
+						}
+					O[charCode(BWT.charAt(j))][j]++;
+					OP[charCode(rBWT.charAt(j))][j]++;
+				}
+
+				// iterate through each read and see if the range at which it matches in this contig (if it matches at all)
+				for (int j = 0; j < reads.size(); ++j) if (!readuse[j]) {
+					ArrayList<Trip> ap = null;
+					tempLen = 0;
+					
+					for (int k = 0; k < reads.get(j).length() - seedLength; ++k) {
+						ap = presearch(reads.get(j).substring(k, k + seedLength), C, O, OP, seedError, i);
+						
+						if (ap != null && ap.size() > 0) {
+							readuse[j] = true;
+							++readusenum;
+							ap = bs(reads.get(j), k, seedLength, reads.get(j).length() - k, C, O, OP, i);
+							break;
+						}
+					}
+					for (int k = 0; ap != null && k < ap.size(); ++k) if (ap.get(k) != null) {
+						ap.get(k).len = tempLen;
+						locs[j].add(ap.get(k));
+					}
+				}
+				
+				// store the SA we found, we will need it later
+				suffixArrays.add(suffixArray);
+				rsuffixArrays.add(rSuffixArray);
+				
+				System.out.printf("done with %d, %d\n", i, readusenum);
+				
 			}
 			
-			// check the event type we are on
-			switch (e.type) {
-			case 0: // this is the beginning of a contig
-				partUnalign += stack;
-				inContig = true; // we are now in a contig
-				break;
+			// The read mappings are a triplet:  the contig number, the location in the contig, and the length of the read
+			// null indicates that a read was not mapped (this can happen)
+			Map[] map = new Map[reads.size()];
+			Arrays.fill(map, null);
+			
+			// find a mapping for each read from among its potential mappings
+			for (int i = 0; i < locs.length; ++i) {
 				
-			case 1: // this is the beginning of a read
-				// this is the first read for this part of the contig, so update the values before incrementing the stack
-				if (stack == 0) {
-					prev = e.loc;
-					if (prevEnd != e.loc)
-						++numGaps;
+				// first find out the number of possible locations the read could be mapped to
+				int sum = 0;
+				for (int j = 0; j < locs[i].size(); ++j)
+					if (locs[i].get(j) != null) {
+						Trip temp = locs[i].get(j);
+						sum += temp.b - temp.a + 1;
+					}
+				
+				if (sum > 0) {
+					// randomly pick one of these locations and map the read to it
+					int ind = r.nextInt(sum);
+					for (int j = 0; j < locs[i].size(); ++j)
+						if (locs[i].get(j) != null) {
+							Trip temp = locs[i].get(j);
+							if (ind < temp.b - temp.a + 1) {
+								map[i] = new Map(temp.c, temp.a + ind, temp.len);
+								break;
+							}
+							ind -= temp.b - temp.a + 1;
+						}
 				}
-				
-				// this is the second read of this part of the contig, so update the first encountered location of duplicate coverage
-				if (stack == 1)
-					prev2 = e.loc;
-				
-				// push the "stack" - this is like a parsing problem, but it's primitive enough that we don't need a real stack, just a counter
-				++stack;
-				break;
-				
-			case 2: // this is end of a read
-				// we are ending coverage, so update some stuff
-				if (stack == 1) {
-					if (inContig)
-						align += e.loc - prev;
-					else
-						align = genome.get(curContig).length() - prev;
-					prevEnd = e.loc;
-				}
-				
-				// we are ending duplicate coverage, so update
-				else if (stack == 2) {
-					if (inContig)
-						dupalign += e.loc - prev2;
-					else
-						dupalign = genome.get(curContig).length() - prev2;
-				}
-				
-				// if we ended outside of a contig, then this read is partially unaligned
-				// (this is technically false due to the edit distance allowed error, but that is small enough error to ignore, hopefully)
-				if (!inContig)
-					++partUnalign;
-				
-				// pop off the "stack"
-				--stack;
-				break;
-				
-			case 3: // this is the end of a contig
-				inContig = false;
-				break;
 			}
+			
+			// we're going to treat the alignment statistics evaluation as a sweep on intervals
+			// since this requires all "events" to be sorted, we'll use a priority queue to pull out events in order
+			PriorityQueue<Event> q = new PriorityQueue<Event>();
+			
+			// first add each contig start and end
+			for (int i = 0; i < genome.size(); ++i) {
+				q.add(new Event(i, 0, 0));
+				q.add(new Event(i, genome.get(i).length(), 3));
+			}
+			
+			// next add each mapping start and end
+			for (int i = 0; i < map.length; ++i) if (map[i] != null) {
+				q.add(new Event(map[i].cont, suffixArrays.get(map[i].cont)[map[i].loc].ind, 1));
+				q.add(new Event(map[i].cont, suffixArrays.get(map[i].cont)[map[i].loc].ind + map[i].len, 2));
+			}
+			
+			// now here comes the fun part, we need to pull out the events and keep track of a lot of info to calculate the stats
+			
+			// first count the number of reads that are not aligned at all, as well as the longest part of the assembly that is aligned
+			for (int i = 0; i < map.length; ++i) {
+				if (map[i] == null || map[i].loc + map[i].len < 0 || map[i].loc >= genome.get(map[i].cont).length())
+					++fullUnalign;
+				else
+					longestAlign = Math.max(longestAlign, Math.min(genome.get(map[i].cont).length(),
+							rsuffixArrays.get(map[i].cont)[map[i].loc].ind + map[i].len) - rsuffixArrays.get(map[i].cont)[map[i].loc].ind);
+			}
+			
+			// now go through all "events" (start/ends of reads and contigs)
+			while (!q.isEmpty()) {
+				Event e = q.poll();
+				
+				// we have moved on to a new contig, update everything - some of this is redundant but just for peace of mind and safety
+				if (e.cont != curContig) {
+					prev = 0;
+					prev2 = 0;
+					stack = 0;
+					prevEnd = 0;
+					curContig = e.cont;
+					inContig = false;
+				}
+				
+				// check the event type we are on
+				switch (e.type) {
+				case 0: // this is the beginning of a contig
+					partUnalign += stack;
+					inContig = true; // we are now in a contig
+					break;
+					
+				case 1: // this is the beginning of a read
+					// this is the first read for this part of the contig, so update the values before incrementing the stack
+					if (stack == 0) {
+						prev = e.loc;
+						if (prevEnd != e.loc)
+							++numGaps;
+					}
+					
+					// this is the second read of this part of the contig, so update the first encountered location of duplicate coverage
+					if (stack == 1)
+						prev2 = e.loc;
+					
+					// push the "stack" - this is like a parsing problem, but it's primitive enough that we don't need a real stack, just a counter
+					++stack;
+					break;
+					
+				case 2: // this is end of a read
+					// we are ending coverage, so update some stuff
+					if (stack == 1) {
+						if (inContig)
+							align += e.loc - prev;
+						else
+							align += genome.get(curContig).length() - prev;
+						prevEnd = e.loc;
+					}
+					
+					// we are ending duplicate coverage, so update
+					else if (stack == 2) {
+						if (inContig)
+							dupalign += e.loc - prev2;
+						else
+							dupalign += genome.get(curContig).length() - prev2;
+					}
+					
+					// if we ended outside of a contig, then this read is partially unaligned
+					// (this is technically false due to the edit distance allowed error, but that is small enough error to ignore, hopefully)
+					if (!inContig)
+						++partUnalign;
+					
+					// pop off the "stack"
+					--stack;
+					break;
+					
+				case 3: // this is the end of a contig
+					inContig = false;
+					break;
+				}
+			}
+			
+			maps = reads.size() - (int) fullUnalign;
 		}
 		
 				
@@ -359,27 +395,30 @@ public class statprog {
 			sysprint();
 		else {
 			PrintWriter out = new PrintWriter(new File("norm_"+out_files+".txt"));
-			out.printf("Assembly Length: %s\n", len.toString());
-			out.printf("Number of contigs: %s\n", contigs.toString());
-			out.printf("Number of clean windows of size %d:  %s\n", WindowSize, wind100.toString());
-			out.printf("Number of large contigs:  %s\n", bigContigs.toString());
-			out.printf("List of contig sizes: %d\n", contigArr.size());
+			out.printf("%s\n", len.toString());
+			out.printf("%s\n", contigs.toString());
+			out.printf("%d %s\n", WindowSize, wind100.toString());
+			out.printf("%s\n", bigContigs.toString());
+			out.printf("%d\n", contigArr.size());
 			for (int i = 0; i < contigArr.size(); ++i)
 				out.printf("%s ", contigArr.get(i).toString());
-			out.printf("\nGC comp:  %.9f\n", ((double) cg.longValue()) / ((double) len.longValue()));
-			out.printf("CG content per windows of size %d: %d\n", WindowSize, gcWind.size());
+			out.printf("\n%.9f\n", ((double) cg.longValue()) / ((double) len.longValue()));
+			out.printf("%d %d\n", WindowSize, gcWind.size());
 			for (int i = 0; i < gcWind.size(); ++i)
 				out.printf("%.9f ", ((double) gcWind.get(i).longValue()) / 100.0);
-			out.printf("\nNX array:\n");
+			out.printf("\n");
 			for (int i = 1; i < NX.length; ++i)
 				out.printf("%s ", NX[i].toString());
-			out.printf("\nNumber of N per %dbp:  %.9f\n", NSize, ((double) Nnum.longValue()) / ((double) len.longValue()) * NSize);
-			out.printf("Aligned genome:  %.9f\n", ((double) align) / (Double.parseDouble(len.toString())));
-			out.printf("Duplication rate:  %.9f\n", ((double) dupalign) / (Double.parseDouble(len.toString())));
-			out.printf("Number of gaps: %d\n", numGaps);
-			out.printf("Largest alignment length:  %d\n", longestAlign);
-			out.printf("Number of fully unaligned reads:  %d\n", fullUnalign);
-			out.printf("Number of partially unaligned reads:  %d\n", partUnalign);
+			out.printf("\n%d %.9f\n", NSize, ((double) Nnum.longValue()) / ((double) len.longValue()) * NSize);
+			if (calculateReadMapping) {
+				out.printf("%.9f\n", ((double) align) / (Double.parseDouble(len.toString())));
+				out.printf("%.9f\n", ((double) dupalign) / (Double.parseDouble(len.toString())));
+				out.printf("%d\n", numGaps);
+				out.printf("%d\n", longestAlign);
+				out.printf("%d\n", fullUnalign);
+				out.printf("%d\n", partUnalign);
+				out.printf("%d\n", maps);
+			}
 			out.close();
 		}
 		
@@ -401,6 +440,7 @@ public class statprog {
 		NSize = 100000;
 		genome = new ArrayList<StringBuilder>();
 		r = new Random();
+		calculateReadMapping = false;
 	}
 	
 	// splitting the reading into its own function
@@ -431,8 +471,7 @@ public class statprog {
 		do {
 			if (idx == str.length()) {
 				idx = 0;
-				while (in.badLine)
-					str = in.next();
+				str = in.next();
 //				if (DebugMode && str.charAt(0) == '$')
 //					endOfFile = true;
 			}
@@ -480,6 +519,9 @@ public class statprog {
 			// this executes if we encounter a line we shouldn't be reading (starts with ; or >)
 			else {
 				in.badLine = true;
+				while (in.badLine)
+					str = in.next();
+				--idx;
 			}
 			++idx;
 		} while (!endOfFile);
@@ -490,12 +532,8 @@ public class statprog {
 		endOfFile = false;
 		while (!endOfFile) {
 			String temp = in.next();
-			if (in.x == 2)
+			if (in.x == 1)
 				a.add(temp);
-			else {
-				int t = in.x;
-				while (t == in.x) in.next();
-			}
 		}
 	}
 	
@@ -605,29 +643,31 @@ public class statprog {
 	}
 	
 	public static class Trip {
-		int a, b, c;
+		int a, b, c, len;
 		Trip(int x, int y, int z) {
 			a = x;
 			b = y;
 			c = z;
+			len = 0;
 		}
 	}
 	
 	public static ArrayList<Trip> union(ArrayList<Trip> a, ArrayList<Trip> b) {
 		if (a == null && b == null)
 			return null;
-		if (a == null)
-			return b;
-		if (b == null)
-			return a;
-		for (int i = 0; i < b.size(); ++i)
-			a.addAll(b);
-		return a;
+		ArrayList<Trip> ret = new ArrayList<Trip>();
+		if (a != null)
+			for (int i = 0; i < a.size(); ++i)
+				ret.add(a.get(i));
+		if (b != null)
+			for (int i = 0; i < b.size(); ++i)
+				ret.add(b.get(i));
+		return ret;
 	}
 	
-	public static ArrayList<Trip> presearch(String s, int[] C, int[][] O, int[][] OP, int e) {
+	public static ArrayList<Trip> presearch(String s, int[] C, int[][] O, int[][] OP, int e, int c) {
 		int[] D = calcD(s, C, OP);
-		return search(D, C, OP, s, s.length() - 1, e, 1, O[0].length - 1);
+		return search(D, C, O, s, s.length() - 1, e, 1, O[0].length - 1, c);
 	}
 	
 	public static int[] calcD(String s, int[] C, int[][] O) {
@@ -646,9 +686,9 @@ public class statprog {
 		return ret;
 	}
 	
-	public static ArrayList<Trip> search(int[] D, int[] C, int[][] O, String s, int i, int z, int k, int l) {
+	public static ArrayList<Trip> search(int[] D, int[] C, int[][] O, String s, int i, int z, int k, int l, int h) {
 		if (i < 0) {
-			if (k > l)
+			if (k > l || z < 0)
 				return null;
 			ArrayList<Trip> ret = new ArrayList<Trip>();
 			ret.add(new Trip(k, l, z));
@@ -656,16 +696,23 @@ public class statprog {
 		}
 		if (z < D[i])
 			return null;
-		ArrayList<Trip> temp = search(D, C, O, s, i - 1, z - 1, k, l);
-		for (char c : new char[]{'A', 'C', 'G', 'T'}) {
+		ArrayList<Trip> temp = new ArrayList<Trip>(), fs = search(D, C, O, s, i - 1, z - 1, k, l, h);
+		if (fs != null)
+			temp.addAll(fs);
+		char[] a = { 'A', 'C', 'G', 'T' };
+		for (char c : a) {
 			int tk = C[charCode(c)] + O[charCode(c)][k - 1] + 1;
 			int tl = C[charCode(c)] + O[charCode(c)][l];
 			if (tk <= tl) {
-				temp = union(temp, search(D, C, O, s, i, z - 1, tk, tl));
+				ArrayList<Trip> tt = search(D, C, O, s, i, z - 1, tk, tl, h);
+				if (tt != null)
+					temp.addAll(tt);
 				if (c == s.charAt(i))
-					temp = union(temp, search(D, C, O, s, i - 1, z, tk, tl));
+					tt = search(D, C, O, s, i - 1, z, tk, tl, h);
 				else
-					temp = union(temp, search(D, C, O, s, i - 1, z - 1, tk, tl));
+					tt = search(D, C, O, s, i - 1, z - 1, tk, tl, h);
+				if (tt != null)
+					temp.addAll(tt);
 			}
 		}
 		return temp;
@@ -690,6 +737,7 @@ public class statprog {
 		FastScanner(File f) throws FileNotFoundException {
 			br = new BufferedReader(new FileReader(f));
 			st = new StringTokenizer("");
+			x = -1;
 		}
 		FastScanner(InputStream in) {
 			br = new BufferedReader(new InputStreamReader(in));
@@ -772,6 +820,8 @@ public class statprog {
 	}
 	
 	public static ArrayList<Trip> unify(ArrayList<Trip> a, int cont) {
+		if (a == null)
+			return null;
 		ArrayList<Trip> ret = new ArrayList<Trip>();
 		PriorityQueue<Event> q = new PriorityQueue<Event>();
 		for (int i = 0; i < a.size(); ++i) {
@@ -802,5 +852,16 @@ public class statprog {
 		}
 		ret.add(curTrip);
 		return ret;
+	}
+	public static ArrayList<Trip> bs(String s, int ind, int lo, int hi, int[] C, int[][] O, int[][] OP, int cont) {
+		int mid = (lo + hi + 1) / 2;
+		ArrayList<Trip> a = unify(presearch(s.substring(ind, ind + mid), C, O, OP, AllowedError, cont), cont);
+		if (lo == hi) {
+			tempLen = lo;
+			return a;
+		}
+		if (a == null || a.size() == 0)
+			return bs(s, ind, lo, mid - 1, C, O, OP, cont);
+		return bs(s, ind, mid, hi, C, O, OP, cont);
 	}
 }
