@@ -19,7 +19,7 @@ public class TrimmingStage extends MetagenomeStage{
 		super();
 	}
 	
-	public TrimmingStage(MetagenomeStage[] nextStage, DatabaseConnection db, String assembler) throws Exception{
+	public TrimmingStage(MetagenomeStage[] nextStage, DatabaseConnection db) throws Exception{
 		super(nextStage, db);
 		
 		//get assembler locations and defaults from text file

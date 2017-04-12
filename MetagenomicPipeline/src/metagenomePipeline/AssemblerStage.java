@@ -33,22 +33,22 @@ public class AssemblerStage extends MetagenomeStage{
 		
 		//set assembler
 		switch(assembler) {
-		case "idba":
-		case "IDBA":
-			this.assembler = Assembler.IDBA;
-			break;
-		case "megahit":
-		case "MEGAHIT":
-		case "Megahit":
-			this.assembler = Assembler.MEGAHIT;
-			break;
-		case "spades":
-		case "SPAdes":
-		case "SPADES":
-			this.assembler = Assembler.SPADES;
-			break;
-		default:
-			throw new Exception("Invalid assembler.");
+			case "idba":
+			case "IDBA":
+				this.assembler = Assembler.IDBA;
+				break;
+			case "megahit":
+			case "MEGAHIT":
+			case "Megahit":
+				this.assembler = Assembler.MEGAHIT;
+				break;
+			case "spades":
+			case "SPAdes":
+			case "SPADES":
+				this.assembler = Assembler.SPADES;
+				break;
+			default:
+				throw new Exception("Invalid assembler.");
 		}
 		
 		//get assembler locations and defaults from text file
