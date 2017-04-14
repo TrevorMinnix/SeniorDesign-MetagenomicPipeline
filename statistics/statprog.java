@@ -1,5 +1,5 @@
 /*
-statprog.java v2.2
+statprog.java v3.0
 senior design group 8
 
 VERSION NOTES:
@@ -39,6 +39,10 @@ finally got the read-mapping to work on my small tests
 finally got the read-mapping to work on real tests
 it's really slow though
 
+3.0
+parallelized read mapping, also changed output format
+minor changes to be made soon to finalize
+
 
 program description:
 takes the data from a genome assembler and provides statistics on it for a particular data set
@@ -55,28 +59,81 @@ output will be provided via system.out
 import java.util.*; // ArrayList, StringTokenizer
 import java.math.*; // BigInteger
 import java.io.*;   // BufferedReader, FileReader, File, FileNotFoundException
-public class statprog {
+import java.util.concurrent.*;
+import java.util.concurrent.atomic.*;
+public class statprog implements Runnable {
+	
+	public static AtomicInteger indx;
+	ArrayList<String> str;
+	int idx;
+	ArrayList<Trip>[] templocs;
+	int[] tempC;
+	int[][] tempO;
+	int[][] tempOP;
+	
+	statprog(ArrayList<String> a, int b, ArrayList<Trip>[] c, int[] e, int[][] f, int[][] g) {
+		str = a;
+		idx = b;
+		templocs = c;
+		tempC = e;
+		tempO = f;
+		tempOP = g;
+	}
+	
+	
+	public void run() {
+		while (true) {
+			int j = indx.getAndIncrement();
+			if (j >= str.size())
+				break;
+			
+			Ret ap = new Ret(null, 0);
+			
+			for (int k = 0; k < str.get(j).length() - seedLength; ++k) {
+				ap.a = presearch(str.get(j).substring(k, k + seedLength), tempC, tempO, tempOP, seedError, idx);
+				
+				if (ap != null && ap.a != null && ap.a.size() > 0) {
+					ap = bs(str.get(j), k, seedLength, str.get(j).length() - k, tempC, tempO, tempOP, idx);
+					break;
+				}
+			}
+			for (int k = 0; ap != null && ap.a != null && k < ap.a.size(); ++k) if (ap.a.get(k) != null) {
+				ap.a.get(k).len = ap.len;
+				templocs[j].add(ap.a.get(k));
+			}
+		}
+		
+	}
+	
+	public static class Ret {
+		ArrayList<Trip> a;
+		int len;
+		Ret(ArrayList<Trip> c, int d) {
+			a = c;
+			len = d;
+		}
+	}
 	
 	// i am using BigIntegers to be safe, because i'm not quite sure how big some genomes might get
 	// a long probably works, but whatever
 	
 	/*
 	variable explanations
-		cg					-		CG% counter.  counts the total number of GC pairs in the assembly
-		len					-		Length of assembly
+		cg				-		CG% counter.  counts the total number of GC pairs in the assembly
+		len				-		Length of assembly
 		wind100				-		Windows where they are fewer than 50% N
 		contigs				-		Number of contigs in assembly.
 		bigContigs			-		Number of contigs of large size
 		Nnum				-		Number of Ns found
 		contigArr			-		Array of contig sizes
 		gcWind				-		CG% counter for windows (not the OS)
-		NX					-		Array of NX values
+		NX				-		Array of NX values
 		endOfFile			-		Indicates end of input has been reached
 		WindowSize			-		Constant defining size of windows
 		LargeSize			-		Constant defining minimum size of large contigs
 		NSize				-		Constant defining for what size the expected number of Ns will be
 		DebugMode			-		Constant determining if program will run in debug mode
-		AllowedError		-		Maximum number of mismatchings allowed per each read mapping
+		AllowedError			-		Maximum number of mismatchings allowed per each read mapping
 	 */
 	public static BigInteger len, cg, wind100, contigs, bigContigs, largestContig, Nnum;
 	public static ArrayList<BigInteger> contigArr, gcWind;
@@ -89,9 +146,9 @@ public class statprog {
 	public static long NSize = 100000;
 	public static int seedLength = 27;
 	public static int seedError = 2;
+	public static int numThreads = 8;
 	
 	public static int AllowedError = 4;
-	public static int tempLen;
 	
 	public static final boolean DebugMode = false;
 	
@@ -121,6 +178,7 @@ public class statprog {
 				break;
 			case 'S': seedLength = Integer.parseInt(args[i].substring(2)); break;
 			case 'D': seedError = Integer.parseInt(args[i].substring(2)); break;
+			case 'T': numThreads = Integer.parseInt(args[i].substring(2)); break;
 			}
 		
 		
@@ -174,8 +232,6 @@ public class statprog {
 			
 			// collect all the reads (account for FASTQ format)
 			read2(new FastScanner(new File(read_file)), reads);
-			boolean[] readuse = new boolean[reads.size()];
-			int readusenum = 0;
 
 			// Create an array of arrays of triplets, storing, for each read, the SA interval and contig it was found in
 			ArrayList<Trip>[] locs = new ArrayList[reads.size()];
@@ -231,31 +287,20 @@ public class statprog {
 				}
 
 				// iterate through each read and see if the range at which it matches in this contig (if it matches at all)
-				for (int j = 0; j < reads.size(); ++j) if (!readuse[j]) {
-					ArrayList<Trip> ap = null;
-					tempLen = 0;
-					
-					for (int k = 0; k < reads.get(j).length() - seedLength; ++k) {
-						ap = presearch(reads.get(j).substring(k, k + seedLength), C, O, OP, seedError, i);
-						
-						if (ap != null && ap.size() > 0) {
-							readuse[j] = true;
-							++readusenum;
-							ap = bs(reads.get(j), k, seedLength, reads.get(j).length() - k, C, O, OP, i);
-							break;
-						}
-					}
-					for (int k = 0; ap != null && k < ap.size(); ++k) if (ap.get(k) != null) {
-						ap.get(k).len = tempLen;
-						locs[j].add(ap.get(k));
-					}
+				ExecutorService executor = Executors.newFixedThreadPool(numThreads);
+				indx = new AtomicInteger(0);
+				for (int j = 0; j < reads.size(); ++j) {
+					statprog temp = new statprog(reads, i, locs, C, O, OP);
+					executor.execute(temp);
 				}
+				executor.shutdown();
+				executor.awaitTermination(Long.MAX_VALUE, TimeUnit.DAYS);
 				
 				// store the SA we found, we will need it later
 				suffixArrays.add(suffixArray);
 				rsuffixArrays.add(rSuffixArray);
 				
-				System.out.printf("done with %d, %d\n", i, readusenum);
+				//System.out.printf("done with %d\n", i);
 				
 			}
 			
@@ -853,12 +898,14 @@ public class statprog {
 		ret.add(curTrip);
 		return ret;
 	}
-	public static ArrayList<Trip> bs(String s, int ind, int lo, int hi, int[] C, int[][] O, int[][] OP, int cont) {
+	public static Ret bs(String s, int ind, int lo, int hi, int[] C, int[][] O, int[][] OP, int cont) {
+		Ret ret = new Ret(null, 0);
 		int mid = (lo + hi + 1) / 2;
 		ArrayList<Trip> a = unify(presearch(s.substring(ind, ind + mid), C, O, OP, AllowedError, cont), cont);
 		if (lo == hi) {
-			tempLen = lo;
-			return a;
+			ret.len = lo;
+			ret.a = a;
+			return ret;
 		}
 		if (a == null || a.size() == 0)
 			return bs(s, ind, lo, mid - 1, C, O, OP, cont);
