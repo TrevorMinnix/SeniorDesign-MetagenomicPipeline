@@ -87,8 +87,13 @@ else{
 	else{
 		if(move_uploaded_file($_FILES["fmy_file"]["tmp_name"], $f_target_file) && move_uploaded_file($_FILES["rmy_file"]["tmp_name"], $r_target_file)){
 			echo "The files ". basename($_FILES["fmy_file"]["name"]). "and ". basename($_FILES["rmy_file"]["name"]). "have been uploaded.";
+
             //update job status
             $con->query("UPDATE job SET jobStatus = '1' WHERE jobID = '{$jobID}'");
+
+            //send email to results page
+            $message = "The results for your metagenomic assembly pipeline job can be found at 10.171.204.144/www/html/results.html?jobID={$jobID}.";
+            $mailCommand = "./sendmail.py '{$email}' 'Metagenomic Pipeline Results' '{$message}'";
 		}
 
 	      else{
