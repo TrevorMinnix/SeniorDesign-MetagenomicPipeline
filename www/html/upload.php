@@ -1,3 +1,4 @@
+
 <?php
 include "mysqli_con.php";
  
@@ -36,29 +37,75 @@ $con->query($query);
 
 $con->close();
 
-$chunk = isset($_REQUEST["chunk"]) ? intval($_REQUEST["chunk"]) : 0;
-$chunks = isset($_REQUEST["chunks"]) ? intval($_REQUEST["chunks"]) : 0;
-
 mkdir("/home/student/SeniorDesign-MetagenomicPipeline/Jobs/" . $jobID . "/");
+mkdir("home/student/SeniorDesign-MetagenomicPipeline/Jobs/" . $jobID . "/" . "IDBA". "/");
+mkdir("home/student/SeniorDesign-MetagenomicPipeline/Jobs/" . $jobID . "/" . "MEGAHIT". "/");
+mkdir("home/student/SeniorDesign-MetagenomicPipeline/Jobs/" . $jobID . "/" . "MetaSPAdes". "/");
 $target_dir = "/home/student/SeniorDesign-MetagenomicPipeline/Jobs/" . $jobID . "/";
-$target_file = $target_dir . basename($_FILES["my_file"]["name"]); 
+
 $uploadOk = 1;
 
-if (file_exists($target_file)) {
-    echo "Sorry, file already exists.";
-    $uploadOk = 0;
+if($pairedEnd == 0){
+	$target_file = $target_dir . basename($_FILES["my_file"]["name"]); 
+
+	if (file_exists($target_file)) {
+   		 echo "Sorry, file already exists.";
+   		 $uploadOk = 0;
+	}
+	// Check if $uploadOk is set to 0 by an error
+	if ($uploadOk == 0) {
+    		echo "Sorry, your file was not uploaded.";
+	// if everything is ok, try to upload file
+	} else {
+   		 if (move_uploaded_file($_FILES["my_file"]["tmp_name"], $target_file)) {
+       			 echo "The file ". basename( $_FILES["my_file"]["name"]). " has been uploaded.";
+
+   		 } else {
+       			 echo "Sorry, there was an error uploading your file.";
+    		   }
+	  }
+
+	$new_dir = $target_dir . "/" . "input_SE.fq";
+
+	$fileHand = fopen($target_file, 'r');
+	fclose($fileHand);
+	rename($target_file, $new_dir);
 }
-// Check if $uploadOk is set to 0 by an error
-if ($uploadOk == 0) {
-    echo "Sorry, your file was not uploaded.";
-// if everything is ok, try to upload file
-} else {
-    if (move_uploaded_file($_FILES["my_file"]["tmp_name"], $target_file)) {
-        echo "The file ". basename( $_FILES["my_file"]["name"]). " has been uploaded.";
+
+else{
+
+	$f_target_file = $target_dir . basename($_FILES["fmy_file"]["name"]);
+	$r_target_file = $target_dir . basename($_FILES["rmy_file"]["name"]);
+
+	if(file_exists($f_target_file) || file_exists($r_target_file)){
+		echo "Sorry, 1 or more files already exist.";
+		$uploadOk = 0;
+	}
 	
-    } else {
-        echo "Sorry, there was an error uploading your file.";
-    }
+	if($uploadOk == 0){
+		echo "Sorry, your files were not uploaded.";
+	}
+
+	else{
+		if(move_uploaded_file($_FILES["fmy_file"]["tmp_name"], $f_target_file) && move_uploaded_file($_FILES["rmy_file"]["tmp_name"], $r_target_file)){
+			echo "The files ". basename($_FILES["fmy_file"]["name"]). "and ". basename($_FILES["rmy_file"]["name"]). "have been uploaded.";	
+		}
+
+	      else{
+			echo "Sorry, there was an error uploading 1 or more files.";
+	     }
+	}
+
+	$f_new_dir = $target_dir . "/" . "input_forward.fq";
+	$r_new_dir = $target_dir . "/" . "input_reverse.fq";
+
+	$f_file_hand = fopen($f_target_file, 'r');
+	fclose($f_file_hand);
+	rename($f_target_file, $f_new_dir);
+
+	$r_file_hand = fopen(r_target_file, 'r');
+	fclose($r_file_hand);
+	rename($r_target_file, $r_new_dir);
 }
 
 ?>
