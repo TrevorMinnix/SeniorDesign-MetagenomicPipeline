@@ -41,24 +41,26 @@ if($_POST['end'] == "paired-end"){
 //sql query
 //single end
 if($pairedEnd == 0){
-	$query = "INSERT INTO job (jobID, email, inputForward, idba, megahit, metaspades, pairedEnd, jobStatus) VALUES ('{$jobID}', '{$_POST['email']}', '{$_FILES['my_file']['name']}', '{$idbaCheck}', '{$megahitCheck}', '{$metaspadesCheck}', '{$pairedEnd}', '1')";
+	$query = "INSERT INTO job (jobID, email, inputForward, idba, megahit, metaspades, pairedEnd, jobStatus) VALUES ('{$jobID}', '{$_POST['email']}', '{$_FILES['my_file']['name']}', '{$idbaCheck}', '{$megahitCheck}', '{$metaspadesCheck}', '{$pairedEnd}', '0')";
 } 
 //paired end
 else{
-	$query = "INSERT INTO job (jobID, email, inputForward, inputReverse, idba, megahit, metaspades, pairedEnd, jobStatus) VALUES ('{$jobID}', '{$_POST['email']}', '{$_FILES['fmy_file']['name']}', '{$_FILES['rmy_file']['name']}', '{$idbaCheck}', '{$megahitCheck}', '{$metaspadesCheck}', '{$pairedEnd}', '1')";
+	$query = "INSERT INTO job (jobID, email, inputForward, inputReverse, idba, megahit, metaspades, pairedEnd, jobStatus) VALUES ('{$jobID}', '{$_POST['email']}', '{$_FILES['fmy_file']['name']}', '{$_FILES['rmy_file']['name']}', '{$idbaCheck}', '{$megahitCheck}', '{$metaspadesCheck}', '{$pairedEnd}', '0')";
 }
 
 echo $query;
 
 $con->query($query);
 
-$con->close();
-
 mkdir("/home/student/SeniorDesign-MetagenomicPipeline/Jobs/" . $jobID . "/");
+mkdir("home/student/SeniorDesign-MetagenomicPipeline/Jobs/" . $jobID . "/" . "IDBA". "/");
+mkdir("home/student/SeniorDesign-MetagenomicPipeline/Jobs/" . $jobID . "/" . "MEGAHIT". "/");
+mkdir("home/student/SeniorDesign-MetagenomicPipeline/Jobs/" . $jobID . "/" . "MetaSPAdes". "/");
 $target_dir = "/home/student/SeniorDesign-MetagenomicPipeline/Jobs/" . $jobID . "/";
-mkdir($target_dir . "IDBA". "/");
-mkdir($target_dir . "MEGAHIT". "/");
-mkdir($target_dir . "MetaSPAdes". "/");
+
+//mkdir($target_dir . "IDBA". "/");
+//mkdir($target_dir . "MEGAHIT". "/");
+//mkdir($target_dir . "MetaSPAdes". "/");
 
 $uploadOk = 1;
 
@@ -105,8 +107,9 @@ else{
 
 	else{
 		if(move_uploaded_file($_FILES["fmy_file"]["tmp_name"], $f_target_file) && move_uploaded_file($_FILES["rmy_file"]["tmp_name"], $r_target_file)){
-			echo "The files ". basename($_FILES["fmy_file"]["name"]). " and ". basename($_FILES["rmy_file"]["name"]). " have been uploaded.";	
-			$con->query("UPDATE job SET jobStatus = '1' WHERE jobID = '{$jobID}'");
+			echo "The files ". basename($_FILES["fmy_file"]["name"]). "and ". basename($_FILES["rmy_file"]["name"]). "have been uploaded.";
+            //update job status
+            $con->query("UPDATE job SET jobStatus = '1' WHERE jobID = '{$jobID}'");
 		}
 
 	      else{
