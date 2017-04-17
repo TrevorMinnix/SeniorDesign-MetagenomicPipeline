@@ -36,14 +36,14 @@ echo $query;
 $con->query($query);
 
 mkdir("/home/student/SeniorDesign-MetagenomicPipeline/Jobs/" . $jobID . "/");
-mkdir("home/student/SeniorDesign-MetagenomicPipeline/Jobs/" . $jobID . "/" . "IDBA". "/");
-mkdir("home/student/SeniorDesign-MetagenomicPipeline/Jobs/" . $jobID . "/" . "MEGAHIT". "/");
-mkdir("home/student/SeniorDesign-MetagenomicPipeline/Jobs/" . $jobID . "/" . "MetaSPAdes". "/");
+//mkdir("home/student/SeniorDesign-MetagenomicPipeline/Jobs/" . $jobID . "/" . "IDBA". "/");
+//mkdir("home/student/SeniorDesign-MetagenomicPipeline/Jobs/" . $jobID . "/" . "MEGAHIT". "/");
+//mkdir("home/student/SeniorDesign-MetagenomicPipeline/Jobs/" . $jobID . "/" . "MetaSPAdes". "/");
 $target_dir = "/home/student/SeniorDesign-MetagenomicPipeline/Jobs/" . $jobID . "/";
 
-//mkdir($target_dir . "IDBA". "/");
-//mkdir($target_dir . "MEGAHIT". "/");
-//mkdir($target_dir . "MetaSPAdes". "/");
+mkdir($target_dir . "IDBA". "/");
+mkdir($target_dir . "MEGAHIT". "/");
+mkdir($target_dir . "MetaSPAdes". "/");
 
 $uploadOk = 1;
 
