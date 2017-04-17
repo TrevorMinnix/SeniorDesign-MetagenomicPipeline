@@ -10,6 +10,23 @@ $idbaCheck = $_POST['idbaCheck'] ? 1 : 0;
 $megahitCheck = $_POST['megahitCheck'] ? 1 : 0;
 $metaspadesCheck = $_POST['metaspadesCheck'] ? 1 : 0;
 
+if(isset($_POST['idba'])){
+	$idbaCheck = 1;
+}else{
+	$idbaCheck = 0;
+}
+
+if(isset($_POST['megahit'])){
+	$megahitCheck = 1;
+}else{
+	$megahitCheck = 0;
+}
+
+if(isset($_POST['metaspades'])){
+	$metaspadesCheck = 1;
+}else{
+	$metaspadesCheck = 0;
+}
 //get radio button value
 $pairedEnd = 0;
 if(isset($_POST['end'])){
@@ -41,6 +58,10 @@ mkdir("home/student/SeniorDesign-MetagenomicPipeline/Jobs/" . $jobID . "/" . "ME
 mkdir("home/student/SeniorDesign-MetagenomicPipeline/Jobs/" . $jobID . "/" . "MetaSPAdes". "/");
 $target_dir = "/home/student/SeniorDesign-MetagenomicPipeline/Jobs/" . $jobID . "/";
 
+//mkdir($target_dir . "IDBA". "/");
+//mkdir($target_dir . "MEGAHIT". "/");
+//mkdir($target_dir . "MetaSPAdes". "/");
+
 $uploadOk = 1;
 
 if($pairedEnd == 0){
@@ -57,7 +78,7 @@ if($pairedEnd == 0){
 	} else {
    		 if (move_uploaded_file($_FILES["my_file"]["tmp_name"], $target_file)) {
        			 echo "The file ". basename( $_FILES["my_file"]["name"]). " has been uploaded.";
-
+			 $con->query("UPDATE job SET jobStatus = '1' WHERE jobID = '{$jobID}'");
    		 } else {
        			 echo "Sorry, there was an error uploading your file.";
     		   }
@@ -112,5 +133,53 @@ else{
 	fclose($r_file_hand);
 	rename($r_target_file, $r_new_dir);
 }
+
+
+
+
+$signal = TRUE;
+
+
+
+while($signal){
+
+	
+	$sql_current = "SELECT TOP 1 jobID FROM job";
+	
+	$current = $con->query($sql_current);
+	
+	
+
+	if(!$current){
+		
+		$signal = FALSE;
+		
+		break;
+	
+	}
+
+	
+
+	$sql_status = "SELECT TOP 1 jobStatus FROM job";
+	
+	$status = $con->query($sql_status);
+
+	
+	$con->close();
+	
+
+	if($status == 3){
+		
+		$result_dir = "home/student/SeniorDesign-MetagenomicPipeline/Jobs/" . $current . "/";
+		
+		$result_file = $result_dir . "result.pdf";
+		
+		echo "success!!!!";
+	
+	} 
+
+}
+
+
 
 ?>
