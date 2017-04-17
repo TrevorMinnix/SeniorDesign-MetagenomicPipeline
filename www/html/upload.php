@@ -12,11 +12,6 @@ $metaspadesCheck = (isset($_POST['metaspadesCheck'])) ? 1 : 0;
 
 //get radio button value
 $pairedEnd = 0;
-if(isset($_POST['end'])){
-	echo "Paired end radio set";
-}else{
-	echo "Radio button not working";
-}
 if($_POST['end'] == "paired-end"){
 	$pairedEnd = 1;
 }
@@ -31,7 +26,7 @@ else{
 	$query = "INSERT INTO job (jobID, email, inputForward, inputReverse, idba, megahit, metaspades, pairedEnd, jobStatus) VALUES ('{$jobID}', '{$_POST['email']}', '{$_FILES['fmy_file']['name']}', '{$_FILES['rmy_file']['name']}', '{$idbaCheck}', '{$megahitCheck}', '{$metaspadesCheck}', '{$pairedEnd}', '0')";
 }
 
-echo $query;
+echo "Database insert: " . $query . "\n";
 
 $con->query($query);
 
@@ -51,24 +46,24 @@ if($pairedEnd == 0){
 	$target_file = $target_dir . basename($_FILES["my_file"]["name"]); 
 
 	if (file_exists($target_file)) {
-   		 echo "Sorry, file already exists.";
+   		 echo "Sorry, file already exists.\n";
    		 $uploadOk = 0;
 	}
 	// Check if $uploadOk is set to 0 by an error
 	if ($uploadOk == 0) {
-    		echo "Sorry, your file was not uploaded.";
+    		echo "Sorry, your file was not uploaded.\n";
 	// if everything is ok, try to upload file
 	} else {
    		 if (move_uploaded_file($_FILES["my_file"]["tmp_name"], $target_file)) {
-       			 echo "The file ". basename( $_FILES["my_file"]["name"]). " has been uploaded.";
+       			 echo "The file ". basename( $_FILES["my_file"]["name"]). " has been uploaded.\n";
 			 	$con->query("UPDATE job SET jobStatus = '1' WHERE jobID = '{$jobID}'");
 			 	//send email to results page
 	            $message = "The results for your metagenomic assembly pipeline job can be found at 10.171.204.144/www/html/results.html?jobID={$jobID}.";
 	            $mailCommand = "./sendmail.py '{$email}' 'Metagenomic Pipeline Results' '{$message}'";
 	            $mailingOutput = shell_exec($mailCommand);
-	            echo $mailingOutput;
+	            echo "Mailing output: " . $mailingOutput . "\n";
    		 } else {
-       			 echo "Sorry, there was an error uploading your file.";
+       			 echo "Sorry, there was an error uploading your file.\n";
     		   }
 	  }
 
@@ -85,17 +80,17 @@ else{
 	$r_target_file = $target_dir . basename($_FILES["rmy_file"]["name"]);
 
 	if(file_exists($f_target_file) || file_exists($r_target_file)){
-		echo "Sorry, 1 or more files already exist.";
+		echo "Sorry, 1 or more files already exist.\n";
 		$uploadOk = 0;
 	}
 	
 	if($uploadOk == 0){
-		echo "Sorry, your files were not uploaded.";
+		echo "Sorry, your files were not uploaded.\n";
 	}
 
 	else{
 		if(move_uploaded_file($_FILES["fmy_file"]["tmp_name"], $f_target_file) && move_uploaded_file($_FILES["rmy_file"]["tmp_name"], $r_target_file)){
-			echo "The files ". basename($_FILES["fmy_file"]["name"]). "and ". basename($_FILES["rmy_file"]["name"]). "have been uploaded.";
+			echo "The files ". basename($_FILES["fmy_file"]["name"]). "and ". basename($_FILES["rmy_file"]["name"]). "have been uploaded.\n";
 
             //update job status
             $con->query("UPDATE job SET jobStatus = '1' WHERE jobID = '{$jobID}'");
@@ -104,11 +99,11 @@ else{
             $message = "The results for your metagenomic assembly pipeline job can be found at 10.171.204.144/www/html/results.html?jobID={$jobID}.";
             $mailCommand = "./sendmail.py '{$email}' 'Metagenomic Pipeline Results' '{$message}'";
             $mailingOutput = shell_exec($mailCommand);
-            echo $mailingOutput;
+            echo "Mailing output: " . $mailingOutput . "\n";
 		}
 
 	      else{
-			echo "Sorry, there was an error uploading 1 or more files.";
+			echo "Sorry, there was an error uploading 1 or more files.\n";
 	     }
 	}
 
@@ -164,7 +159,7 @@ while($signal){
 		
 		$result_file = $result_dir . "result.pdf";
 		
-		echo "success!!!!";
+		echo "success!!!!\n";
 	
 	} 
 
