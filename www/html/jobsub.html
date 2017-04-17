@@ -119,6 +119,7 @@
 		<h1>Metagenomic Assembly and Evaluation Pipeline - Job Submission</h1>
 	</div>
 
+	<form action="upload.php" method="post" enctype="multipart/form-data" onsubmit="return verify(this);"
 	<div class="page-header" style="height: 200px;">
 		<h3>Assembler Selection</h3>
 		<ul style="padding-left: 350px; padding-bottom:100px;">
@@ -129,9 +130,9 @@
 					</li>
 
 					<li style="padding-top: 11px;">
-					<form action="upload.php"  method="post" enctype="multipart/form-data">
+					<!--<form action="upload.php"  method="post" enctype="multipart/form-data">-->
 						<input type="checkbox" name="idbaCheck"  id="ca1">
-					</form>
+					<!--</form>-->
 					</li>
 				</ul>
 			</li>
@@ -143,9 +144,9 @@
 					</li>
 
 					<li style="padding-top: 11px;">
-					<form action="upload.php" method="post" enctype="multipart/form-data">
+					<!--<form action="upload.php" method="post" enctype="multipart/form-data">-->
 						<input type="checkbox" name="megahitCheck"  id="ca2">
-					</form>
+					<!--</form>-->
 					</li>
 				</ul>
 
@@ -158,9 +159,9 @@
 					</li>
 
 					<li style="padding-top: 11px;">
-					<form action="upload.php" method="post" enctype="multipart/form-data">
+					<!--<form action="upload.php" method="post" enctype="multipart/form-data">-->
 						<input type="checkbox" name="metaspadesCheck"  id="ca3">
-					</form>
+					<!--</form>-->
 					</li>
 				</ul>
 			</li>
@@ -171,14 +172,14 @@
 		<ul style="padding-left: 400px; padding-bottom: 25px">
 			<li style="padding-right: 150px;">
 				<h3>Email Address</h3>
-				<form action="upload.php" method="post" enctype="multipart/form-data">
+				<!--<form action="upload.php" method="post" enctype="multipart/form-data">-->
 					<input type="text" name="email" id="email" placeholder="Email address field">
-				</form>
+				<!--</form>-->
 			</li>
 
 			<li>
 				<h3 style="padding-left:125px;">FASTQ Reads File</h3>
-				<form action="upload.php" method="post" enctype="multipart/form-data" onsubmit="return verify(this);">
+				<!--<form action="upload.php" method="post" enctype="multipart/form-data" onsubmit="return verify(this);">-->
 					<ul>
 						 <li>
 							<input type="radio" name="end" value="single-end">Single-end Data<br>
@@ -195,10 +196,11 @@
 					<div style="padding-top: 50px; padding-right: 100px"> 
 						<input type="submit" value="Submit Job" style="height: 50px; width: 150px; border-radius: 10px; font-size: 18px;" onclick="checkReady();">
 					</div>
-				</form>
+				<!--</form>-->
 			</li>
 		</ul>
 	</div>
+	</form>
 
  </body>
 
