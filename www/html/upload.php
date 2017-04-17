@@ -10,23 +10,6 @@ $idbaCheck = $_POST['idbaCheck'] ? 1 : 0;
 $megahitCheck = $_POST['megahitCheck'] ? 1 : 0;
 $metaspadesCheck = $_POST['metaspadesCheck'] ? 1 : 0;
 
-if(isset($_POST['idba'])){
-	$idbaCheck = 1;
-}else{
-	$idbaCheck = 0;
-}
-
-if(isset($_POST['megahit'])){
-	$megahitCheck = 1;
-}else{
-	$megahitCheck = 0;
-}
-
-if(isset($_POST['metaspades'])){
-	$metaspadesCheck = 1;
-}else{
-	$metaspadesCheck = 0;
-}
 //get radio button value
 $pairedEnd = 0;
 if(isset($_POST['end'])){
