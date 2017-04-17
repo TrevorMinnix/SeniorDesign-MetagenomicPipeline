@@ -31,9 +31,7 @@ echo "Database insert: " . $query . "\n";
 $con->query($query);
 
 mkdir("/home/student/SeniorDesign-MetagenomicPipeline/Jobs/" . $jobID . "/");
-//mkdir("home/student/SeniorDesign-MetagenomicPipeline/Jobs/" . $jobID . "/" . "IDBA". "/");
-//mkdir("home/student/SeniorDesign-MetagenomicPipeline/Jobs/" . $jobID . "/" . "MEGAHIT". "/");
-//mkdir("home/student/SeniorDesign-MetagenomicPipeline/Jobs/" . $jobID . "/" . "MetaSPAdes". "/");
+
 $target_dir = "/home/student/SeniorDesign-MetagenomicPipeline/Jobs/" . $jobID . "/";
 
 mkdir($target_dir . "IDBA". "/");
@@ -121,50 +119,6 @@ else{
 }
 
 
-
-
-$signal = TRUE;
-
-
-
-while($signal){
-
-	
-	$sql_current = "SELECT TOP 1 jobID FROM job";
-	
-	$current = $con->query($sql_current);
-	
-	
-
-	if(!$current){
-		
-		$signal = FALSE;
-		
-		break;
-	
-	}
-
-	
-
-	$sql_status = "SELECT TOP 1 jobStatus FROM job";
-	
-	$status = $con->query($sql_status);
-
-	
-	$con->close();
-	
-
-	if($status == 3){
-		
-		$result_dir = "home/student/SeniorDesign-MetagenomicPipeline/Jobs/" . $current . "/";
-		
-		$result_file = $result_dir . "result.pdf";
-		
-		echo "success!!!!\n";
-	
-	} 
-
-}
 
 
 
