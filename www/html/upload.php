@@ -47,6 +47,12 @@ if($pairedEnd == 0){
    		 echo "Sorry, file already exists.\n";
    		 $uploadOk = 0;
 	}
+
+	if(($idbaCheck == 1 && pairedEnd == 0) || ($metaspadesCheck == 1 && pairedEnd == 0)){
+		echo "Sorry, only MEGAHIT accepts single-end data.";
+		return;
+	}
+
 	// Check if $uploadOk is set to 0 by an error
 	if ($uploadOk == 0) {
     		echo "Sorry, your file was not uploaded.\n";
@@ -89,7 +95,7 @@ else{
 
 	else{
 		if(move_uploaded_file($_FILES["fmy_file"]["tmp_name"], $f_target_file) && move_uploaded_file($_FILES["rmy_file"]["tmp_name"], $r_target_file)){
-			echo "The files ". basename($_FILES["fmy_file"]["name"]). "and ". basename($_FILES["rmy_file"]["name"]). " have been uploaded.\n";
+			echo "The files ". basename($_FILES["fmy_file"]["name"]). "and ". basename($_FILES["rmy_file"]["name"]). "have been uploaded.\n";
 
             //update job status
             $con->query("UPDATE job SET jobStatus = '1' WHERE jobID = '{$jobID}'");
