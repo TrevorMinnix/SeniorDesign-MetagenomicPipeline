@@ -27,7 +27,7 @@ function openCity(evt, cityName) {
 
     // Show the current tab, and add an "active" class to the link that opened the tab
     document.getElementById(cityName).style.display = "block";
-    evt.currentTarget.className += " active";
+    evt.currentTarget.class += " active";
 }
 </script>
 <style>
@@ -44,17 +44,18 @@ box-shadow: 0 0 10px 0px;
 }
 
 h4{
-				padding-top: 100px;
-				color: #3419a0;
-			}
+padding-top: 100px;
+color: #3419a0;
+}
 
-			ul{
-				list-style: none;
-			}
+ul{
+list-style: none;
+}
 
-			.tab{
-				float: left;
-			}
+.tab{
+float: left;
+}
+
 </style>
 </head>
 
@@ -64,65 +65,89 @@ h4{
 </div>
 
 <ul class="nav nav-pills">
-  <li id="tab"><a data-toggle="pill" href="javascript:void(0)" class="tablinks" onclick="openCity(event, 'as1')">IDBA</a></li>
+  <li id="tab"><a data-toggle="pill" href="javascript:void(0)" class="tablinks active" onclick="openCity(event, 'as1')">IDBA</a></li>
   <li id="tab"><a data-toggle="pill" href="javascript:void(0)" class="tablinks" onclick="openCity(event, 'as2')">MEGAHIT</a></li>
   <li id="tab"><a data-toggle="pill" href="javascript:void(0)" class="tablinks" onclick="openCity(event, 'as3')">MetaSPAdes</a></li>
   <li id="tab"><a data-toggle="pill" href="javascript:void(0)" class="tablinks" onclick="openCity(event, 'asc')">Assembler Comparison</a></li>
 </ul>
 
+
+
 <div id="as1" class="tabcontent">
   <h3>IDBA</h3>
+  <hr style="height:30px; color: black;">
   <ul>
 	<li>
 		<h3>Cumulative Plot</h3>
+		<iframe src="" 
+		style="width:600px; height:500px;" frameborder="0"></iframe>
 	</li>
 	<br/>
 	<li>
 		<h3>Nx</h3>
+		<iframe src="" 
+		style="width:600px; height:500px;" frameborder="0"></iframe>
 	</li>
 	<br/>
 	<li>
 		<h3>Statistics</h3>
+		<iframe src="" 
+		style="width:600px; height:500px;" frameborder="0"></iframe>
 	</li>
   </ul>
 </div>
 
 <div id="as2" class="tabcontent">
   <h3>MEGAHIT</h3>
+  <hr style="height:30px; color: black;">
   <ul>
 	<li>
 		<h3>Cumulative Plot</h3>
+		<iframe src="" 
+		style="width:600px; height:500px;" frameborder="0"></iframe>
 	</li>
 	<br/>
 	<li>
 		<h3>Nx</h3>
+		<iframe src="" 
+		style="width:600px; height:500px;" frameborder="0"></iframe>
 	</li>
 	<br/>
 	<li>
 		<h3>Statistics</h3>
+		<iframe src="" 
+		style="width:600px; height:500px;" frameborder="0"></iframe>
 	</li>
   </ul>
 </div>
 
 <div id="as3" class="tabcontent">
   <h3>MetaSPAdes</h3>
+  <hr style="height:30px; color: black;">
   <ul>
 	<li>
 		<h3>Cumulative Plot</h3>
+		<iframe src="" 
+		style="width:600px; height:500px;" frameborder="0"></iframe>
 	</li>
 	<br/>
 	<li>
 		<h3>Nx</h3>
+		<iframe src="" 
+		style="width:600px; height:500px;" frameborder="0"></iframe>
 	</li>
 	<br/>
 	<li>
 		<h3>Statistics</h3>
+		<iframe src="" 
+		style="width:600px; height:500px;" frameborder="0"></iframe>
 	</li>
   </ul>
 </div>
 
 <div id="asc" class="tabcontent">
   <h3>Assembler Comparison</h3>
+  <hr style="height:30px; color: black;">
 </div>
 
 </body>
