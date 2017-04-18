@@ -52,7 +52,7 @@ h4{
 				list-style: none;
 			}
 
-			li{
+			.tab{
 				float: left;
 			}
 </style>
@@ -64,10 +64,10 @@ h4{
 </div>
 
 <ul class="nav nav-pills">
-  <li><a data-toggle="pill" href="javascript:void(0)" class="tablinks" onclick="openCity(event, 'as1')">IDBA</a></li>
-  <li><a data-toggle="pill" href="javascript:void(0)" class="tablinks" onclick="openCity(event, 'as2')">MEGAHIT</a></li>
-  <li><a data-toggle="pill" href="javascript:void(0)" class="tablinks" onclick="openCity(event, 'as3')">MetaSPAdes</a></li>
-  <li><a data-toggle="pill" href="javascript:void(0)" class="tablinks" onclick="openCity(event, 'asc')">Assembler Comparison</a></li>
+  <li id="tab"><a data-toggle="pill" href="javascript:void(0)" class="tablinks" onclick="openCity(event, 'as1')">IDBA</a></li>
+  <li id="tab"><a data-toggle="pill" href="javascript:void(0)" class="tablinks" onclick="openCity(event, 'as2')">MEGAHIT</a></li>
+  <li id="tab"><a data-toggle="pill" href="javascript:void(0)" class="tablinks" onclick="openCity(event, 'as3')">MetaSPAdes</a></li>
+  <li id="tab"><a data-toggle="pill" href="javascript:void(0)" class="tablinks" onclick="openCity(event, 'asc')">Assembler Comparison</a></li>
 </ul>
 
 <div id="as1" class="tabcontent">
@@ -76,9 +76,11 @@ h4{
 	<li>
 		<h3>Cumulative Plot</h3>
 	</li>
+	<br/>
 	<li>
 		<h3>Nx</h3>
 	</li>
+	<br/>
 	<li>
 		<h3>Statistics</h3>
 	</li>
@@ -91,9 +93,11 @@ h4{
 	<li>
 		<h3>Cumulative Plot</h3>
 	</li>
+	<br/>
 	<li>
 		<h3>Nx</h3>
 	</li>
+	<br/>
 	<li>
 		<h3>Statistics</h3>
 	</li>
@@ -106,9 +110,11 @@ h4{
 	<li>
 		<h3>Cumulative Plot</h3>
 	</li>
+	<br/>
 	<li>
 		<h3>Nx</h3>
 	</li>
+	<br/>
 	<li>
 		<h3>Statistics</h3>
 	</li>
