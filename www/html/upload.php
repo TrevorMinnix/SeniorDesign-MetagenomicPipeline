@@ -30,9 +30,9 @@ echo "Database insert: " . $query . "\n";
 
 $con->query($query);
 
-mkdir("/home/student/SeniorDesign-MetagenomicPipeline/Jobs/" . $jobID . "/");
+mkdir("/home/student/SeniorDesign-MetagenomicPipeline/www/html/Jobs/" . $jobID . "/");
 
-$target_dir = "/home/student/SeniorDesign-MetagenomicPipeline/Jobs/" . $jobID . "/";
+$target_dir = "/home/student/SeniorDesign-MetagenomicPipeline/www/html/Jobs/" . $jobID . "/";
 
 mkdir($target_dir . "IDBA". "/");
 mkdir($target_dir . "MEGAHIT". "/");
@@ -102,7 +102,7 @@ else{
             $con->query("UPDATE job SET jobStatus = '1' WHERE jobID = '{$jobID}'");
 
             //send email to results page
-            $message = "The results for your metagenomic assembly pipeline job can be found at 10.171.204.144/www/html/results.html?jobID={$jobID}.";
+            $message = "The results for your metagenomic assembly pipeline job can be found at 10.171.204.144/html/results.html?jobID={$jobID}.";
             $mailCommand = "python /home/student/SeniorDesign-MetagenomicPipeline/www/html/sendmail.py '{$email}' 'Metagenomic Pipeline Results' '{$message}'";
             $mailingOutput = shell_exec($mailCommand);
 	    echo "Mail command: " . $mailCommand . "\n";
