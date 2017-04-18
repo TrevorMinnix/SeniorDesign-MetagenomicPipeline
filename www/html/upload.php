@@ -50,7 +50,7 @@ if($pairedEnd == 0){
 
 	if(($idbaCheck == 1 && pairedEnd == 0) || ($metaspadesCheck == 1 && pairedEnd == 0)){
 		echo "Sorry, only MEGAHIT accepts single-end data.";
-		return;
+		$uploadOk = 0;
 	}
 
 	// Check if $uploadOk is set to 0 by an error
@@ -62,10 +62,11 @@ if($pairedEnd == 0){
        			 echo "The file ". basename( $_FILES["my_file"]["name"]). " has been uploaded.\n";
 			 	$con->query("UPDATE job SET jobStatus = '1' WHERE jobID = '{$jobID}'");
 			 	//send email to results page
-	            $message = "The results for your metagenomic assembly pipeline job can be found at 10.171.204.144/www/html/results.html?jobID={$jobID}.";
+
+	            $message = "The results for your metagenomic assembly pipeline job can be found at 10.171.204.144/html/results.html?jobID={$jobID}.";
 	            $mailCommand = "python /home/student/SeniorDesign-MetagenomicPipeline/www/html/sendmail.py' '{$_POST['email']} 'Metagenomic Pipeline Results' '{$message}'";
 	            $mailingOutput = shell_exec($mailCommand);
-	            echo "Mail command: " . $mailingCommand . "\n";
+	            echo "Mail command: " . $mailCommand . "\n";
 	            echo "Mailing output: " . $mailingOutput . "\n";
    		 } else {
        			 echo "Sorry, there was an error uploading your file.\n";
