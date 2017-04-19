@@ -74,9 +74,9 @@ if($metaspadesCheck == 1){
 
 mkdir("/home/student/SeniorDesign-MetagenomicPipeline/www/Jobs/" . $jobID . "/");
 
-mkdir($idbaAssembly);
-mkdir($megahitAssembly);
-mkdir($metaspadesAssembly);
+//mkdir($idbaAssembly);
+//mkdir($megahitAssembly);
+//mkdir($metaspadesAssembly);
 
 $uploadOk = 1;
 
