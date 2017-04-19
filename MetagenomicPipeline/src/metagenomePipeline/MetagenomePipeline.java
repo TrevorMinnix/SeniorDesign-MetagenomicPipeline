@@ -54,16 +54,16 @@ public class MetagenomePipeline {
 //		trimming.nextJob();
 //		trimming.process();
 		
-//		assemblerMegahit.addJob(job);
-//		assemblerMegahit.nextJob();
-//		assemblerMegahit.process();
+		assemblerMegahit.addJob(job);
+		assemblerMegahit.nextJob();
+		assemblerMegahit.process();
 		
 //		assemblerSpades.addJob(job);
 //		assemblerSpades.nextJob();
 //		assemblerSpades.process();
 		
-		assemblerIdba.addJob(job);
-		assemblerIdba.nextJob();
-		assemblerIdba.process();
+//		assemblerIdba.addJob(job);
+//		assemblerIdba.nextJob();
+//		assemblerIdba.process();
 	}
 }

@@ -35,27 +35,7 @@ public class AssemblerStage extends MetagenomeStage{
 		super(nextStage, db);
 		
 		//set assembler
-		switch(assembler) {
-			case "idba":
-			case "IDBA":
-				this.assembler = Assembler.IDBA;
-				assemblerTable = "idba";
-				break;
-			case "megahit":
-			case "MEGAHIT":
-			case "Megahit":
-				this.assembler = Assembler.MEGAHIT;
-				assemblerTable = "megahit";
-				break;
-			case "spades":
-			case "SPAdes":
-			case "SPADES":
-				this.assembler = Assembler.SPADES;
-				assemblerTable = "metaspades";
-				break;
-			default:
-				throw new Exception("Invalid assembler.");
-		}
+		setAssembler(assembler);
 		
 		//get assembler locations and defaults from text file
 		getProperties();
@@ -205,5 +185,29 @@ public class AssemblerStage extends MetagenomeStage{
 	private void spadesCommand(){
 		command = spadesPath + " " + spadesPEDefault;
 		command = replaceSpadesPE(command, currentJob.trimmedForwardPaired, currentJob.trimmedReversePaired, currentJob.metaspadesAssembly);
+	}
+	
+	private void setAssembler(String assembler) throws Exception{
+		switch(assembler) {
+		case "idba":
+		case "IDBA":
+			this.assembler = Assembler.IDBA;
+			assemblerTable = "idba";
+			break;
+		case "megahit":
+		case "MEGAHIT":
+		case "Megahit":
+			this.assembler = Assembler.MEGAHIT;
+			assemblerTable = "megahit";
+			break;
+		case "spades":
+		case "SPAdes":
+		case "SPADES":
+			this.assembler = Assembler.SPADES;
+			assemblerTable = "metaspades";
+			break;
+		default:
+			throw new Exception("Invalid assembler.");
+		}
 	}
 }
