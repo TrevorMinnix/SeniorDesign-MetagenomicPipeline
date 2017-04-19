@@ -99,6 +99,8 @@ if($pairedEnd == 0){
 	// if everything is ok, try to upload file
 	} else {
    		 if (move_uploaded_file($_FILES["my_file"]["tmp_name"], $target_file)) {
+   		 		//change permission for upload
+   		 		chmod($inputForward, 0777);
        			 echo "The file ". basename( $_FILES["my_file"]["name"]). " has been uploaded.\n";
 			 	$con->query("UPDATE job SET jobStatus = '1' WHERE jobID = '{$jobID}'");
 			 	//send email to results page
@@ -136,6 +138,8 @@ else{
 
 	else{
 		if(move_uploaded_file($_FILES["fmy_file"]["tmp_name"], $f_target_file) && move_uploaded_file($_FILES["rmy_file"]["tmp_name"], $r_target_file)){
+			chmod($inputForward, 0777);
+			chmod($inputReverse, 0777);
 			echo "The files ". basename($_FILES["fmy_file"]["name"]). "and ". basename($_FILES["rmy_file"]["name"]). "have been uploaded.\n";
 
             //update job status
