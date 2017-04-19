@@ -42,9 +42,43 @@ function getQueryStrings() {
 function makeSrc(){
 	var prefix = "/Jobs/";
 	var jid = getQueryStrings();
-	var newSrc = prefix  + jid + "/IMG_20150207_214818.jpg";
-	document.getElementById("idbacp").src = newSrc;
+	var idbaSrc1 = prefix  + jid + "/IDBA/CumulPlot.jpg";
+	document.getElementById("idbacp").src = idbaSrc1;
+	
+	var idbaSrc2 = prefix  + jid + "/IDBA/Nx_Plot.jpg";
+	document.getElementById("idbanx").src = idbaSrc2;
+	
+	var idbaSrc3 = prefix  + jid + "/IDBA/table.jpg";
+	document.getElementById("idbast").src = idbaSrc3;
 
+	var idbaSrc4 = prefix  + jid + "/IDBA/GCPlot.jpg";
+	document.getElementById("idbagp").src = idbaSrc4;
+	
+	
+	var mhSrc1 = prefix  + jid + "/MEGAHIT/CumulPlot.jpg";
+	document.getElementById("mhcp").src = mhSrc1;
+	
+	var mhSrc2 = prefix  + jid + "/MEGAHIT/Nx_Plot.jpg";
+	document.getElementById("mhnx").src = mhSrc2;
+	
+	var mhSrc3 = prefix  + jid + "/MEGAHIT/table.jpg";
+	document.getElementById("mhst").src = mhSrc3;
+
+	var mhSrc4 = prefix  + jid + "/MEGAHIT/GCPlot.jpg";
+	document.getElementById("mhgp").src = mhSrc4;
+	
+	
+	var msSrc1 = prefix  + jid + "/MetaSPAdes/CumulPlot.jpg";
+	document.getElementById("mscp").src = msSrc1;
+	
+	var msSrc2 = prefix  + jid + "/MetaSPAdes/Nx_Plot.jpg";
+	document.getElementById("msnx").src = msSrc2;
+	
+	var msSrc3 = prefix  + jid + "/MetaSPAdes/table.jpg";
+	document.getElementById("msst").src = msSrc3;
+
+	var msSrc4 = prefix  + jid + "/MetaSPAdes/GCPlot.jpg";
+	document.getElementById("msgp").src = msSrc4;
 }
 </script>
 <style>
@@ -97,20 +131,29 @@ float: left;
 	<li>
 		<h3>Cumulative Plot</h3>
 		<div>
-			<img src="IMG_20150207_214818.jpg" alt="FAIL!" id="idbacp">
+			<img src="CumulPlot.jpg" alt="FAIL!" id="idbacp">
 		</div>
 	</li>
 	<br/>
 	<li>
 		<h3>Nx</h3>
-		<iframe id="idbanx" src="" 
-		style="width:600px; height:500px;" frameborder="0"></iframe>
+		<div>
+			<img src="Nx_Plot.jpg" alt="FAIL!" id="idbanx">
+		</div>
 	</li>
 	<br/>
 	<li>
-		<h3>Statistics</h3>
-		<iframe id="idbas" src="" 
-		style="width:600px; height:500px;" frameborder="0"></iframe>
+		<h3>Statistics Table</h3>
+		<div>
+			<img src="table.jpg" alt="FAIL!" id="idbast">
+		</div> 
+	</li>
+	<br/>
+	<li>
+		<h3>GC Plot</h3>
+		<div>
+			<img src="GCPlot.jpg" alt="FAIL!" id="idbagp">
+		</div> 
 	</li>
   </ul>
 </div>
@@ -121,20 +164,30 @@ float: left;
   <ul>
 	<li>
 		<h3>Cumulative Plot</h3>
-		<iframe id="mhcp" src="" 
-		style="width:600px; height:500px;" frameborder="0"></iframe>
+		<div>
+			<img src="CumulPlot.jpg" alt="FAIL!" id="mhcp">
+		</div>
 	</li>
 	<br/>
 	<li>
 		<h3>Nx</h3>
-		<iframe id="mhnx" src="" 
-		style="width:600px; height:500px;" frameborder="0"></iframe>
+		<div>
+			<img src="Nx_Plot.jpg" alt="FAIL!" id="mhnx">
+		</div>
 	</li>
 	<br/>
 	<li>
-		<h3>Statistics</h3>
-		<iframe id="mhs" src="" 
-		style="width:600px; height:500px;" frameborder="0"></iframe>
+		<h3>Statistics Table</h3>
+		<div>
+			<img src="table.jpg" alt="FAIL!" id="mhst">
+		</div> 
+	</li>
+	<br/>
+	<li>
+		<h3>GC Plot</h3>
+		<div>
+			<img src="GCPlot.jpg" alt="FAIL!" id="mhgp">
+		</div> 
 	</li>
   </ul>
 </div>
@@ -145,20 +198,30 @@ float: left;
   <ul>
 	<li>
 		<h3>Cumulative Plot</h3>
-		<iframe id="mscp" src="" 
-		style="width:600px; height:500px;" frameborder="0"></iframe>
+		<div>
+			<img src="CumulPlot.jpg" alt="FAIL!" id="mscp">
+		</div>
 	</li>
 	<br/>
 	<li>
 		<h3>Nx</h3>
-		<iframe id="msnx" src="" 
-		style="width:600px; height:500px;" frameborder="0"></iframe>
+		<div>
+			<img src="Nx_Plot.jpg" alt="FAIL!" id="msnx">
+		</div>
 	</li>
 	<br/>
 	<li>
-		<h3>Statistics</h3>
-		<iframe id="mss" src="" 
-		style="width:600px; height:500px;" frameborder="0"></iframe>
+		<h3>Statistics Table</h3>
+		<div>
+			<img src="table.jpg" alt="FAIL!" id="msst">
+		</div> 
+	</li>
+	<br/>
+	<li>
+		<h3>GC Plot</h3>
+		<div>
+			<img src="GCPlot.jpg" alt="FAIL!" id="msgp">
+		</div> 
 	</li>
   </ul>
 </div>

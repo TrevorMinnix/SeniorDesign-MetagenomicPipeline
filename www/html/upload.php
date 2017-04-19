@@ -54,30 +54,27 @@ $con->query($query);
 if($idbaCheck == 1){
 	$query = "INSERT INTO idba (jobID, assembly, stat, visual) VALUES ('{$jobID}', '{$idbaAssembly}', '{$idbaStat}', '{$idbaVisual}')";
 	$con->query($query);
+	mkdir($idbaAssembly);
 }
 //megahit
 if($megahitCheck == 1){
 	$query = "INSERT INTO megahit (jobID, assembly, stat, visual) VALUES ('{$jobID}', '{$megahitAssembly}', '{$megahitStat}', '{$megahitVisual}')";
 	$con->query($query);
+	mkdir($megahitAssembly);
 }
 //metaspades
 if($metaspadesCheck == 1){
 	$query = "INSERT INTO metaspades (jobID, assembly, stat, visual) VALUES ('{$jobID}', '{$metaspadesAssembly}', '{$metaspadesStat}', '{$metaspadesVisual}')";
 	$con->query($query);
+	mkdir($metaspadesAssembly);
 }
 
 mkdir("/home/student/SeniorDesign-MetagenomicPipeline/www/Jobs/" . $jobID . "/");
 
-$target_dir = "/home/student/SeniorDesign-MetagenomicPipeline/www/Jobs/" . $jobID . "/";
-
-mkdir($idbaAssembly);
-mkdir($megahitAssembly);
-mkdir($metaspadesAssembly);
-
 $uploadOk = 1;
 
 if($pairedEnd == 0){
-	$target_file = $target_dir . basename($_FILES["my_file"]["name"]); 
+	$target_file = $basePath . basename($_FILES["my_file"]["name"]); 
 
 	if (file_exists($target_file)) {
    		 echo "Sorry, file already exists.\n";
