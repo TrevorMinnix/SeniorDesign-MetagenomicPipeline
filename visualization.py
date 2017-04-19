@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 import matplotlib.pyplot as plot
 import sys
 
@@ -100,7 +98,7 @@ def Nx_plot(nxArray, output_dir):
 def CumulativePlot(contigSizes, output_dir):
     prevContig = 0
     contigSizes = contigSizes[::-1]
-    print contigSizes
+
     cumulContig = [0] * len(contigSizes)
     for i in xrange(len(contigSizes)):
         cumulContig[i] = prevContig + contigSizes[i]

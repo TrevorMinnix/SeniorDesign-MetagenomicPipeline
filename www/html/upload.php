@@ -97,7 +97,8 @@ if($pairedEnd == 0){
 			 	$con->query("UPDATE job SET jobStatus = '1' WHERE jobID = '{$jobID}'");
 			 	//send email to results page
 
-	            $message = "The results for your metagenomic assembly pipeline job can be found at 10.171.204.144/html/results.html?jobID={$jobID}.";
+	            $jlink = make_links_clickable("10.171.204.144/html/results.html?jobID=" . {$jobID});
+            	    $message = "The results for your metagenomic assembly pipeline job can be found at" . $jlink;
 	            $mailCommand = "python '/home/student/SeniorDesign-MetagenomicPipeline/www/html/sendmail.py' '{$_POST['email']}' 'Metagenomic Pipeline Results' '{$message}'";
 	            $mailingOutput = shell_exec($mailCommand);
 	            echo "Mail command: " . $mailCommand . "\n";
@@ -136,7 +137,8 @@ else{
             $con->query("UPDATE job SET jobStatus = '1' WHERE jobID = '{$jobID}'");
 
             //send email to results page
-            $message = "The results for your metagenomic assembly pipeline job can be found at 10.171.204.144/html/results.html?jobID=" . $jobID . ".";
+	    $frjlink = make_links_clickable("10.171.204.144/html/results.html?jobID=" . {$jobID});
+            $message = "The results for your metagenomic assembly pipeline job can be found at" . $frjlink;
             $mailCommand = "/home/student/SeniorDesign-MetagenomicPipeline/www/html/sendmail.py '{$email}' 'Metagenomic Pipeline Results' '{$message}'";
             $mailingOutput = shell_exec($mailCommand);
 	    echo "Mail command: " . $mailCommand . "\n";
@@ -160,6 +162,10 @@ else{
 	rename($r_target_file, $r_new_dir);
 }
 
+function make_links_clickable($text)
+{
+   return preg_replace ('/http:\/\/[^\s]+/i', "<a href=\"${0}\">${0}</a>", $text);
+} 
 
 
 
