@@ -187,7 +187,7 @@ public class AssemblerStage extends MetagenomeStage{
 	}
 	
 	private void megahitCommand(){
-		if(currentJob.pairedEnd){
+		if(!currentJob.pairedEnd){
 			command = megahitPath + " " + megahitSEDefault;
 			command = replaceMegahitSE(command, currentJob.trimmedSE, currentJob.megahitAssembly);
 		}else{	//paired end command
