@@ -100,7 +100,10 @@ if($pairedEnd == 0){
 	} else {
    		 if (move_uploaded_file($_FILES["my_file"]["tmp_name"], $target_file)) {
    		 		//change permission for upload
-   		 		chmod($inputForward, 0777);
+   		 		if(!chmod($inputForward, 0777)){
+   		 			echo "FAILURE";
+   		 		}
+   		 		
        			 echo "The file ". basename( $_FILES["my_file"]["name"]). " has been uploaded.\n";
 			 	$con->query("UPDATE job SET jobStatus = '1' WHERE jobID = '{$jobID}'");
 			 	//send email to results page
