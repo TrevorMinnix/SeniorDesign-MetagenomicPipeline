@@ -16,7 +16,6 @@ public class MetagenomePipeline {
 		
 		//connect to database
 		db = new DatabaseConnection();
-		db = null;
 		
 		//connect stages and put in array
 		visualIdba = new VisualStage(new MetagenomeStage[]{}, db, "IDBA");
