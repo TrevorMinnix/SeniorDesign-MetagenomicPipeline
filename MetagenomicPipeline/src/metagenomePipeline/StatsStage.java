@@ -77,7 +77,7 @@ public class StatsStage extends MetagenomeStage{
 		
 		//for each assembler
 		String input, output, reads;
-		reads = currentJob.inputForward;
+		reads = currentJob.pairedEnd ? currentJob.trimmedForwardPaired : currentJob.trimmedSE;
 		switch(assembler){
 		case IDBA:
 			input = currentJob.idbaAssembly + "contig.fa";
