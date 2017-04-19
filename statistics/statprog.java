@@ -1,5 +1,5 @@
 /*
-statprog.java v3.0
+statprog.java v3.1
 senior design group 8
 
 VERSION NOTES:
@@ -43,6 +43,9 @@ it's really slow though
 parallelized read mapping, also changed output format
 minor changes to be made soon to finalize
 
+3.1
+add type safety to arraylist (hopefully still read-only threadsafe)
+
 
 program description:
 takes the data from a genome assembler and provides statistics on it for a particular data set
@@ -66,12 +69,12 @@ public class statprog implements Runnable {
 	public static AtomicInteger indx;
 	ArrayList<String> str;
 	int idx;
-	ArrayList<Trip>[] templocs;
+	ArrayList<ArrayList<Trip>> templocs;
 	int[] tempC;
 	int[][] tempO;
 	int[][] tempOP;
 	
-	statprog(ArrayList<String> a, int b, ArrayList<Trip>[] c, int[] e, int[][] f, int[][] g) {
+	statprog(ArrayList<String> a, int b, ArrayList<ArrayList<Trip>> c, int[] e, int[][] f, int[][] g) {
 		str = a;
 		idx = b;
 		templocs = c;
@@ -99,7 +102,7 @@ public class statprog implements Runnable {
 			}
 			for (int k = 0; ap != null && ap.a != null && k < ap.a.size(); ++k) if (ap.a.get(k) != null) {
 				ap.a.get(k).len = ap.len;
-				templocs[j].add(ap.a.get(k));
+				templocs.get(j).add(ap.a.get(k));
 			}
 		}
 		
@@ -119,24 +122,24 @@ public class statprog implements Runnable {
 	
 	/*
 	variable explanations
-		cg				-		CG% counter.  counts the total number of GC pairs in the assembly
-		len				-		Length of assembly
+		cg					-		CG% counter.  counts the total number of GC pairs in the assembly
+		len					-		Length of assembly
 		wind100				-		Windows where they are fewer than 50% N
 		contigs				-		Number of contigs in assembly.
 		bigContigs			-		Number of contigs of large size
 		Nnum				-		Number of Ns found
 		contigArr			-		Array of contig sizes
 		gcWind				-		CG% counter for windows (not the OS)
-		NX				-		Array of NX values
+		NX					-		Array of NX values
 		endOfFile			-		Indicates end of input has been reached
 		WindowSize			-		Constant defining size of windows
 		LargeSize			-		Constant defining minimum size of large contigs
 		NSize				-		Constant defining for what size the expected number of Ns will be
 		DebugMode			-		Constant determining if program will run in debug mode
-		AllowedError			-		Maximum number of mismatchings allowed per each read mapping
+		AllowedError		-		Maximum number of mismatchings allowed per each read mapping
 	 */
 	public static BigInteger len, cg, wind100, contigs, bigContigs, largestContig, Nnum;
-	public static ArrayList<BigInteger> contigArr, gcWind;
+	public static ArrayList<BigInteger> contigArr, gcWind, contigArrOr;
 	public static BigInteger[] NX;
 	public static ArrayList<StringBuilder> genome;
 	public static boolean endOfFile;
@@ -186,6 +189,8 @@ public class statprog implements Runnable {
 		
 		// grab stats from a single sweep of the assembly
 		read1(in);
+		for (int i = 0; i < contigArr.size(); ++i)
+			contigArrOr.add(contigArr.get(i));
 		calculateNX();
 		
 		/*
@@ -232,11 +237,11 @@ public class statprog implements Runnable {
 			
 			// collect all the reads (account for FASTQ format)
 			read2(new FastScanner(new File(read_file)), reads);
-
+			
 			// Create an array of arrays of triplets, storing, for each read, the SA interval and contig it was found in
-			ArrayList<Trip>[] locs = new ArrayList[reads.size()];
+			ArrayList<ArrayList<Trip>> locs = new ArrayList<ArrayList<Trip>>();
 			for (int i = 0; i < reads.size(); ++i)
-				locs[i] = new ArrayList<Trip>();
+				locs.add(new ArrayList<Trip>());
 			
 			// store the SAs for each contig once found, they will be needed again later
 			ArrayList<Suf[]> suffixArrays = new ArrayList<Suf[]>();
@@ -300,7 +305,7 @@ public class statprog implements Runnable {
 				suffixArrays.add(suffixArray);
 				rsuffixArrays.add(rSuffixArray);
 				
-				//System.out.printf("done with %d\n", i);
+				System.out.printf("done with %d\n", i);
 				
 			}
 			
@@ -310,22 +315,22 @@ public class statprog implements Runnable {
 			Arrays.fill(map, null);
 			
 			// find a mapping for each read from among its potential mappings
-			for (int i = 0; i < locs.length; ++i) {
+			for (int i = 0; i < locs.size(); ++i) {
 				
 				// first find out the number of possible locations the read could be mapped to
 				int sum = 0;
-				for (int j = 0; j < locs[i].size(); ++j)
-					if (locs[i].get(j) != null) {
-						Trip temp = locs[i].get(j);
+				for (int j = 0; j < locs.get(i).size(); ++j)
+					if (locs.get(i).get(j) != null) {
+						Trip temp = locs.get(i).get(j);
 						sum += temp.b - temp.a + 1;
 					}
 				
 				if (sum > 0) {
 					// randomly pick one of these locations and map the read to it
 					int ind = r.nextInt(sum);
-					for (int j = 0; j < locs[i].size(); ++j)
-						if (locs[i].get(j) != null) {
-							Trip temp = locs[i].get(j);
+					for (int j = 0; j < locs.get(i).size(); ++j)
+						if (locs.get(i).get(j) != null) {
+							Trip temp = locs.get(i).get(j);
 							if (ind < temp.b - temp.a + 1) {
 								map[i] = new Map(temp.c, temp.a + ind, temp.len);
 								break;
@@ -444,9 +449,9 @@ public class statprog implements Runnable {
 			out.printf("%s\n", contigs.toString());
 			out.printf("%d %s\n", WindowSize, wind100.toString());
 			out.printf("%s\n", bigContigs.toString());
-			out.printf("%d\n", contigArr.size());
-			for (int i = 0; i < contigArr.size(); ++i)
-				out.printf("%s ", contigArr.get(i).toString());
+			out.printf("%d\n", contigArrOr.size());
+			for (int i = 0; i < contigArrOr.size(); ++i)
+				out.printf("%s ", contigArrOr.get(i).toString());
 			out.printf("\n%.9f\n", ((double) cg.longValue()) / ((double) len.longValue()));
 			out.printf("%d %d\n", WindowSize, gcWind.size());
 			for (int i = 0; i < gcWind.size(); ++i)
@@ -461,7 +466,6 @@ public class statprog implements Runnable {
 				out.printf("%d\n", numGaps);
 				out.printf("%d\n", longestAlign);
 				out.printf("%d\n", fullUnalign);
-				out.printf("%d\n", partUnalign);
 				out.printf("%d\n", maps);
 			}
 			out.close();
@@ -486,6 +490,7 @@ public class statprog implements Runnable {
 		genome = new ArrayList<StringBuilder>();
 		r = new Random();
 		calculateReadMapping = false;
+		contigArrOr = new ArrayList<BigInteger>();
 	}
 	
 	// splitting the reading into its own function
