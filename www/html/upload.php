@@ -54,22 +54,23 @@ $con->query($query);
 if($idbaCheck == 1){
 	$query = "INSERT INTO idba (jobID, assembly, stat, visual) VALUES ('{$jobID}', '{$idbaAssembly}', '{$idbaStat}', '{$idbaVisual}')";
 	$con->query($query);
-	mkdir($idbaAssembly);
 }
 //megahit
 if($megahitCheck == 1){
 	$query = "INSERT INTO megahit (jobID, assembly, stat, visual) VALUES ('{$jobID}', '{$megahitAssembly}', '{$megahitStat}', '{$megahitVisual}')";
 	$con->query($query);
-	mkdir($megahitAssembly);
 }
 //metaspades
 if($metaspadesCheck == 1){
 	$query = "INSERT INTO metaspades (jobID, assembly, stat, visual) VALUES ('{$jobID}', '{$metaspadesAssembly}', '{$metaspadesStat}', '{$metaspadesVisual}')";
 	$con->query($query);
-	mkdir($metaspadesAssembly);
 }
 
 mkdir("/home/student/SeniorDesign-MetagenomicPipeline/www/Jobs/" . $jobID . "/");
+
+mkdir($idbaAssembly);
+mkdir($megahitAssembly);
+mkdir($metaspadesAssembly);
 
 $uploadOk = 1;
 
@@ -115,8 +116,8 @@ if($pairedEnd == 0){
 
 else{
 
-	$f_target_file = $basePath . basename($_FILES["fmy_file"]["name"]);
-	$r_target_file = $basePath . basename($_FILES["rmy_file"]["name"]);
+	$f_target_file = $target_dir . basename($_FILES["fmy_file"]["name"]);
+	$r_target_file = $target_dir . basename($_FILES["rmy_file"]["name"]);
 
 	if(file_exists($f_target_file) || file_exists($r_target_file)){
 		echo "Sorry, 1 or more files already exist.\n";
@@ -147,8 +148,8 @@ else{
 	     }
 	}
 
-	$f_new_dir = $basePath . "/" . "input_forward.fq";
-	$r_new_dir = $basePath . "/" . "input_reverse.fq";
+	$f_new_dir = $target_dir . "/" . "input_forward.fq";
+	$r_new_dir = $target_dir . "/" . "input_reverse.fq";
 
 	$f_file_hand = fopen($f_target_file, 'r');
 	fclose($f_file_hand);
