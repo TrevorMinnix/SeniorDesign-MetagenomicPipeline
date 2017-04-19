@@ -32,7 +32,7 @@ def Create_table(cell_text, output_dir):
                 colWidths=[float(column_width) / sum(col_widths) for column_width in col_widths[1:]],
                 rowLoc = 'left', loc='center right')
     
-    plot.savefig('/' + output_dir +'/table.jpg')
+    plot.savefig(output_dir +'table.jpg')
     
     plot.cla()
     plot.close()
@@ -79,7 +79,6 @@ def openStatFile(inputFile):
         else:
             statistics.append([float(file.readline())])
 
-    
     file.close()
     
     return statistics, contigSizes, gcContent, gcCont, nxArray    
@@ -90,7 +89,7 @@ def Nx_plot(nxArray, output_dir):
     plot.ylabel('Contig Length (bp)')
     plot.grid(b = True)
     plot.title('Nx-Plot')
-    plot.savefig('/' + output_dir+'/Nx_Plot.jpg')
+    plot.savefig(output_dir + 'Nx_Plot.jpg')
     plot.cla()
     plot.close()
 
@@ -109,7 +108,7 @@ def CumulativePlot(contigSizes, output_dir):
     plot.xlabel('Contig Index')
     plot.grid(b = True)
     plot.title('Cumulative Length')
-    plot.savefig('/' + output_dir+'/CumulPlot.jpg')
+    plot.savefig(output_dir+'CumulPlot.jpg')
     plot.cla()
     plot.close()
 
@@ -123,7 +122,7 @@ def GcPlot(gcCont, numWindows, output_dir):
     plot.xlabel('GC (%)')
     plot.grid(b = True)
     plot.title('GC content')
-    plot.savefig('/' + output_dir+'/GCPlot.jpg')
+    plot.savefig(output_dir+'GCPlot.jpg')
     plot.cla()
     plot.close()
  
