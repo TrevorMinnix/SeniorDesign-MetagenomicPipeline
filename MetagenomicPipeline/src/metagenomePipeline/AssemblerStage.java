@@ -88,9 +88,7 @@ public class AssemblerStage extends MetagenomeStage{
 			break;
 		default:
 		}
-		
-		System.out.println(command);
-		
+				
 		try {
 			RunTool.runProgramAndWait(command);
 		} catch (IOException e) {

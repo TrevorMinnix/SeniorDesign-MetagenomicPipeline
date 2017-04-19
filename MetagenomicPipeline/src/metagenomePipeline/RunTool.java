@@ -12,6 +12,7 @@ public class RunTool {
 	}
 	
 	static String runProgramAndWait(String command) throws IOException, InterruptedException{
+		System.out.println(command);
 		String[] splitCommand = command.split("\\s+");
 		ProcessBuilder builder = new ProcessBuilder(splitCommand);
 		builder.redirectErrorStream(true);

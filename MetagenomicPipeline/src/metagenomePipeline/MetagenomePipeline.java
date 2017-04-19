@@ -46,13 +46,19 @@ public class MetagenomePipeline {
 		job.trimmedReversePaired = "/home/student/Testing/trimmedRP.fq";
 		job.trimmedReverseUnpaired = "/home/student/Testing/trimmedRU.fq";
 		job.megahitAssembly = "/home/student/Testing/megahitAssembly";
+		job.idbaAssembly = "/home/student/Testing/idbaAssembly";
+		job.metaspadesAssembly = "/home/student/Testing/metaspadesAssembly";
 
 		trimming.addJob(job);
 		trimming.nextJob();
 		trimming.process();
 		
-		assemblerMegahit.addJob(job);
-		assemblerMegahit.nextJob();
-		assemblerMegahit.process();
+//		assemblerMegahit.addJob(job);
+//		assemblerMegahit.nextJob();
+//		assemblerMegahit.process();
+		
+		assemblerSpades.addJob(job);
+		assemblerSpades.nextJob();
+		assemblerSpades.process();
 	}
 }
