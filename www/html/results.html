@@ -16,7 +16,7 @@ function openCity(evt, cityName) {
     // Get all elements with class="tabcontent" and hide them
     tabcontent = document.getElementsByClassName("tabcontent");
     for (i = 0; i < tabcontent.length; i++) {
-        tabcontent[i].style.display = "none";
+        tabcontent[i].style.display = 'none';
     }
 
     // Get all elements with class="tablinks" and remove the class "active"
@@ -26,8 +26,25 @@ function openCity(evt, cityName) {
     }
 
     // Show the current tab, and add an "active" class to the link that opened the tab
-    document.getElementById(cityName).style.display = "block";
-    evt.currentTarget.className += " active";
+    document.getElementById(cityName).style.display = 'block';
+    evt.currentTarget.class += " active";
+}
+
+function getQueryStrings() { 
+	 
+		var path = window.location.href;
+		var frags = path.split('=');
+		
+		var fragstwo = frags[1];
+		return fragstwo; 
+	}
+	
+function makeSrc(){
+	var prefix = "/Jobs/";
+	var jid = getQueryStrings();
+	var newSrc = prefix  + jid + "/IMG_20150207_214818.jpg";
+	document.getElementById("idbacp").src = newSrc;
+
 }
 </script>
 <style>
@@ -42,39 +59,113 @@ width: 94%;
 border-radius: 12px;
 box-shadow: 0 0 10px 0px;
 }
+
+h4{
+padding-top: 100px;
+color: #3419a0;
+}
+
+ul{
+list-style: none;
+}
+
+.tab{
+float: left;
+}
+
 </style>
 </head>
 
-<body>
+<body onload="makeSrc()">
 <div class="page-header">
 <h1>Metagenomic Assembly and Evaluation Pipeline - Results</h1>
 </div>
 
 <ul class="nav nav-pills">
-  <li><a data-toggle="pill" href="javascript:void(0)" class="tablinks" onclick="openCity(event, 'as1')">IDBA</a></li>
-  <li><a data-toggle="pill" href="javascript:void(0)" class="tablinks" onclick="openCity(event, 'as2')">MEGAHIT</a></li>
-  <li><a data-toggle="pill" href="javascript:void(0)" class="tablinks" onclick="openCity(event, 'as3')">MetaSPAdes</a></li>
-  <li><a data-toggle="pill" href="javascript:void(0)" class="tablinks" onclick="openCity(event, 'asc')">Assembler Comparison</a></li>
+  <li id="tab"><a data-toggle="pill" href="javascript:void(0)" class="tablinks" onclick="openCity(event, 'as1')">IDBA</a></li>
+  <li id="tab"><a data-toggle="pill" href="javascript:void(0)" class="tablinks" onclick="openCity(event, 'as2')">MEGAHIT</a></li>
+  <li id="tab"><a data-toggle="pill" href="javascript:void(0)" class="tablinks" onclick="openCity(event, 'as3')">MetaSPAdes</a></li>
+  <li id="tab"><a data-toggle="pill" href="javascript:void(0)" class="tablinks" onclick="openCity(event, 'asc')">Assembler Comparison</a></li>
 </ul>
+
+
 
 <div id="as1" class="tabcontent">
   <h3>IDBA</h3>
-  <p></p>
+  <hr style="height:30px; color: black;">
+  <ul>
+	<li>
+		<h3>Cumulative Plot</h3>
+		<div>
+			<img src="IMG_20150207_214818.jpg" alt="FAIL!" id="idbacp">
+		</div>
+	</li>
+	<br/>
+	<li>
+		<h3>Nx</h3>
+		<iframe id="idbanx" src="" 
+		style="width:600px; height:500px;" frameborder="0"></iframe>
+	</li>
+	<br/>
+	<li>
+		<h3>Statistics</h3>
+		<iframe id="idbas" src="" 
+		style="width:600px; height:500px;" frameborder="0"></iframe>
+	</li>
+  </ul>
 </div>
 
-<div id="as2" class="tabcontent">
+<div id="as2" class="tabcontent" style="display: none">
   <h3>MEGAHIT</h3>
-  <p></p> 
+  <hr style="height:30px; color: black;">
+  <ul>
+	<li>
+		<h3>Cumulative Plot</h3>
+		<iframe id="mhcp" src="" 
+		style="width:600px; height:500px;" frameborder="0"></iframe>
+	</li>
+	<br/>
+	<li>
+		<h3>Nx</h3>
+		<iframe id="mhnx" src="" 
+		style="width:600px; height:500px;" frameborder="0"></iframe>
+	</li>
+	<br/>
+	<li>
+		<h3>Statistics</h3>
+		<iframe id="mhs" src="" 
+		style="width:600px; height:500px;" frameborder="0"></iframe>
+	</li>
+  </ul>
 </div>
 
-<div id="as3" class="tabcontent">
+<div id="as3" class="tabcontent" style="display: none">
   <h3>MetaSPAdes</h3>
-  <p></p>
+  <hr style="height:30px; color: black;">
+  <ul>
+	<li>
+		<h3>Cumulative Plot</h3>
+		<iframe id="mscp" src="" 
+		style="width:600px; height:500px;" frameborder="0"></iframe>
+	</li>
+	<br/>
+	<li>
+		<h3>Nx</h3>
+		<iframe id="msnx" src="" 
+		style="width:600px; height:500px;" frameborder="0"></iframe>
+	</li>
+	<br/>
+	<li>
+		<h3>Statistics</h3>
+		<iframe id="mss" src="" 
+		style="width:600px; height:500px;" frameborder="0"></iframe>
+	</li>
+  </ul>
 </div>
 
-<div id="asc" class="tabcontent">
+<div id="asc" class="tabcontent" style="display: none">
   <h3>Assembler Comparison</h3>
-  <?php include 'output.php';?>
+  <hr style="height:30px; color: black;">
 </div>
 
 </body>

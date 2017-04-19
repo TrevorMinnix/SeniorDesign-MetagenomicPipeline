@@ -30,11 +30,9 @@ echo "Database insert: " . $query . "\n";
 
 $con->query($query);
 
-mkdir("/home/student/SeniorDesign-MetagenomicPipeline/Jobs/" . $jobID . "/");
-//mkdir("home/student/SeniorDesign-MetagenomicPipeline/Jobs/" . $jobID . "/" . "IDBA". "/");
-//mkdir("home/student/SeniorDesign-MetagenomicPipeline/Jobs/" . $jobID . "/" . "MEGAHIT". "/");
-//mkdir("home/student/SeniorDesign-MetagenomicPipeline/Jobs/" . $jobID . "/" . "MetaSPAdes". "/");
-$target_dir = "/home/student/SeniorDesign-MetagenomicPipeline/Jobs/" . $jobID . "/";
+mkdir("/home/student/SeniorDesign-MetagenomicPipeline/www/Jobs/" . $jobID . "/");
+
+$target_dir = "/home/student/SeniorDesign-MetagenomicPipeline/www/Jobs/" . $jobID . "/";
 
 mkdir($target_dir . "IDBA". "/");
 mkdir($target_dir . "MEGAHIT". "/");
@@ -49,6 +47,12 @@ if($pairedEnd == 0){
    		 echo "Sorry, file already exists.\n";
    		 $uploadOk = 0;
 	}
+
+	if(($idbaCheck == 1 && pairedEnd == 0) || ($metaspadesCheck == 1 && pairedEnd == 0)){
+		echo "Sorry, only MEGAHIT accepts single-end data.";
+		$uploadOk = 0;
+	}
+
 	// Check if $uploadOk is set to 0 by an error
 	if ($uploadOk == 0) {
     		echo "Sorry, your file was not uploaded.\n";
@@ -58,10 +62,11 @@ if($pairedEnd == 0){
        			 echo "The file ". basename( $_FILES["my_file"]["name"]). " has been uploaded.\n";
 			 	$con->query("UPDATE job SET jobStatus = '1' WHERE jobID = '{$jobID}'");
 			 	//send email to results page
-	            $message = "The results for your metagenomic assembly pipeline job can be found at 10.171.204.144/www/html/results.html?jobID={$jobID}.";
+
+	            $message = "The results for your metagenomic assembly pipeline job can be found at 10.171.204.144/html/results.html?jobID={$jobID}.";
 	            $mailCommand = "python /home/student/SeniorDesign-MetagenomicPipeline/www/html/sendmail.py' '{$_POST['email']} 'Metagenomic Pipeline Results' '{$message}'";
 	            $mailingOutput = shell_exec($mailCommand);
-	            echo "Mail command: " . $mailingCommand . "\n";
+	            echo "Mail command: " . $mailCommand . "\n";
 	            echo "Mailing output: " . $mailingOutput . "\n";
    		 } else {
        			 echo "Sorry, there was an error uploading your file.\n";
@@ -97,9 +102,10 @@ else{
             $con->query("UPDATE job SET jobStatus = '1' WHERE jobID = '{$jobID}'");
 
             //send email to results page
-            $message = "The results for your metagenomic assembly pipeline job can be found at 10.171.204.144/www/html/results.html?jobID={$jobID}.";
+            $message = "The results for your metagenomic assembly pipeline job can be found at 10.171.204.144/html/results.html?jobID={$jobID}.";
             $mailCommand = "python /home/student/SeniorDesign-MetagenomicPipeline/www/html/sendmail.py '{$email}' 'Metagenomic Pipeline Results' '{$message}'";
             $mailingOutput = shell_exec($mailCommand);
+	    echo "Mail command: " . $mailCommand . "\n";
             echo "Mailing output: " . $mailingOutput . "\n";
 		}
 
@@ -120,51 +126,6 @@ else{
 	rename($r_target_file, $r_new_dir);
 }
 
-
-
-
-$signal = TRUE;
-
-
-
-while($signal){
-
-	
-	$sql_current = "SELECT TOP 1 jobID FROM job";
-	
-	$current = $con->query($sql_current);
-	
-	
-
-	if(!$current){
-		
-		$signal = FALSE;
-		
-		break;
-	
-	}
-
-	
-
-	$sql_status = "SELECT TOP 1 jobStatus FROM job";
-	
-	$status = $con->query($sql_status);
-
-	
-	$con->close();
-	
-
-	if($status == 3){
-		
-		$result_dir = "home/student/SeniorDesign-MetagenomicPipeline/Jobs/" . $current . "/";
-		
-		$result_file = $result_dir . "result.pdf";
-		
-		echo "success!!!!\n";
-	
-	} 
-
-}
 
 
 
