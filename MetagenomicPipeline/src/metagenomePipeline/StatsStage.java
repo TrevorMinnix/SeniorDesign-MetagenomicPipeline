@@ -38,7 +38,7 @@ public class StatsStage extends MetagenomeStage{
 		buildCommand();
 		
 		try {
-			System.out.println(RunTool.runProgramAndWait(command));
+			RunTool.runProgramAndWait(command);
 		} catch (IOException | InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
