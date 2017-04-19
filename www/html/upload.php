@@ -17,13 +17,16 @@ if($_POST['end'] == "paired-end"){
 }
 
 //file paths
-$basePath = "/home/student/SeniorDesign-MetagenomicPipeline/Jobs/" . $jobID . "/";
+$basePath = "/home/student/SeniorDesign-MetagenomicPipeline/www/Jobs/" . $jobID . "/";
 $trimmedSEPath = $basePath . "trimmedSE.fq";
 $trimmedFPPath = $basePath . "trimmedFP.fq";
 $trimmedFUPath = $basePath . "trimmedFU.fq";
 $trimmedRPPath = $basePath . "trimmedRP.fq";
 $trimmedRUPath = $basePath . "trimmedRU.fq";
 $trimmedCPath = $basePath . "trimmedC.fa";
+$idbaAssembly = $basePath . "idba/";
+$megahitAssembly = $basePath . "megahit/";
+$metaspadesAssembly = $basePath . "metaspades/";
 
 //sql query
 //single end
@@ -43,24 +46,24 @@ $con->query($query);
 //assembler table queries
 //idba
 if($idbaCheck == 1){
-	$query = "INSERT INTO idba (jobID, assembly, stat, visual) VALUES ('{$jobID}', 'idba', 'idbaStat.txt', 'idbaVisual')";
+	$query = "INSERT INTO idba (jobID, assembly, stat, visual) VALUES ('{$jobID}', '{$idbaAssembly}', 'idbaStat.txt', 'idbaVisual')";
 }
 //megahit
 if($megahitCheck == 1){
-	$query = "INSERT INTO idba (jobID, assembly, stat, visual) VALUES ('{$jobID}', 'megahit', 'megahitStat.txt', 'megahitVisual')";
+	$query = "INSERT INTO idba (jobID, assembly, stat, visual) VALUES ('{$jobID}', '{$megahitAssembly}', 'megahitStat.txt', 'megahitVisual')";
 }
 //metaspades
 if($metaspadesCheck == 1){
-	$query = "INSERT INTO idba (jobID, assembly, stat, visual) VALUES ('{$jobID}', 'metaspades', 'metaspadesStat.txt', 'metaspadesVisual')";
+	$query = "INSERT INTO idba (jobID, assembly, stat, visual) VALUES ('{$jobID}', '{$metaspadesAssembly}', 'metaspadesStat.txt', 'metaspadesVisual')";
 }
 
 mkdir("/home/student/SeniorDesign-MetagenomicPipeline/www/Jobs/" . $jobID . "/");
 
 $target_dir = "/home/student/SeniorDesign-MetagenomicPipeline/www/Jobs/" . $jobID . "/";
 
-mkdir($target_dir . "IDBA". "/");
-mkdir($target_dir . "MEGAHIT". "/");
-mkdir($target_dir . "MetaSPAdes". "/");
+mkdir($idbaAssembly);
+mkdir($megahitAssembly);
+mkdir($metaspadesAssembly);
 
 $uploadOk = 1;
 
@@ -126,8 +129,8 @@ else{
             $con->query("UPDATE job SET jobStatus = '1' WHERE jobID = '{$jobID}'");
 
             //send email to results page
-            $message = "The results for your metagenomic assembly pipeline job can be found at 10.171.204.144/html/results.html?jobID={$jobID}.";
-            $mailCommand = "python /home/student/SeniorDesign-MetagenomicPipeline/www/html/sendmail.py '{$email}' 'Metagenomic Pipeline Results' '{$message}'";
+            $message = "The results for your metagenomic assembly pipeline job can be found at 10.171.204.144/html/results.html?jobID=" . $jobID . ".";
+            $mailCommand = "/home/student/SeniorDesign-MetagenomicPipeline/www/html/sendmail.py '{$email}' 'Metagenomic Pipeline Results' '{$message}'";
             $mailingOutput = shell_exec($mailCommand);
 	    echo "Mail command: " . $mailCommand . "\n";
             echo "Mailing output: " . $mailingOutput . "\n";
