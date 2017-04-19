@@ -7,9 +7,7 @@ import java.io.InputStream;
 import java.util.Properties;
 
 public class TrimmingStage extends MetagenomeStage{
-	//private static final String CONFIG = "/home/student/SeniorDesign-MetagenomicPipeline/assembler_config.txt";
-	//TODO
-	private static final String CONFIG = "D:/GoogleDrive/UCF/SeniorDesign/SeniorDesign-MetagenomicPipeline/assembler_config.txt";
+	private static final String CONFIG = "/home/student/SeniorDesign-MetagenomicPipeline/assembler_config.txt";
 	
 	private String trimPrefix;
 	private String trimPath;
@@ -26,9 +24,6 @@ public class TrimmingStage extends MetagenomeStage{
 		
 		//get assembler locations and defaults from text file
 		getProperties();
-		
-		//TODO
-		trimPath = "D:/GoogleDrive/UCF/SeniorDesign/SeniorDesign-MetagenomicPipeline/Trimmomatic-0.36/trimmomatic-0.36.jar";
 	}
 
 	private void trim(){

@@ -8,9 +8,8 @@ import java.util.Properties;
 
 public class AssemblerStage extends MetagenomeStage{
 	private Assembler assembler;
-	//private static final String CONFIG = "/home/student/SeniorDesign-MetagenomicPipeline/assembler_config.txt";
-	//TODO
-	private static final String CONFIG = "D:/GoogleDrive/UCF/SeniorDesign/SeniorDesign-MetagenomicPipeline/assembler_config.txt";
+	private static final String CONFIG = "/home/student/SeniorDesign-MetagenomicPipeline/assembler_config.txt";
+	
 	
 	private String idbaPath;
 	private String idbaConvertPath;

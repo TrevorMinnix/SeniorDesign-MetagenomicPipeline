@@ -35,23 +35,23 @@ public class MetagenomePipeline {
 //		//run pipeline
 //		pipeline.runPipeline();
 		
-//		//test job
-//		MetagenomeJob job = new MetagenomeJob("testID");
-//		job.pairedEnd = true;
-//		job.inputForward = "D:/GoogleDrive/UCF/SeniorDesign/Project/TestData/Simulated/References1/simulatedReads1.fq";
-//		job.inputReverse = "D:/GoogleDrive/UCF/SeniorDesign/Project/TestData/Simulated/References1/simulatedReads2.fq";
-//		job.trimmedSE = "C:/Users/Architect0126/Desktop/trimmed.fa";
-//		job.trimmedForwardPaired = "C:/Users/Architect0126/Desktop/trimmedFP.fa";
-//		job.trimmedForwardUnpaired = "C:/Users/Architect0126/Desktop/trimmedFU.fa";
-//		job.trimmedReversePaired = "C:/Users/Architect0126/Desktop/trimmedRP.fa";
-//		job.trimmedReverseUnpaired = "C:/Users/Architect0126/Desktop/trimmedRU.fa";
-//		
-//		trimming.addJob(job);
-//		trimming.nextJob();
-//		trimming.process();
-//		
-//		assemblerMegahit.addJob(job);
-//		assemblerMegahit.nextJob();
-//		assemblerMegahit.process();
+		//test job
+		MetagenomeJob job = new MetagenomeJob("testID");
+		job.pairedEnd = true;
+		job.inputForward = "/home/student/SeniorDesign-MetagenomicPipeline/TestData/simulatedReads1.fq";
+		//job.inputReverse = "D:/GoogleDrive/UCF/SeniorDesign/Project/TestData/Simulated/References1/simulatedReads2.fq";
+		job.trimmedSE =  "/home/student/Testing/trimmedSE.fq";
+		job.trimmedForwardPaired = "/home/student/Testing/trimmedFP.fq";
+		job.trimmedForwardUnpaired = "/home/student/Testing/trimmedFU.fq";
+		job.trimmedReversePaired = "/home/student/Testing/trimmedRP.fq";
+		job.trimmedReverseUnpaired = "/home/student/Testing/trimmedRU.fq";
+
+		trimming.addJob(job);
+		trimming.nextJob();
+		trimming.process();
+		
+		assemblerMegahit.addJob(job);
+		assemblerMegahit.nextJob();
+		assemblerMegahit.process();
 	}
 }
