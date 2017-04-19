@@ -25,8 +25,14 @@ $trimmedRPPath = $basePath . "trimmedRP.fq";
 $trimmedRUPath = $basePath . "trimmedRU.fq";
 $trimmedCPath = $basePath . "trimmedC.fa";
 $idbaAssembly = $basePath . "idba/";
+$idbaStat = $basePath . "idbaStat.txt";
+$idbaVisual = $idbaAssembly;
 $megahitAssembly = $basePath . "megahit/";
+$megahitStat = $basePath . "megahit/";
+$megahitVisual = $megahitAssembly;
 $metaspadesAssembly = $basePath . "metaspades/";
+$metaspadesStat = $basePath . "metaspadesStat.txt";
+$metaspadesVisual = $metaspadesAssembly;
 
 //sql query
 //single end
@@ -46,17 +52,17 @@ $con->query($query);
 //assembler table queries
 //idba
 if($idbaCheck == 1){
-	$query = "INSERT INTO idba (jobID, assembly, stat, visual) VALUES ('{$jobID}', '{$idbaAssembly}', 'idbaStat.txt', 'idbaVisual')";
+	$query = "INSERT INTO idba (jobID, assembly, stat, visual) VALUES ('{$jobID}', '{$idbaAssembly}', '{$idbaStat}', '{$idbaVisual}')";
 	$con->query($query);
 }
 //megahit
 if($megahitCheck == 1){
-	$query = "INSERT INTO idba (jobID, assembly, stat, visual) VALUES ('{$jobID}', '{$megahitAssembly}', 'megahitStat.txt', 'megahitVisual')";
+	$query = "INSERT INTO megahit (jobID, assembly, stat, visual) VALUES ('{$jobID}', '{$megahitAssembly}', '{$megahitStat}', '{$megahitVisual}')";
 	$con->query($query);
 }
 //metaspades
 if($metaspadesCheck == 1){
-	$query = "INSERT INTO idba (jobID, assembly, stat, visual) VALUES ('{$jobID}', '{$metaspadesAssembly}', 'metaspadesStat.txt', 'metaspadesVisual')";
+	$query = "INSERT INTO metaspades (jobID, assembly, stat, visual) VALUES ('{$jobID}', '{$metaspadesAssembly}', '{$metaspadesStat}', '{$metaspadesVisual}')";
 	$con->query($query);
 }
 
