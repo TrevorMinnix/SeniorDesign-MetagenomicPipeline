@@ -48,11 +48,11 @@ public class MetagenomePipeline {
 		job.trimmedReversePaired = "/home/student/Testing/trimmedRP.fq";
 		job.trimmedReverseUnpaired = "/home/student/Testing/trimmedRU.fq";
 		job.trimmedCombined = "/home/student/Testing/trimmedC.fq";
-		job.megahitAssembly = "/home/student/Testing/megahitAssembly";
+		job.megahitAssembly = "/home/student/Testing/megahitAssembly/";
 		job.megahitStats = "/home/student/Testing/megahitStats.txt";
-		job.idbaAssembly = "/home/student/Testing/idbaAssembly";
+		job.idbaAssembly = "/home/student/Testing/idbaAssembly/";
 		job.idbaStats = "/home/student/Testing/idbaStats.txt";
-		job.metaspadesAssembly = "/home/student/Testing/spadesAssembly";
+		job.metaspadesAssembly = "/home/student/Testing/spadesAssembly/";
 		job.metaspadesStats = "/home/student/Testing/metaspadesStats.txt";
 
 //		trimming.addJob(job);
