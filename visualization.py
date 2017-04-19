@@ -1,5 +1,3 @@
-#!/usr/bin/env python2
-
 import matplotlib.pyplot as plot
 import sys
 
@@ -14,10 +12,10 @@ def Create_table(cell_text, output_dir):
     row_height = lHeight_coeff * scaling
     nrows = len(cell_text)
     
-    rows = ['Assembly Length (bp)','Number of Contigs','Number of Clean Windows'
-            ,'Number of Large Contigs', 'GC Comp.', '# Windows', 'N50', 'N75', 'Avg. Number of N per 100 kbp'
-            ,'Aligned Genome','Duplication Rate','Number of Gaps','Largest Alignment Length'
-            ,'Number of Fully Unaligned Reads','# Mapped Reads']
+    rows = ['Assembly Length (bp)','# of Contigs','# of Clean Windows'
+            ,'# of Large Contigs', 'GC Comp.', '# Windows', 'N50', 'N75', 'Avg. # of N per 100 kbp'
+            ,'Aligned Genome','Duplication Rate','# of Gaps','Largest Alignment Length'
+            ,'# of Fully Unaligned Reads','# of Mapped Reads']
     
     col_widths = [len(max(rows, key = len)), len(max([str(i[0]) for i in cell_text], key = len))]
 
@@ -99,14 +97,16 @@ def Nx_plot(nxArray, output_dir):
 #Plots the cumulative length
 def CumulativePlot(contigSizes, output_dir):
     prevContig = 0
+    contigSizes = contigSizes[::-1]
+    print contigSizes
     cumulContig = [0] * len(contigSizes)
     for i in xrange(len(contigSizes)):
-        cumulContig[i] = prevContig
+        cumulContig[i] = prevContig + contigSizes[i]
         prevContig += contigSizes[i]
     
     plot.plot(cumulContig, linewidth = 2.0)
     plot.ylabel('Contig Length (bp)')
-    plot.xlabel('Contig Index (bp)')
+    plot.xlabel('Contig Index')
     plot.grid(b = True)
     plot.title('Cumulative Length')
     plot.savefig('/' + output_dir+'/CumulPlot.jpg')
@@ -137,6 +137,5 @@ def Visualize():
     Nx_plot(nxArray, output_dir)
     CumulativePlot(contigSizes, output_dir)
     GcPlot(gcCont, numWindows, output_dir)
-    
     
 Visualize()
