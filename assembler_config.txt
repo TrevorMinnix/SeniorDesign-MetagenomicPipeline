@@ -11,6 +11,6 @@ megahitSEDefault=-r se.fq -o megahit_se_assembled
 megahitPEDefault=-1 pe_1.fq -2 pe_2.fq -o megahit_pe_assembled
 spadesPath=/home/student/SeniorDesign-MetagenomicPipeline/SPAdes-3.9.1-Linux/bin/spades.py
 spadesPEDefault=--meta -1 pe_1.fq -2 pe_2.fq -o spades_assembled
-statsPath=/home/student/SeniorDesign-MetagnomicPipeline/statistics/statprog.jar
+statsPath=/home/student/SeniorDesign-MetagnomicPipeline/statprog.jar
 statsPrefix=java -jar
 statsDefault=I=INPUT O=OUTPUT R=READS
