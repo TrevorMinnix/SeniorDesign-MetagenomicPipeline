@@ -16,19 +16,43 @@ if($_POST['end'] == "paired-end"){
 	$pairedEnd = 1;
 }
 
+//file paths
+$basePath = "/home/student/SeniorDesign-MetagenomicPipeline/Jobs/" . $jobID . "/";
+$trimmedSEPath = $basePath . "trimmedSE.fq";
+$trimmedFPPath = $basePath . "trimmedFP.fq";
+$trimmedFUPath = $basePath . "trimmedFU.fq";
+$trimmedRPPath = $basePath . "trimmedRP.fq";
+$trimmedRUPath = $basePath . "trimmedRU.fq";
+$trimmedCPath = $basePath . "trimmedC.fa";
+
 //sql query
 //single end
 if($pairedEnd == 0){
-	$query = "INSERT INTO job (jobID, email, inputForward, idba, megahit, metaspades, pairedEnd, jobStatus) VALUES ('{$jobID}', '{$_POST['email']}', '{$_FILES['my_file']['name']}', '{$idbaCheck}', '{$megahitCheck}', '{$metaspadesCheck}', '{$pairedEnd}', '0')";
+	$query = "INSERT INTO job (jobID, email, inputForward, idba, megahit, metaspades, pairedEnd, jobStatus, trimmedSE) VALUES ('{$jobID}', '{$_POST['email']}', '{$_FILES['my_file']['name']}', '{$idbaCheck}', '{$megahitCheck}', '{$metaspadesCheck}', '{$pairedEnd}', '0', '{$trimmedSEPath}')";
 } 
 //paired end
 else{
-	$query = "INSERT INTO job (jobID, email, inputForward, inputReverse, idba, megahit, metaspades, pairedEnd, jobStatus) VALUES ('{$jobID}', '{$_POST['email']}', '{$_FILES['fmy_file']['name']}', '{$_FILES['rmy_file']['name']}', '{$idbaCheck}', '{$megahitCheck}', '{$metaspadesCheck}', '{$pairedEnd}', '0')";
+	$query = "INSERT INTO job (jobID, email, inputForward, inputReverse, idba, megahit, metaspades, pairedEnd, jobStatus, trimmedForwardPaired, trimmedForwardUnpaired, trimmedReversePaired, trimmedReverseUnpaired, trimmedCombined) VALUES ('{$jobID}', '{$_POST['email']}', '{$_FILES['fmy_file']['name']}', '{$_FILES['rmy_file']['name']}', '{$idbaCheck}', '{$megahitCheck}', '{$metaspadesCheck}', '{$pairedEnd}', '0', '{$trimmedFPPath}', '{$trimmedFUPath}', '{$trimmedRPPath}', '{$trimmedRUPath}', '{$trimmedCPath}')";
 }
+
 
 echo "Database insert: " . $query . "\n";
 
 $con->query($query);
+
+//assembler table queries
+//idba
+if($idbaCheck == 1){
+	$query = "INSERT INTO idba (jobID, assembly, stat, visual) VALUES ('{$jobID}', 'idba', 'idbaStat.txt', 'idbaVisual')";
+}
+//megahit
+if($megahitCheck == 1){
+	$query = "INSERT INTO idba (jobID, assembly, stat, visual) VALUES ('{$jobID}', 'megahit', 'megahitStat.txt', 'megahitVisual')";
+}
+//metaspades
+if($metaspadesCheck == 1){
+	$query = "INSERT INTO idba (jobID, assembly, stat, visual) VALUES ('{$jobID}', 'metaspades', 'metaspadesStat.txt', 'metaspadesVisual')";
+}
 
 mkdir("/home/student/SeniorDesign-MetagenomicPipeline/www/Jobs/" . $jobID . "/");
 
