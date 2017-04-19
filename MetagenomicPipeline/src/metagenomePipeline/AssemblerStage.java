@@ -56,11 +56,33 @@ public class AssemblerStage extends MetagenomeStage{
 				
 				//assembly command
 				idbaCommand();
+				
+				try {
+					System.out.println("Assembling:");
+					RunTool.runProgramAndWait(command);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 			break;
 		case MEGAHIT:
 			if(currentJob.megahit){
 				megahitCommand();
+				
+				try {
+					System.out.println("Assembling:");
+					RunTool.runProgramAndWait(command);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 			break;
 		case SPADES:
@@ -73,20 +95,20 @@ public class AssemblerStage extends MetagenomeStage{
 				
 				//assembly command
 				spadesCommand();
+				
+				try {
+					System.out.println("Assembling:");
+					RunTool.runProgramAndWait(command);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 			break;
 		default:
-		}
-				
-		try {
-			System.out.println("Assembling:");
-			RunTool.runProgramAndWait(command);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 	}
 	
