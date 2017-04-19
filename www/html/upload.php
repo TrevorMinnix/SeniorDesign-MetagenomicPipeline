@@ -30,9 +30,9 @@ echo "Database insert: " . $query . "\n";
 
 $con->query($query);
 
-mkdir("/home/student/SeniorDesign-MetagenomicPipeline/www/html/Jobs/" . $jobID . "/");
+mkdir("/home/student/SeniorDesign-MetagenomicPipeline/www/Jobs/" . $jobID . "/");
 
-$target_dir = "/home/student/SeniorDesign-MetagenomicPipeline/www/html/Jobs/" . $jobID . "/";
+$target_dir = "/home/student/SeniorDesign-MetagenomicPipeline/www/Jobs/" . $jobID . "/";
 
 mkdir($target_dir . "IDBA". "/");
 mkdir($target_dir . "MEGAHIT". "/");
