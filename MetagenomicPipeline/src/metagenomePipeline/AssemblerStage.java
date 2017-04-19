@@ -87,8 +87,7 @@ public class AssemblerStage extends MetagenomeStage{
 	@Override
 	protected void process(){
 		assemble();
-		//TODO: add back in after testing
-		//db.updateAssembly(currentJob.jobID, assemblerTable, true);
+		db.updateAssembly(currentJob.jobID, assemblerTable, true);
 	}
 	
 	private static String replaceIdbaConvert(String original, String forward, String reverse, String combined){
@@ -208,6 +207,19 @@ public class AssemblerStage extends MetagenomeStage{
 			break;
 		default:
 			throw new Exception("Invalid assembler.");
+		}
+	}
+	
+	public static String assemblerString(Assembler assembler){
+		switch(assembler){
+		case IDBA:
+			return "idba";
+		case MEGAHIT:
+			return "megahit";
+		case SPADES:
+			return "metaspades";
+		default:
+			return null;	
 		}
 	}
 }

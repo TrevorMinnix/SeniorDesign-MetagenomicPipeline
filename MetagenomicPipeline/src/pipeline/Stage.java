@@ -41,8 +41,7 @@ public abstract class Stage <J extends Job> extends Thread{
 	}
 	
 	//adds job to queue
-	//TODO
-	public void addJob(J job){
+	protected void addJob(J job){
 		queue.add(job);
 	}
 	
@@ -59,8 +58,7 @@ public abstract class Stage <J extends Job> extends Thread{
 	}
 	
 	//fetches next job from queue
-	//TODO
-	public void nextJob(){
+	protected void nextJob(){
 		currentJob = queue.poll();
 	}
 	

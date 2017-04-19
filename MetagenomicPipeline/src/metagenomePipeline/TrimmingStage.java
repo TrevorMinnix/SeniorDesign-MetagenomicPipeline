@@ -41,8 +41,7 @@ public class TrimmingStage extends MetagenomeStage{
 	@Override
 	protected void process(){
 		trim();
-		//TODO: add back in after testing
-		//db.updateTrimming(currentJob.jobID, true);
+		db.updateTrimming(currentJob.jobID, true);
 	}
 	
 	private static String replaceSEFilePaths(String original, String input, String output){

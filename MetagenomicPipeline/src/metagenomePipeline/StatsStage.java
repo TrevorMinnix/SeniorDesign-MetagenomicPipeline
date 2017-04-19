@@ -48,8 +48,7 @@ public class StatsStage extends MetagenomeStage{
 	@Override
 	protected void process(){
 		stats();
-		//TODO: add back in after testing
-		//db.updateStats(currentJob.jobID, true);
+		db.updateStatistics(currentJob.jobID, assemblerString(assembler), true);
 	}
 	
 	
@@ -85,13 +84,11 @@ public class StatsStage extends MetagenomeStage{
 			command = replaceFilePath(command, input, output, reads);
 			break;
 		case MEGAHIT:
-			//TODO
 			input = currentJob.megahitAssembly + "final.contigs.fa";
 			output = currentJob.megahitStats;
 			command = replaceFilePath(command, input, output, reads);
 			break;
 		case SPADES:
-			//TODO
 			input = currentJob.metaspadesAssembly + "contigs.fasta";
 			output = currentJob.metaspadesStats;
 			command = replaceFilePath(command, input, output, reads);
@@ -123,6 +120,19 @@ public class StatsStage extends MetagenomeStage{
 			break;
 		default:
 			throw new Exception("Invalid assembler.");
+		}
+	}
+	
+	public static String assemblerString(Assembler assembler){
+		switch(assembler){
+		case IDBA:
+			return "idba";
+		case MEGAHIT:
+			return "megahit";
+		case SPADES:
+			return "metaspades";
+		default:
+			return null;	
 		}
 	}
 }
