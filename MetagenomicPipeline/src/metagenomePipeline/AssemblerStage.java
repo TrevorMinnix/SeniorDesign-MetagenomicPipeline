@@ -21,6 +21,7 @@ public class AssemblerStage extends MetagenomeStage{
 	private String spadesPath;
 	private String spadesPEDefault;
 	private String command;
+	private String assemblerTable;
 	
 	private enum Assembler{
 		IDBA, MEGAHIT, SPADES;
@@ -38,16 +39,19 @@ public class AssemblerStage extends MetagenomeStage{
 			case "idba":
 			case "IDBA":
 				this.assembler = Assembler.IDBA;
+				assemblerTable = "idba";
 				break;
 			case "megahit":
 			case "MEGAHIT":
 			case "Megahit":
 				this.assembler = Assembler.MEGAHIT;
+				assemblerTable = "megahit";
 				break;
 			case "spades":
 			case "SPAdes":
 			case "SPADES":
 				this.assembler = Assembler.SPADES;
+				assemblerTable = "metaspades";
 				break;
 			default:
 				throw new Exception("Invalid assembler.");
@@ -103,6 +107,8 @@ public class AssemblerStage extends MetagenomeStage{
 	@Override
 	protected void process(){
 		assemble();
+		//TODO: add back in after testing
+		//db.updateAssembly(currentJob.jobID, assemblerTable, true);
 	}
 	
 	private static String replaceIdbaConvert(String original, String forward, String reverse, String combined){
