@@ -74,6 +74,7 @@ public class AssemblerStage extends MetagenomeStage{
 		}
 				
 		try {
+			System.out.println("Assembling:");
 			RunTool.runProgramAndWait(command);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
