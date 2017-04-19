@@ -44,31 +44,36 @@ public class AssemblerStage extends MetagenomeStage{
 	private void assemble(){	
 		switch(assembler){
 		case IDBA:
-			//ensure paired end
-			if(!currentJob.pairedEnd){
-				//TODO: assembly failure
-				break;
+			if(currentJob.idba){
+				//ensure paired end
+				if(!currentJob.pairedEnd){
+					//TODO: assembly failure
+					break;
+				}
+				
+				//combine input reads into single FASTA file
+				combineReads();
+				
+				//assembly command
+				idbaCommand();
 			}
-			
-			//combine input reads into single FASTA file
-			combineReads();
-			
-			//assembly command
-			idbaCommand();
 			break;
 		case MEGAHIT:
-			//single end command
-			megahitCommand();
+			if(currentJob.megahit){
+				megahitCommand();
+			}
 			break;
 		case SPADES:
-			//ensure paired end
-			if(!currentJob.pairedEnd){
-				//TODO: assembly failure
-				break;
+			if(currentJob.metaspades){
+				//ensure paired end
+				if(!currentJob.pairedEnd){
+					//TODO: assembly failure
+					break;
+				}
+				
+				//assembly command
+				spadesCommand();
 			}
-			
-			//assembly command
-			spadesCommand();
 			break;
 		default:
 		}
