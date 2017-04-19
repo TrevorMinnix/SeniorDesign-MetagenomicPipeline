@@ -52,10 +52,13 @@ public class MetagenomePipeline {
 		job.trimmedCombined = "/home/student/Testing/trimmedC.fq";
 		job.megahitAssembly = "/home/student/Testing/megahitAssembly/";
 		job.megahitStats = "/home/student/Testing/megahitStats.txt";
+		job.megahitVisual = "/home/student/Testing/megahit/";
 		job.idbaAssembly = "/home/student/Testing/idbaAssembly/";
 		job.idbaStats = "/home/student/Testing/idbaStats.txt";
+		job.idbaVisual = "/home/student/Testing/idba/";
 		job.metaspadesAssembly = "/home/student/Testing/spadesAssembly/";
 		job.metaspadesStats = "/home/student/Testing/metaspadesStats.txt";
+		job.metaspadesVisual = "/home/student/Testing/spades/";
 
 //		trimming.addJob(job);
 //		trimming.nextJob();
