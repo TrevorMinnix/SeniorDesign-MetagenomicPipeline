@@ -47,14 +47,17 @@ $con->query($query);
 //idba
 if($idbaCheck == 1){
 	$query = "INSERT INTO idba (jobID, assembly, stat, visual) VALUES ('{$jobID}', '{$idbaAssembly}', 'idbaStat.txt', 'idbaVisual')";
+	$con->query($query);
 }
 //megahit
 if($megahitCheck == 1){
 	$query = "INSERT INTO idba (jobID, assembly, stat, visual) VALUES ('{$jobID}', '{$megahitAssembly}', 'megahitStat.txt', 'megahitVisual')";
+	$con->query($query);
 }
 //metaspades
 if($metaspadesCheck == 1){
 	$query = "INSERT INTO idba (jobID, assembly, stat, visual) VALUES ('{$jobID}', '{$metaspadesAssembly}', 'metaspadesStat.txt', 'metaspadesVisual')";
+	$con->query($query);
 }
 
 mkdir("/home/student/SeniorDesign-MetagenomicPipeline/www/Jobs/" . $jobID . "/");
