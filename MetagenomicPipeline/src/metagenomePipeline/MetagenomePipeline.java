@@ -39,7 +39,7 @@ public class MetagenomePipeline {
 		MetagenomeJob job = new MetagenomeJob("testID");
 		job.pairedEnd = false;
 		job.inputForward = "/home/student/SeniorDesign-MetagenomicPipeline/TestData/simulatedReads1.fq";
-		//job.inputReverse = "D:/GoogleDrive/UCF/SeniorDesign/Project/TestData/Simulated/References1/simulatedReads2.fq";
+		job.inputReverse = "/home/student/SeniorDesign-MetagenomicPipeline/TestData/simulatedReads2.fq";
 		job.trimmedSE =  "/home/student/Testing/trimmedSE.fq";
 		job.trimmedForwardPaired = "/home/student/Testing/trimmedFP.fq";
 		job.trimmedForwardUnpaired = "/home/student/Testing/trimmedFU.fq";
