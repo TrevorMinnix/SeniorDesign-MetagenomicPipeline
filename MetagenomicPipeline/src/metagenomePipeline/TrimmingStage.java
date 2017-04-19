@@ -41,6 +41,7 @@ public class TrimmingStage extends MetagenomeStage{
 	@Override
 	protected void process(){
 		trim();
+		//TODO
 		//db.updateTrimming(currentJob.jobID, true);
 	}
 	
