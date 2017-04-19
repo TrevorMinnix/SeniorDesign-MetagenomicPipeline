@@ -106,7 +106,7 @@ if($pairedEnd == 0){
     		   }
 	  }
 
-	$new_dir = $target_dir . "/" . "input_SE.fq";
+	$new_dir = $basePath . "/" . "input_SE.fq";
 
 	$fileHand = fopen($target_file, 'r');
 	fclose($fileHand);
@@ -115,8 +115,8 @@ if($pairedEnd == 0){
 
 else{
 
-	$f_target_file = $target_dir . basename($_FILES["fmy_file"]["name"]);
-	$r_target_file = $target_dir . basename($_FILES["rmy_file"]["name"]);
+	$f_target_file = $basePath . basename($_FILES["fmy_file"]["name"]);
+	$r_target_file = $basePath . basename($_FILES["rmy_file"]["name"]);
 
 	if(file_exists($f_target_file) || file_exists($r_target_file)){
 		echo "Sorry, 1 or more files already exist.\n";
@@ -147,8 +147,8 @@ else{
 	     }
 	}
 
-	$f_new_dir = $target_dir . "/" . "input_forward.fq";
-	$r_new_dir = $target_dir . "/" . "input_reverse.fq";
+	$f_new_dir = $basePath . "/" . "input_forward.fq";
+	$r_new_dir = $basePath . "/" . "input_reverse.fq";
 
 	$f_file_hand = fopen($f_target_file, 'r');
 	fclose($f_file_hand);
