@@ -36,11 +36,13 @@ public class VisualStage extends MetagenomeStage{
 		//build command by replacing files names in default string
 		buildCommand();
 		
-		try {
-			RunTool.runProgramAndWait(command);
-		} catch (IOException | InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		if(command != null){
+			try {
+				RunTool.runProgramAndWait(command);
+			} catch (IOException | InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 	
@@ -73,19 +75,32 @@ public class VisualStage extends MetagenomeStage{
 		String input, output;
 		switch(assembler){
 		case IDBA:
-			input = currentJob.idbaStats;
-			output = currentJob.idbaVisual;
-			command = replacePath(command, input, output);
+			if(currentJob.idba){
+				input = currentJob.idbaStats;
+				output = currentJob.idbaVisual;
+				command = replacePath(command, input, output);
+			}else{
+				command = null;
+			}
 			break;
 		case MEGAHIT:
-			input = currentJob.megahitStats;
-			output = currentJob.megahitVisual;
-			command = replacePath(command, input, output);
+			if(currentJob.megahit){
+				input = currentJob.megahitStats;
+				output = currentJob.megahitVisual;
+				command = replacePath(command, input, output);
+			}else{
+				command = null;
+			}
 			break;
 		case SPADES:
-			input = currentJob.metaspadesStats;
-			output = currentJob.metaspadesVisual;
-			command = replacePath(command, input, output);
+			if(currentJob.metaspades){
+				input = currentJob.metaspadesStats;
+				output = currentJob.metaspadesVisual;
+				command = replacePath(command, input, output);
+			}else{
+				command = null;
+			}
+			break;
 		}
 	}
 	

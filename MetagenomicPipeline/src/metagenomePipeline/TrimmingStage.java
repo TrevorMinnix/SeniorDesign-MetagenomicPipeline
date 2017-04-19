@@ -30,6 +30,7 @@ public class TrimmingStage extends MetagenomeStage{
 		//build command by replacing files names in default string
 		buildCommand();
 		
+		System.out.println("Trimming:");
 		try {
 			RunTool.runProgramAndWait(command);
 		} catch (IOException | InterruptedException e) {
