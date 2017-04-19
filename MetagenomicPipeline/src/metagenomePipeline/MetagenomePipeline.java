@@ -45,6 +45,7 @@ public class MetagenomePipeline {
 		job.trimmedForwardUnpaired = "/home/student/Testing/trimmedFU.fq";
 		job.trimmedReversePaired = "/home/student/Testing/trimmedRP.fq";
 		job.trimmedReverseUnpaired = "/home/student/Testing/trimmedRU.fq";
+		job.trimmedCombined = "/home/student/Testing/trimmedC.fq";
 		job.megahitAssembly = "/home/student/Testing/megahitAssembly";
 		job.idbaAssembly = "/home/student/Testing/idbaAssembly";
 		job.metaspadesAssembly = "/home/student/Testing/spadesAssembly";
