@@ -38,14 +38,14 @@ $metaspadesVisual = $metaspadesAssembly;
 //sql query
 //single end
 if($pairedEnd == 0){
-	$inputForward = $basePath . $_FILES['my_file']['name'];
+	$inputForward = $basePath . "input_SE.fq";
 
 	$query = "INSERT INTO job (jobID, email, inputForward, idba, megahit, metaspades, pairedEnd, jobStatus, trimmedSE) VALUES ('{$jobID}', '{$_POST['email']}', '{$inputForward}', '{$idbaCheck}', '{$megahitCheck}', '{$metaspadesCheck}', '{$pairedEnd}', '0', '{$trimmedSEPath}')";
 } 
 //paired end
 else{
-	$inputForward = $basePath . $_FILES['fmy_file']['name'];
-	$inputReverse= $basePath . $_FILES['rmy_file']['name'];
+	$inputForward = $basePath . "input_forward.fq";
+	$inputReverse= $basePath . "input_reverse.fq";
 
 	$query = "INSERT INTO job (jobID, email, inputForward, inputReverse, idba, megahit, metaspades, pairedEnd, jobStatus, trimmedForwardPaired, trimmedForwardUnpaired, trimmedReversePaired, trimmedReverseUnpaired, trimmedCombined) VALUES ('{$jobID}', '{$_POST['email']}', '{$inputForward}', '{$inputReverse}', '{$idbaCheck}', '{$megahitCheck}', '{$metaspadesCheck}', '{$pairedEnd}', '0', '{$trimmedFPPath}', '{$trimmedFUPath}', '{$trimmedRPPath}', '{$trimmedRUPath}', '{$trimmedCPath}')";
 }
