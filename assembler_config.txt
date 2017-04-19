@@ -14,5 +14,5 @@ spadesPEDefault=--meta -1 pe_1.fq -2 pe_2.fq -o spades_assembled
 statsPath=statprog
 statsPrefix=java -cp /home/student/SeniorDesign-MetagenomicPipeline/statistics/
 statsDefault=I=INPUT O=OUTPUT R=READS
-visualPath=/home/student/SeniorDesign-MetagenomicPipeline/visualization.py
+visualPath=python2 /home/student/SeniorDesign-MetagenomicPipeline/visualization.py
 visualDefault=INPUT OUTPUT
