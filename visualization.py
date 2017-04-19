@@ -38,8 +38,8 @@ def Create_table(cell_text, output_dir):
     plot.close()
 
 #Opens and reads the file containing statistics
-def openStatFile():
-    file = open('statistics.txt', 'r') 
+def openStatFile(inputFile):
+    file = open(inputFile, 'r') 
     statistics = []
     statistics.append([int(file.readline())])
     statistics.append([int(file.readline())])
@@ -125,10 +125,12 @@ def GcPlot(gcCont, numWindows, output_dir):
     plot.cla()
     plot.close()
  
-#The main function  
+#The main function, takes two command line arguments
+#First is the input file of statistics
+#Second arg is the output directory
 def Visualize():
-    output_dir = sys.argv[1]
-    statistics, contigSizes, numWindows, gcCont, nxArray = openStatFile()
+    inputFile, output_dir = sys.argv[1], sys.argv[2]
+    statistics, contigSizes, numWindows, gcCont, nxArray = openStatFile(inputFile)
     Create_table(statistics, output_dir)
     Nx_plot(nxArray, output_dir)
     CumulativePlot(contigSizes, output_dir)
