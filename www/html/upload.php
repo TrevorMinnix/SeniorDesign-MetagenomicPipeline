@@ -98,7 +98,7 @@ if($pairedEnd == 0){
 			 	//send email to results page
 
 	            $message = "The results for your metagenomic assembly pipeline job can be found at 10.171.204.144/html/results.html?jobID={$jobID}.";
-	            $mailCommand = "python /home/student/SeniorDesign-MetagenomicPipeline/www/html/sendmail.py' '{$_POST['email']} 'Metagenomic Pipeline Results' '{$message}'";
+	            $mailCommand = "python '/home/student/SeniorDesign-MetagenomicPipeline/www/html/sendmail.py' '{$_POST['email']}' 'Metagenomic Pipeline Results' '{$message}'";
 	            $mailingOutput = shell_exec($mailCommand);
 	            echo "Mail command: " . $mailCommand . "\n";
 	            echo "Mailing output: " . $mailingOutput . "\n";
