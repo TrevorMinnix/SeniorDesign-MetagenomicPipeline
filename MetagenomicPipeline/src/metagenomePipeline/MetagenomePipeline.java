@@ -37,7 +37,7 @@ public class MetagenomePipeline {
 		
 		//test job
 		MetagenomeJob job = new MetagenomeJob("testID");
-		job.pairedEnd = false;
+		job.pairedEnd = true;
 		job.inputForward = "/home/student/SeniorDesign-MetagenomicPipeline/TestData/simulatedReads1.fq";
 		job.inputReverse = "/home/student/SeniorDesign-MetagenomicPipeline/TestData/simulatedReads2.fq";
 		job.trimmedSE =  "/home/student/Testing/trimmedSE.fq";
@@ -45,7 +45,7 @@ public class MetagenomePipeline {
 		job.trimmedForwardUnpaired = "/home/student/Testing/trimmedFU.fq";
 		job.trimmedReversePaired = "/home/student/Testing/trimmedRP.fq";
 		job.trimmedReverseUnpaired = "/home/student/Testing/trimmedRU.fq";
-		job.megahitAssembly = "/home/student/Testing/megahitAssembly.fa";
+		job.megahitAssembly = "/home/student/Testing/megahitAssembly";
 
 		trimming.addJob(job);
 		trimming.nextJob();
