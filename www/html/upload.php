@@ -38,14 +38,14 @@ $metaspadesVisual = $metaspadesAssembly;
 //sql query
 //single end
 if($pairedEnd == 0){
-	$inputForward = $basePath . "input_SE.fq";
+	$inputForward = $basePath . "inputSE.fq";
 
 	$query = "INSERT INTO job (jobID, email, inputForward, idba, megahit, metaspades, pairedEnd, jobStatus, trimmedSE) VALUES ('{$jobID}', '{$_POST['email']}', '{$inputForward}', '{$idbaCheck}', '{$megahitCheck}', '{$metaspadesCheck}', '{$pairedEnd}', '0', '{$trimmedSEPath}')";
 } 
 //paired end
 else{
-	$inputForward = $basePath . "input_forward.fq";
-	$inputReverse= $basePath . "input_reverse.fq";
+	$inputForward = $basePath . "inputForward.fq";
+	$inputReverse= $basePath . "inputReverse.fq";
 
 	$query = "INSERT INTO job (jobID, email, inputForward, inputReverse, idba, megahit, metaspades, pairedEnd, jobStatus, trimmedForwardPaired, trimmedForwardUnpaired, trimmedReversePaired, trimmedReverseUnpaired, trimmedCombined) VALUES ('{$jobID}', '{$_POST['email']}', '{$inputForward}', '{$inputReverse}', '{$idbaCheck}', '{$megahitCheck}', '{$metaspadesCheck}', '{$pairedEnd}', '0', '{$trimmedFPPath}', '{$trimmedFUPath}', '{$trimmedRPPath}', '{$trimmedRUPath}', '{$trimmedCPath}')";
 }
@@ -113,7 +113,7 @@ if($pairedEnd == 0){
     		   }
 	  }
 
-	$new_dir = $basePath . "/" . "input_SE.fq";
+	$new_dir = $basePath . "/" . "inputSE.fq";
 
 	$fileHand = fopen($target_file, 'r');
 	fclose($fileHand);
@@ -154,8 +154,8 @@ else{
 	     }
 	}
 
-	$f_new_dir = $target_dir . "/" . "input_forward.fq";
-	$r_new_dir = $target_dir . "/" . "input_reverse.fq";
+	$f_new_dir = $target_dir . "/" . "inputForward.fq";
+	$r_new_dir = $target_dir . "/" . "inputReverse.fq";
 
 	$f_file_hand = fopen($f_target_file, 'r');
 	fclose($f_file_hand);
