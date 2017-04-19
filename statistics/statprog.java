@@ -139,7 +139,7 @@ public class statprog implements Runnable {
 		AllowedError		-		Maximum number of mismatchings allowed per each read mapping
 	 */
 	public static BigInteger len, cg, wind100, contigs, bigContigs, largestContig, Nnum;
-	public static ArrayList<BigInteger> contigArr, gcWind, contigArrOr;
+	public static ArrayList<BigInteger> contigArr, gcWind;
 	public static BigInteger[] NX;
 	public static ArrayList<StringBuilder> genome;
 	public static boolean endOfFile;
@@ -189,8 +189,6 @@ public class statprog implements Runnable {
 		
 		// grab stats from a single sweep of the assembly
 		read1(in);
-		for (int i = 0; i < contigArr.size(); ++i)
-			contigArrOr.add(contigArr.get(i));
 		calculateNX();
 		
 		/*
@@ -449,9 +447,9 @@ public class statprog implements Runnable {
 			out.printf("%s\n", contigs.toString());
 			out.printf("%d %s\n", WindowSize, wind100.toString());
 			out.printf("%s\n", bigContigs.toString());
-			out.printf("%d\n", contigArrOr.size());
-			for (int i = 0; i < contigArrOr.size(); ++i)
-				out.printf("%s ", contigArrOr.get(i).toString());
+			out.printf("%d\n", contigArr.size());
+			for (int i = contigArr.size() - 1; i >= 0; --i)
+				out.printf("%s ", contigArr.get(i).toString());
 			out.printf("\n%.9f\n", ((double) cg.longValue()) / ((double) len.longValue()));
 			out.printf("%d %d\n", WindowSize, gcWind.size());
 			for (int i = 0; i < gcWind.size(); ++i)
@@ -490,7 +488,6 @@ public class statprog implements Runnable {
 		genome = new ArrayList<StringBuilder>();
 		r = new Random();
 		calculateReadMapping = false;
-		contigArrOr = new ArrayList<BigInteger>();
 	}
 	
 	// splitting the reading into its own function
