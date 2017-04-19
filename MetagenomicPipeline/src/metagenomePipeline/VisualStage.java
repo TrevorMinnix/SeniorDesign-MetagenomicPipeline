@@ -7,21 +7,29 @@ import java.io.InputStream;
 import java.util.Properties;
 
 public class VisualStage extends MetagenomeStage{
+	private Assembler assembler;
 	private static final String CONFIG = "/home/student/SeniorDesign-MetagenomicPipeline/assembler_config.txt";
 	
 	private String visualDefault;
 	private String visualPath;
 	private String command;
 	
+	private enum Assembler{
+		IDBA, MEGAHIT, SPADES;
+	}
+	
 	public VisualStage(){
 		super();
 	}
 	
-	public VisualStage(MetagenomeStage[] nextStage, DatabaseConnection db) throws Exception{
+	public VisualStage(MetagenomeStage[] nextStage, DatabaseConnection db, String assembler) throws Exception{
 		super(nextStage, db);
 		
-		//get assembler locations and defaults from text file
+		//default command from text file
 		getProperties();
+		
+		//set assembler
+		setAssembler(assembler);
 	}
 
 	private void visual(){
@@ -52,7 +60,7 @@ public class VisualStage extends MetagenomeStage{
 			
 			//get properties
 			visualPath = config.getProperty("visualPath");
-			visualDefault = config.getProperty("trimSEDefault");
+			visualDefault = config.getProperty("visualDefault");
 		}catch(FileNotFoundException e){
 			e.printStackTrace();
 		}catch(IOException e){
@@ -61,13 +69,51 @@ public class VisualStage extends MetagenomeStage{
 	}
 	
 	private void buildCommand(){
-		if(currentJob.pairedEnd){
-			command = trimPrefix + " " + trimPath + " " + trimPEDefault;
-			command = replacePEFilePaths(command, currentJob.inputForward, currentJob.inputReverse, 
-					currentJob.trimmedForwardPaired, currentJob.trimmedForwardUnpaired, currentJob.trimmedReversePaired, currentJob.trimmedReverseUnpaired);
-		}else{
-			command = trimPrefix + " " + trimPath + " " + trimSEDefault;
-			command = replaceSEFilePaths(command, currentJob.inputForward, currentJob.trimmedSE);
+		command = visualPath + " " + visualDefault;
+		
+		String input, output;
+		switch(assembler){
+		case IDBA:
+			input = currentJob.idbaStats;
+			output = currentJob.idbaVisual;
+			command = replacePath(command, input, output);
+			break;
+		case MEGAHIT:
+			input = currentJob.megahitStats;
+			output = currentJob.megahitVisual;
+			command = replacePath(command, input, output);
+			break;
+		case SPADES:
+			input = currentJob.metaspadesStats;
+			output = currentJob.metaspadesVisual;
+			command = replacePath(command, input, output);
+		}
+	}
+	
+	private static String replacePath(String command, String input, String output){
+		command = command.replaceAll("INPUT", input);
+		command = command.replaceAll("OUTPUT", output);
+		return command;
+	}
+	
+	private void setAssembler(String assembler) throws Exception{
+		switch(assembler) {
+		case "idba":
+		case "IDBA":
+			this.assembler = Assembler.IDBA;
+			break;
+		case "megahit":
+		case "MEGAHIT":
+		case "Megahit":
+			this.assembler = Assembler.MEGAHIT;
+			break;
+		case "spades":
+		case "SPAdes":
+		case "SPADES":
+			this.assembler = Assembler.SPADES;
+			break;
+		default:
+			throw new Exception("Invalid assembler.");
 		}
 	}
 }
