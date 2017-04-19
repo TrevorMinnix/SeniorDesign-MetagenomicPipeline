@@ -11,6 +11,7 @@ public class MetagenomePipeline {
 		//pipeline stages
 		TrimmingStage trimming;
 		AssemblerStage assemblerIdba, assemblerMegahit, assemblerSpades;
+		StatsStage stats;
 		//TODO: other stages
 		
 //		//connect to database
@@ -22,6 +23,7 @@ public class MetagenomePipeline {
 		assemblerMegahit = new AssemblerStage(new MetagenomeStage[]{}, db, "MEGAHIT");
 		assemblerSpades = new AssemblerStage(new MetagenomeStage[]{}, db, "SPADES");
 		trimming = new TrimmingStage(new MetagenomeStage[]{assemblerIdba, assemblerMegahit, assemblerSpades}, db);
+		stats = new StatsStage(new MetagenomeStage[]{}, db, "MEGAHIT");
 		
 		stages = new MetagenomeStage[]{trimming, assemblerIdba, assemblerMegahit, assemblerSpades};
 		
@@ -54,9 +56,9 @@ public class MetagenomePipeline {
 //		trimming.nextJob();
 //		trimming.process();
 		
-		assemblerMegahit.addJob(job);
-		assemblerMegahit.nextJob();
-		assemblerMegahit.process();
+//		assemblerMegahit.addJob(job);
+//		assemblerMegahit.nextJob();
+//		assemblerMegahit.process();
 		
 //		assemblerSpades.addJob(job);
 //		assemblerSpades.nextJob();
@@ -65,5 +67,9 @@ public class MetagenomePipeline {
 //		assemblerIdba.addJob(job);
 //		assemblerIdba.nextJob();
 //		assemblerIdba.process();
+		
+		stats.addJob(job);
+		stats.nextJob();
+		stats.process();
 	}
 }

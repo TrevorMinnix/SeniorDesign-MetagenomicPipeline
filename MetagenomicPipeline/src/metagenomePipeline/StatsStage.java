@@ -85,17 +85,24 @@ public class StatsStage extends MetagenomeStage{
 			command = replaceFilePath(command, input, output, reads);
 			break;
 		case MEGAHIT:
-			command = replaceFilePath(command);
+			//TODO
+			input = currentJob.megahitAssembly + "final.contigs.fa";
+			output = currentJob.megahitStats;
+			command = replaceFilePath(command, input, output, reads);
 			break;
 		case SPADES:
-			command = replaceFilePath(command);
+			//TODO
+			input = currentJob.metaspadesAssembly + "contigs.fasta";
+			output = currentJob.metaspadesStats;
+			command = replaceFilePath(command, input, output, reads);
 		}
 	}
 	
-	private String replaceFilePath(String command, String input, String output, String reads){
+	private static String replaceFilePath(String command, String input, String output, String reads){
 		command = command.replaceAll("INPUT", input);
 		command = command.replaceAll("OUTPUT", output);
 		command = command.replaceAll("READS", reads);
+		return command;
 	}
 	
 	private void setAssembler(String assembler) throws Exception{
