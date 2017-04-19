@@ -89,7 +89,7 @@ public class DatabaseConnection{
 	
 	private int execUpdate(String query){
 		Statement statement;
-		try {
+		try {System.out.println("here");
 			statement = con.createStatement();
 			int result = statement.executeUpdate(query);
 			statement.close();
