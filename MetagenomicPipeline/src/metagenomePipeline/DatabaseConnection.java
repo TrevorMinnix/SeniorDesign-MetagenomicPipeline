@@ -61,22 +61,22 @@ public class DatabaseConnection{
 	
 	public int updateAssembly(String jobID, String assembler, boolean status){
 		return execUpdate("UPDATE `" + assembler + "` SET `assemblyStatus` = '" + 
-				(status ? 1 : 0) + "' WHERE `idba`.`jobID` = '" + jobID + "';");
+				(status ? 1 : 0) + "' WHERE `"+ assembler +"`.`jobID` = '" + jobID + "';");
 	}
 	
 	public int updateReadMapping(String jobID, String assembler, boolean status){
 		return execUpdate("UPDATE `" + assembler + "` SET `readmapStatus` = '" + 
-				(status ? 1 : 0) + "' WHERE `idba`.`jobID` = '" + jobID + "';");
+				(status ? 1 : 0) + "' WHERE `"+ assembler +"`.`jobID` = '" + jobID + "';");
 	}
 	
 	public int updateStatistics(String jobID, String assembler, boolean status){
 		return execUpdate("UPDATE `" + assembler + "` SET `statStatus` = '" + 
-				(status ? 1 : 0) + "' WHERE `idba`.`jobID` = '" + jobID + "';");
+				(status ? 1 : 0) + "' WHERE `"+ assembler +"`.`jobID` = '" + jobID + "';");
 	}
 	
 	public int updateVisualization(String jobID, String assembler, boolean status){
 		return execUpdate("UPDATE `" + assembler + "` SET `visualStatus` = '" + 
-				(status ? 1 : 0) + "' WHERE `idba`.`jobID` = '" + jobID + "';");
+				(status ? 1 : 0) + "' WHERE `"+ assembler +"`.`jobID` = '" + jobID + "';");
 	}
 	
 	public int updateJobStatus(String jobID, int i){
