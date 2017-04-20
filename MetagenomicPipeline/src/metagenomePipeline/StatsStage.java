@@ -30,20 +30,21 @@ public class StatsStage extends MetagenomeStage{
 		setAssembler(assembler);
 		
 		//get default command from text file
-		getProperties();
+		getProperties();if(command != null){
+			try {
+				RunTool.runProgramAndWait(command);
+			} catch (IOException | InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 
 	private void stats(){
 		//build command by replacing files names in default string
 		buildCommand();
 		
-		System.out.println("Stats:");
-		try {
-			RunTool.runProgramAndWait(command);
-		} catch (IOException | InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
 	}
 	
 	@Override
@@ -84,6 +85,8 @@ public class StatsStage extends MetagenomeStage{
 				input = currentJob.idbaAssembly + "contig.fa";
 				output = currentJob.idbaStats;
 				command = replaceFilePath(command, input, output, reads);
+			} else {
+				command = null;
 			}
 			break;
 		case MEGAHIT:
@@ -91,6 +94,8 @@ public class StatsStage extends MetagenomeStage{
 				input = currentJob.megahitAssembly + "final.contigs.fa";
 				output = currentJob.megahitStats;
 				command = replaceFilePath(command, input, output, reads);
+			} else {
+				command = null;
 			}
 			break;
 		case SPADES:
@@ -98,6 +103,8 @@ public class StatsStage extends MetagenomeStage{
 				input = currentJob.metaspadesAssembly + "contigs.fasta";
 				output = currentJob.metaspadesStats;
 				command = replaceFilePath(command, input, output, reads);
+			} else {
+				command = null;
 			}
 			break;
 		}
