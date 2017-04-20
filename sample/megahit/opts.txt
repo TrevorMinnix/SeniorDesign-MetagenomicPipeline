@@ -1,0 +1,5 @@
+-r
+/home/student/SeniorDesign-MetagenomicPipeline/www/Jobs/58f80115387ec3-63160195/trimmedSE.fq
+-o
+/home/student/SeniorDesign-MetagenomicPipeline/www/Jobs/58f80115387ec3-63160195/megahit/
+MEGAHIT_TEMP_DIR: /home/student/SeniorDesign-MetagenomicPipeline/www/Jobs/58f80115387ec3-63160195/megahit//tmp/
