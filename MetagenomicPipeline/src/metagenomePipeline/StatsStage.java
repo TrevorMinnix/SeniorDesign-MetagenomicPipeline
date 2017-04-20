@@ -83,6 +83,7 @@ public class StatsStage extends MetagenomeStage{
 		reads = currentJob.pairedEnd ? currentJob.trimmedForwardPaired : currentJob.trimmedSE;
 		switch(assembler){
 		case IDBA:
+			System.out.println("IDBA STATS");
 			if(currentJob.idba){
 				input = currentJob.idbaAssembly + "contig.fa";
 				output = currentJob.idbaStats;
@@ -92,6 +93,7 @@ public class StatsStage extends MetagenomeStage{
 			}
 			break;
 		case MEGAHIT:
+			System.out.println("MEGAHIT STATS");
 			if(currentJob.megahit){
 				input = currentJob.megahitAssembly + "final.contigs.fa";
 				output = currentJob.megahitStats;
@@ -101,6 +103,7 @@ public class StatsStage extends MetagenomeStage{
 			}
 			break;
 		case SPADES:
+			System.out.println("SPADES STATS");
 			if(currentJob.metaspades){
 				input = currentJob.metaspadesAssembly + "contigs.fasta";
 				output = currentJob.metaspadesStats;
