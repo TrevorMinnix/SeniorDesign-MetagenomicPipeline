@@ -31,6 +31,12 @@ public class StatsStage extends MetagenomeStage{
 		
 		//get default command from text file
 		getProperties();
+	}
+
+	private void stats(){
+		//build command by replacing files names in default string
+		buildCommand();
+		
 		if(command != null){
 			System.out.println("Stats:");
 			try {
@@ -40,13 +46,6 @@ public class StatsStage extends MetagenomeStage{
 				e.printStackTrace();
 			}
 		}
-	}
-
-	private void stats(){
-		//build command by replacing files names in default string
-		buildCommand();
-		
-		
 	}
 	
 	@Override
