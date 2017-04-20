@@ -1,0 +1,3 @@
+-r
+/home/student/SeniorDesign-MetagenomicPipeline/TestData/reads1.fastq
+MEGAHIT_TEMP_DIR: ./megahit_out/tmp/
