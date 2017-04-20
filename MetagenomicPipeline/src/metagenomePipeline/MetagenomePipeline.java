@@ -42,8 +42,9 @@ public class MetagenomePipeline {
 		//run pipeline
 		pipeline.runPipeline();
 		
-		System.in.read();
-		
+		for(Thread t : stages){
+			t.join();
+		}
 		//test job
 //		MetagenomeJob job = new MetagenomeJob("testID");
 //		job.pairedEnd = true;
