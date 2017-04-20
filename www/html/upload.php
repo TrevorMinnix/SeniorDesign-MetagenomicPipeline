@@ -16,7 +16,7 @@ if($_POST['end'] == "paired-end"){
 	$pairedEnd = 1;
 }
 
-echo $_POST['end'];
+echo "POST: " . $_POST['end'];
 
 //file paths
 $basePath = "/home/student/SeniorDesign-MetagenomicPipeline/www/Jobs/" . $jobID . "/";
