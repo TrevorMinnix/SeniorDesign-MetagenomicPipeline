@@ -182,7 +182,7 @@ public class AssemblerStage extends MetagenomeStage{
 	
 	private void combineReads(){
 		String command = idbaConvertPath + " " + idbaConvert;
-		command = replaceIdbaConvert(command, currentJob.trimmedForwardUnpaired, currentJob.trimmedReverseUnpaired, currentJob.trimmedCombined);
+		command = replaceIdbaConvert(command, currentJob.trimmedForwardPaired, currentJob.trimmedReversePaired, currentJob.trimmedCombined);
 		try {
 			RunTool.runProgramAndWait(command);
 		} catch (IOException e1) {
@@ -205,13 +205,13 @@ public class AssemblerStage extends MetagenomeStage{
 			command = replaceMegahitSE(command, currentJob.trimmedSE, currentJob.megahitAssembly);
 		}else{	//paired end command
 			command = megahitPath + " " + megahitPEDefault;
-			command = replaceMegahitPE(command, currentJob.trimmedForwardUnpaired, currentJob.trimmedReverseUnpaired, currentJob.megahitAssembly);
+			command = replaceMegahitPE(command, currentJob.trimmedForwardPaired, currentJob.trimmedReversePaired, currentJob.megahitAssembly);
 		}
 	}
 	
 	private void spadesCommand(){
 		command = spadesPath + " " + spadesPEDefault;
-		command = replaceSpadesPE(command, currentJob.trimmedForwardUnpaired, currentJob.trimmedReverseUnpaired, currentJob.metaspadesAssembly);
+		command = replaceSpadesPE(command, currentJob.trimmedForwardPaired, currentJob.trimmedReversePaired, currentJob.metaspadesAssembly);
 	}
 	
 	private void setAssembler(String assembler) throws Exception{
