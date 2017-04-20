@@ -146,7 +146,7 @@ else{
 			chmod($basePath, 0777);
 			echo "The files ". basename($_FILES["fmy_file"]["name"]). "and ". basename($_FILES["rmy_file"]["name"]). "have been uploaded.\n";
 
-			echo "Sent to: "$f_target_file;
+			echo "Sent to: " . $f_target_file;
 
             //update job status
             $con->query("UPDATE job SET jobStatus = '1' WHERE jobID = '{$jobID}'");
