@@ -29,7 +29,8 @@ public class MetagenomePipeline {
 		assemblerSpades = new AssemblerStage(new MetagenomeStage[]{statsSpades}, db, "SPADES");
 		trimming = new TrimmingStage(new MetagenomeStage[]{assemblerIdba, assemblerMegahit, assemblerSpades}, db);
 		
-		stages = new MetagenomeStage[]{trimming, assemblerIdba, assemblerMegahit, assemblerSpades};
+		stages = new MetagenomeStage[]{trimming, assemblerIdba, assemblerMegahit, assemblerSpades, statsIdba, statsMegahit, 
+				statsSpades, visualIdba, visualMegahit, visualSpades};
 		
 		//put stages in pipeline
 		pipeline = new Pipeline<MetagenomeJob>(stages, trimming);
