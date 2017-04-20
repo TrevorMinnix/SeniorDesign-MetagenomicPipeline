@@ -37,15 +37,15 @@ public class StatsStage extends MetagenomeStage{
 		//build command by replacing files names in default string
 		buildCommand();
 		
-//		if(command != null){
-//			System.out.println("Stats:");
-//			try {
-//				RunTool.runProgramAndWait(command);
-//			} catch (IOException | InterruptedException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//		}
+		if(command != null){
+			System.out.println("Stats:");
+			try {
+				RunTool.runProgramAndWait(command);
+			} catch (IOException | InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	@Override
