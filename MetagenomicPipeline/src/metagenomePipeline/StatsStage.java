@@ -92,7 +92,6 @@ public class StatsStage extends MetagenomeStage{
 			break;
 		case MEGAHIT:
 			if(currentJob.megahit){
-				System.out.println("PASSED");
 				input = currentJob.megahitAssembly + "final.contigs.fa";
 				output = currentJob.megahitStats;
 				command = replaceFilePath(command, input, output, reads);
