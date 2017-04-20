@@ -12,7 +12,7 @@ $metaspadesCheck = (isset($_POST['metaspadesCheck'])) ? 1 : 0;
 
 //get radio button value
 $pairedEnd = 0;
-if($_POST['end'] === "paired-end"){
+if($_POST['end'] == "paired-end"){
 	$pairedEnd = 1;
 }
 
