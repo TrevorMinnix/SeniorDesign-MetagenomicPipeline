@@ -80,19 +80,26 @@ public class StatsStage extends MetagenomeStage{
 		reads = currentJob.pairedEnd ? currentJob.trimmedForwardPaired : currentJob.trimmedSE;
 		switch(assembler){
 		case IDBA:
-			input = currentJob.idbaAssembly + "contig.fa";
-			output = currentJob.idbaStats;
-			command = replaceFilePath(command, input, output, reads);
+			if(currentJob.idba){
+				input = currentJob.idbaAssembly + "contig.fa";
+				output = currentJob.idbaStats;
+				command = replaceFilePath(command, input, output, reads);
+			}
 			break;
 		case MEGAHIT:
-			input = currentJob.megahitAssembly + "final.contigs.fa";
-			output = currentJob.megahitStats;
-			command = replaceFilePath(command, input, output, reads);
+			if(currentJob.megahit){
+				input = currentJob.megahitAssembly + "final.contigs.fa";
+				output = currentJob.megahitStats;
+				command = replaceFilePath(command, input, output, reads);
+			}
 			break;
 		case SPADES:
-			input = currentJob.metaspadesAssembly + "contigs.fasta";
-			output = currentJob.metaspadesStats;
-			command = replaceFilePath(command, input, output, reads);
+			if(currentJob.metaspades){
+				input = currentJob.metaspadesAssembly + "contigs.fasta";
+				output = currentJob.metaspadesStats;
+				command = replaceFilePath(command, input, output, reads);
+			}
+			break;
 		}
 	}
 	
