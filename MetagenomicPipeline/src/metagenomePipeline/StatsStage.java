@@ -99,6 +99,7 @@ public class StatsStage extends MetagenomeStage{
 				input = currentJob.megahitAssembly + "final.contigs.fa";
 				output = currentJob.megahitStats;
 				command = replaceFilePath(command, input, output, reads);
+				System.out.println(command);
 			} else {
 				command = null;
 			}
