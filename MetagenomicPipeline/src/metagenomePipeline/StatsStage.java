@@ -30,7 +30,9 @@ public class StatsStage extends MetagenomeStage{
 		setAssembler(assembler);
 		
 		//get default command from text file
-		getProperties();if(command != null){
+		getProperties();
+		if(command != null){
+			System.out.println("Stats:");
 			try {
 				RunTool.runProgramAndWait(command);
 			} catch (IOException | InterruptedException e) {

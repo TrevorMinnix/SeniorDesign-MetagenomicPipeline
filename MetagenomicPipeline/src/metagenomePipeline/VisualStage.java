@@ -37,6 +37,7 @@ public class VisualStage extends MetagenomeStage{
 		buildCommand();
 		
 		if(command != null){
+			System.out.println("Visual:");
 			try {
 				RunTool.runProgramAndWait(command);
 			} catch (IOException | InterruptedException e) {
