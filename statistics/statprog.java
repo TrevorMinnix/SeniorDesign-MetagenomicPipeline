@@ -563,6 +563,7 @@ public class statprog implements Runnable {
 				}
 				
 				genome.get(genome.size() - 1).append(str.charAt(idx));
+				System.out.println("HERE1");
 			}
 			
 			// this executes when we are finished with the current contig
@@ -573,14 +574,15 @@ public class statprog implements Runnable {
 				updateContigs(size);
 				
 				size = BigInteger.ZERO;
+				System.out.println("HERE2");
 			}
-							System.out.println("HERE");
 			// this executes if we encounter a line we shouldn't be reading (starts with ; or >)
 			else {
 				in.badLine = true;
 				while (in.badLine)
 					str = in.next();
 				--idx;
+				System.out.println("HERE3");
 			}
 			++idx;
 		} while (!endOfFile);
