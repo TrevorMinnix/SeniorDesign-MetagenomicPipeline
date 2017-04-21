@@ -564,7 +564,7 @@ public class statprog implements Runnable {
 				
 				genome.get(genome.size() - 1).append(str.charAt(idx));
 			}
-							System.out.println("HERE");
+			
 			// this executes when we are finished with the current contig
 			else if (inContig) {
 				genome.get(genome.size() - 1).append("$");
@@ -574,7 +574,7 @@ public class statprog implements Runnable {
 				
 				size = BigInteger.ZERO;
 			}
-			
+							System.out.println("HERE");
 			// this executes if we encounter a line we shouldn't be reading (starts with ; or >)
 			else {
 				in.badLine = true;
