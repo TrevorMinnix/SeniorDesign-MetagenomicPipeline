@@ -195,7 +195,6 @@ public class statprog implements Runnable {
 		
 		// grab stats from a single sweep of the assembly
 		read1(in);
-		System.out.println("HERE");
 		calculateNX();
 		
 		/*
@@ -554,10 +553,10 @@ public class statprog implements Runnable {
 				if (isCG(str.charAt(idx)))
 					cg = cg.add(BigInteger.ONE);
 				
+				
 				// end of window has been reached
 				if (ind % WindowSize == 0) {
 					updateWindows(N, prev);
-					
 					prev = cg;
 					ind = 0;
 					N = 0;
@@ -584,6 +583,7 @@ public class statprog implements Runnable {
 				--idx;
 			}
 			++idx;
+			System.out.println("HERE");
 		} while (!endOfFile);
 	}
 	
