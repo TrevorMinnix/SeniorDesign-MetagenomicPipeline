@@ -448,7 +448,12 @@ public class statprog implements Runnable {
 		if (DebugMode)
 			sysprint();
 		else {
-			PrintWriter out = new PrintWriter(new File("norm_"+out_files+".txt"));
+			//try to create output file
+			File outputFileObj = new File(out_files);
+			if(!outputFileObj.createNewFile()){
+				throw new IOException();
+			}
+			PrintWriter out = new PrintWriter(outputFileObj);
 			out.printf("%s\n", len.toString());
 			out.printf("%s\n", contigs.toString());
 			out.printf("%d %s\n", WindowSize, wind100.toString());
