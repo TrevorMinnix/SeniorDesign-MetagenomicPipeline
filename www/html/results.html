@@ -79,7 +79,18 @@ function makeSrc(){
 
 	var msSrc4 = prefix  + jid + "/metaspades/GCPlot.jpg";
 	document.getElementById("msgp").src = msSrc4;
+	
+	
+	var idbaaf = prefix + jid + "/idba/contig.fa";
+	document.getElementById("idbahref").href = idbaaf;
+	
+	var mhaf = prefix + jid + "/megahit/final.contigs.fa";
+	document.getElementById("mhhref").href = mhaf;
+	
+	var msaf = prefix + jid + "/metaspades/contigs.fasta";
+	document.getElementById("mshref").href = msaf;
 }
+
 </script>
 <style>
 h1{
@@ -107,6 +118,7 @@ list-style: none;
 float: left;
 }
 
+
 </style>
 </head>
 
@@ -127,6 +139,7 @@ float: left;
 <div id="as1" class="tabcontent">
   <h3>IDBA</h3>
   <hr style="height:30px; color: black;">
+  <a id="idbahref" href="#" download>Download assembled file.</a>
   <ul>
 	<li>
 		<h3>Cumulative Plot</h3>
@@ -161,6 +174,7 @@ float: left;
 <div id="as2" class="tabcontent" style="display: none">
   <h3>MEGAHIT</h3>
   <hr style="height:30px; color: black;">
+  <a id="mhhref" href="#" download>Download assembled file.</a>
   <ul>
 	<li>
 		<h3>Cumulative Plot</h3>
@@ -195,6 +209,7 @@ float: left;
 <div id="as3" class="tabcontent" style="display: none">
   <h3>MetaSPAdes</h3>
   <hr style="height:30px; color: black;">
+  <a id="mshref" href="" download>Download assembled file.</a>
   <ul>
 	<li>
 		<h3>Cumulative Plot</h3>
