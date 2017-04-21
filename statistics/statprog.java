@@ -184,7 +184,13 @@ public class statprog implements Runnable {
 			case 'T': numThreads = Integer.parseInt(args[i].substring(2)); break;
 			}
 		
-		
+		File inputFileObj = new File(input_file);
+		File readFileObj = new File(read_file);
+		//test if files exists
+		if(!inputFileObj.exists() || !readFileObj.exists()){
+			throw new IOException();
+		}
+			
 		FirstScanner in = new FirstScanner(new File(input_file));
 		
 		// grab stats from a single sweep of the assembly
