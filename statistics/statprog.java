@@ -535,7 +535,7 @@ public class statprog implements Runnable {
 //					endOfFile = true;
 			}
 			
-			if (!endOfFile && str.charAt(0) != '>' && str.charAt(0) != ';') {
+			if (!endOfFile && str.charAt(0) != '>' && str.charAt(0) != ';') {System.out.println("HERE1A");
 			
 				inContig = true;
 				
@@ -567,7 +567,7 @@ public class statprog implements Runnable {
 			}
 			
 			// this executes when we are finished with the current contig
-			else if (inContig) {
+			else if (inContig) {System.out.println("HERE2A");
 				genome.get(genome.size() - 1).append("$");
 				genome.add(new StringBuilder(""));
 				inContig = false;
@@ -577,7 +577,7 @@ public class statprog implements Runnable {
 				System.out.println("HERE2");
 			}
 			// this executes if we encounter a line we shouldn't be reading (starts with ; or >)
-			else {
+			else {System.out.println("HERE3A");
 				in.badLine = true;
 				while (in.badLine)
 					str = in.next();
