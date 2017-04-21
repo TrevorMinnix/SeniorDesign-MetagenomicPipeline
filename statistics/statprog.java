@@ -534,7 +534,7 @@ public class statprog implements Runnable {
 //				if (DebugMode && str.charAt(0) == '$')
 //					endOfFile = true;
 			}
-			System.out.println("HERE");
+			
 			if (!endOfFile && str.charAt(0) != '>' && str.charAt(0) != ';') {
 			
 				inContig = true;
@@ -564,7 +564,7 @@ public class statprog implements Runnable {
 				
 				genome.get(genome.size() - 1).append(str.charAt(idx));
 			}
-			
+							System.out.println("HERE");
 			// this executes when we are finished with the current contig
 			else if (inContig) {
 				genome.get(genome.size() - 1).append("$");
