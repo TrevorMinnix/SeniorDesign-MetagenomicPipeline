@@ -534,6 +534,7 @@ public class statprog implements Runnable {
 //				if (DebugMode && str.charAt(0) == '$')
 //					endOfFile = true;
 			}
+			System.out.println(str);
 			
 			if (!endOfFile && str.charAt(0) != '>' && str.charAt(0) != ';') {System.out.println("HERE1A");
 			
