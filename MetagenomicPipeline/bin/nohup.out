@@ -1,0 +1,32 @@
+Openning connection to database.
+Connected.
+Trimming:
+java -jar /home/student/SeniorDesign-MetagenomicPipeline/Trimmomatic-0.36/trimmomatic-0.36.jar PE -phred33 /home/student/SeniorDesign-MetagenomicPipeline/www/Jobs/58f8e2289728c5-87528467/inputForward.fq /home/student/SeniorDesign-MetagenomicPipeline/www/Jobs/58f8e2289728c5-87528467/inputReverse.fq /home/student/SeniorDesign-MetagenomicPipeline/www/Jobs/58f8e2289728c5-87528467/trimmedFP.fq /home/student/SeniorDesign-MetagenomicPipeline/www/Jobs/58f8e2289728c5-87528467/trimmedFU.fq /home/student/SeniorDesign-MetagenomicPipeline/www/Jobs/58f8e2289728c5-87528467/trimmedRP.fq /home/student/SeniorDesign-MetagenomicPipeline/www/Jobs/58f8e2289728c5-87528467/trimmedRU.fq ILLUMINACLIP:/home/student/SeniorDesign-MetagenomicPipeline/Trimmomatic-0.36/adapters/TruSeq3-PE.fa:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36
+Assembling:
+/home/student/SeniorDesign-MetagenomicPipeline/SPAdes-3.9.1-Linux/bin/spades.py --meta -1 /home/student/SeniorDesign-MetagenomicPipeline/www/Jobs/58f8e2289728c5-87528467/trimmedFP.fq -2 /home/student/SeniorDesign-MetagenomicPipeline/www/Jobs/58f8e2289728c5-87528467/trimmedRP.fq -o /home/student/SeniorDesign-MetagenomicPipeline/www/Jobs/58f8e2289728c5-87528467/metaspades/
+Assembling:
+/home/student/SeniorDesign-MetagenomicPipeline/megahit-master/megahit -1 /home/student/SeniorDesign-MetagenomicPipeline/www/Jobs/58f8e2289728c5-87528467/trimmedFP.fq -2 /home/student/SeniorDesign-MetagenomicPipeline/www/Jobs/58f8e2289728c5-87528467/trimmedRP.fq -o /home/student/SeniorDesign-MetagenomicPipeline/www/Jobs/58f8e2289728c5-87528467/megahit/
+/home/student/SeniorDesign-MetagenomicPipeline/idba-master/bin/fq2fa --merge --filter /home/student/SeniorDesign-MetagenomicPipeline/www/Jobs/58f8e2289728c5-87528467/trimmedFP.fq /home/student/SeniorDesign-MetagenomicPipeline/www/Jobs/58f8e2289728c5-87528467/trimmedRP.fq /home/student/SeniorDesign-MetagenomicPipeline/www/Jobs/58f8e2289728c5-87528467/trimmedC.fa
+Assembling:
+/home/student/SeniorDesign-MetagenomicPipeline/idba-master/bin/idba_ud -r /home/student/SeniorDesign-MetagenomicPipeline/www/Jobs/58f8e2289728c5-87528467/trimmedC.fa -o /home/student/SeniorDesign-MetagenomicPipeline/www/Jobs/58f8e2289728c5-87528467/idba/
+Stats:
+java -cp /home/student/SeniorDesign-MetagenomicPipeline/statistics/ statprog I=/home/student/SeniorDesign-MetagenomicPipeline/www/Jobs/58f8e2289728c5-87528467/megahit/final.contigs.fa O=/home/student/SeniorDesign-MetagenomicPipeline/www/Jobs/58f8e2289728c5-87528467/megahitStat.txt R=/home/student/SeniorDesign-MetagenomicPipeline/www/Jobs/58f8e2289728c5-87528467/trimmedFP.fq
+Stats:
+java -cp /home/student/SeniorDesign-MetagenomicPipeline/statistics/ statprog I=/home/student/SeniorDesign-MetagenomicPipeline/www/Jobs/58f8e2289728c5-87528467/idba/contig.fa O=/home/student/SeniorDesign-MetagenomicPipeline/www/Jobs/58f8e2289728c5-87528467/idbaStat.txt R=/home/student/SeniorDesign-MetagenomicPipeline/www/Jobs/58f8e2289728c5-87528467/trimmedFP.fq
+Openning connection to database.
+Connected.
+Trimming:
+java -jar /home/student/SeniorDesign-MetagenomicPipeline/Trimmomatic-0.36/trimmomatic-0.36.jar PE -phred33 /home/student/SeniorDesign-MetagenomicPipeline/www/Jobs/58f9734d354c09-56317232/inputForward.fq /home/student/SeniorDesign-MetagenomicPipeline/www/Jobs/58f9734d354c09-56317232/inputReverse.fq /home/student/SeniorDesign-MetagenomicPipeline/www/Jobs/58f9734d354c09-56317232/trimmedFP.fq /home/student/SeniorDesign-MetagenomicPipeline/www/Jobs/58f9734d354c09-56317232/trimmedFU.fq /home/student/SeniorDesign-MetagenomicPipeline/www/Jobs/58f9734d354c09-56317232/trimmedRP.fq /home/student/SeniorDesign-MetagenomicPipeline/www/Jobs/58f9734d354c09-56317232/trimmedRU.fq ILLUMINACLIP:/home/student/SeniorDesign-MetagenomicPipeline/Trimmomatic-0.36/adapters/TruSeq3-PE.fa:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36
+Assembling:
+/home/student/SeniorDesign-MetagenomicPipeline/megahit-master/megahit -1 /home/student/SeniorDesign-MetagenomicPipeline/www/Jobs/58f9734d354c09-56317232/trimmedFP.fq -2 /home/student/SeniorDesign-MetagenomicPipeline/www/Jobs/58f9734d354c09-56317232/trimmedRP.fq -o /home/student/SeniorDesign-MetagenomicPipeline/www/Jobs/58f9734d354c09-56317232/megahit/
+/home/student/SeniorDesign-MetagenomicPipeline/idba-master/bin/fq2fa --merge --filter /home/student/SeniorDesign-MetagenomicPipeline/www/Jobs/58f9734d354c09-56317232/trimmedFP.fq /home/student/SeniorDesign-MetagenomicPipeline/www/Jobs/58f9734d354c09-56317232/trimmedRP.fq /home/student/SeniorDesign-MetagenomicPipeline/www/Jobs/58f9734d354c09-56317232/trimmedC.fa
+Assembling:
+/home/student/SeniorDesign-MetagenomicPipeline/SPAdes-3.9.1-Linux/bin/spades.py --meta -1 /home/student/SeniorDesign-MetagenomicPipeline/www/Jobs/58f9734d354c09-56317232/trimmedFP.fq -2 /home/student/SeniorDesign-MetagenomicPipeline/www/Jobs/58f9734d354c09-56317232/trimmedRP.fq -o /home/student/SeniorDesign-MetagenomicPipeline/www/Jobs/58f9734d354c09-56317232/metaspades/
+Assembling:
+/home/student/SeniorDesign-MetagenomicPipeline/idba-master/bin/idba_ud -r /home/student/SeniorDesign-MetagenomicPipeline/www/Jobs/58f9734d354c09-56317232/trimmedC.fa -o /home/student/SeniorDesign-MetagenomicPipeline/www/Jobs/58f9734d354c09-56317232/idba/
+Stats:
+java -cp /home/student/SeniorDesign-MetagenomicPipeline/statistics/ statprog I=/home/student/SeniorDesign-MetagenomicPipeline/www/Jobs/58f9734d354c09-56317232/idba/contig.fa O=/home/student/SeniorDesign-MetagenomicPipeline/www/Jobs/58f9734d354c09-56317232/idbaStat.txt R=/home/student/SeniorDesign-MetagenomicPipeline/www/Jobs/58f9734d354c09-56317232/trimmedFP.fq
+Stats:
+java -cp /home/student/SeniorDesign-MetagenomicPipeline/statistics/ statprog I=/home/student/SeniorDesign-MetagenomicPipeline/www/Jobs/58f9734d354c09-56317232/megahit/final.contigs.fa O=/home/student/SeniorDesign-MetagenomicPipeline/www/Jobs/58f9734d354c09-56317232/megahitStat.txt R=/home/student/SeniorDesign-MetagenomicPipeline/www/Jobs/58f9734d354c09-56317232/trimmedFP.fq
+Visual:
+python2 /home/student/SeniorDesign-MetagenomicPipeline/visualization.py /home/student/SeniorDesign-MetagenomicPipeline/www/Jobs/58f9734d354c09-56317232/megahitStat.txt /home/student/SeniorDesign-MetagenomicPipeline/www/Jobs/58f9734d354c09-56317232/megahit/

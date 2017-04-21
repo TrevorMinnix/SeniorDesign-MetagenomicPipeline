@@ -1,0 +1,31 @@
+number of threads 5
+reads 20000
+long reads 0
+extra reads 0
+read_length 70
+kmer 20
+kmers 246627 242785
+merge bubble 445
+contigs: 1082 n50: 80 max: 356 mean: 61 total length: 66430 n80: 44
+aligned 290 reads
+confirmed bases: 1047 correct reads: 0 bases: 0
+kmer 30
+kmers 56104 55090
+merge bubble 3
+contigs: 29 n50: 258 max: 356 mean: 202 total length: 5880 n80: 238
+aligned 175 reads
+confirmed bases: 659 correct reads: 0 bases: 0
+kmer 40
+kmers 4908 4880
+merge bubble 0
+contigs: 15 n50: 274 max: 356 mean: 273 total length: 4106 n80: 247
+aligned 137 reads
+confirmed bases: 540 correct reads: 0 bases: 0
+kmer 50
+kmers 3371 3356
+merge bubble 0
+contigs: 11 n50: 274 max: 356 mean: 285 total length: 3135 n80: 265
+reads 20000
+aligned 110 reads
+distance mean -nan sd -nan
+invalid insert distance
