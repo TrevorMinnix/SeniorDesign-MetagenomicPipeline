@@ -231,6 +231,8 @@ public class statprog implements Runnable {
 		testing this is going to be quite a bundle of fun
 		if i can't prove the mapping works properly in time for us to be finished, i'll just remove the mapping and work with the basics
 		 */
+		 System.out.println("here");
+		 
 		long align = 0, dupalign = 0, numGaps = 0, longestAlign = 0, fullUnalign = 0, partUnalign = 0;
 		int prev = 0, prev2 = 0, curContig = -1, stack = 0, prevEnd = 0, maps = 0;
 		boolean inContig = false;
