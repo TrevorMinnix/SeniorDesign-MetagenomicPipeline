@@ -530,12 +530,11 @@ public class statprog implements Runnable {
 		do {
 			if (idx == str.length()) {
 				idx = 0;
-				System.out.println("HERE");
 				str = in.next();
 //				if (DebugMode && str.charAt(0) == '$')
 //					endOfFile = true;
 			}
-			
+			System.out.println("HERE");
 			if (!endOfFile && str.charAt(0) != '>' && str.charAt(0) != ';') {
 			
 				inContig = true;
