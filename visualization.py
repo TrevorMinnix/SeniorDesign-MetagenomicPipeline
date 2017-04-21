@@ -96,7 +96,7 @@ def Nx_plot(nxArray, output_dir):
 #Plots the cumulative length
 def CumulativePlot(contigSizes, output_dir):
     prevContig = 0
-    contigSizes = contigSizes[::-1]
+    #contigSizes = contigSizes[::-1]
 
     cumulContig = [0] * len(contigSizes)
     for i in xrange(len(contigSizes)):
