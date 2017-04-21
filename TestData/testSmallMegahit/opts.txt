@@ -1,0 +1,7 @@
+-1
+TestData/testSmallF.fq
+-2
+TestData/testSmallR.fq
+-o
+TestData/testSmallMegahit
+MEGAHIT_TEMP_DIR: TestData/testSmallMegahit/tmp/
