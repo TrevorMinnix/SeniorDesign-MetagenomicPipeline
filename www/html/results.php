@@ -4,7 +4,7 @@
 	//get status
 	include "mysqli_con.php";
 
-	$statusSet = $con->query("SELECT * FROM jobStatus WHERE jobID  = " htmlspecialchars($_GET["jobID"]));
+	$statusSet = $con->query("SELECT * FROM jobStatus WHERE jobID  = " . htmlspecialchars($_GET["jobID"]));
 	$statusSet->close();
 
 	$row = $statusSet->fetch_object();
