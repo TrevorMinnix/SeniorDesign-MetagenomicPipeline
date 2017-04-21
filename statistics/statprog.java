@@ -193,12 +193,9 @@ public class statprog implements Runnable {
 			
 		FirstScanner in = new FirstScanner(new File(input_file));
 		
-		System.out.println("HERE");
-		System.out.println(input_file);
-		System.out.println(read_file);
-		
 		// grab stats from a single sweep of the assembly
 		read1(in);
+		System.out.println("HERE");
 		calculateNX();
 		
 		/*
