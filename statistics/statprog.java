@@ -450,10 +450,12 @@ public class statprog implements Runnable {
 			sysprint();
 		else {
 			//try to create output file
-			File outputFileObj = new File(out_files);
-			if(!outputFileObj.createNewFile()){
-				throw new IOException();
-			}
+			//File outputFileObj = new File(out_files);
+			//if(!outputFileObj.createNewFile()){		//create file if one doesn't exist
+			//	if(!outputFileObj.exists()){
+			//		throw new IOException();
+			//	}
+			//}
 			PrintWriter out = new PrintWriter(outputFileObj);
 			out.printf("%s\n", len.toString());
 			out.printf("%s\n", contigs.toString());
