@@ -161,8 +161,8 @@ float: left;
 </ul>
 
 
-<!--<?php if($row['idba'] == 1) : ?>-->
-<div id="as1" class="tabcontent" style="display: none">
+
+<div id="as1" class="tabcontent">
   <h3>IDBA</h3>
   <hr style="height:30px; color: black;">
   <a id="idbahref" href="#" download>Download assembled file.</a>
@@ -196,9 +196,7 @@ float: left;
 	</li>
   </ul>
 </div>
-<!--<?php endif; ?>-->
 
-<!--<?php if($row['idba'] == 1) : ?>-->
 <div id="as2" class="tabcontent" style="display: none">
   <h3>MEGAHIT</h3>
   <hr style="height:30px; color: black;">
@@ -233,9 +231,7 @@ float: left;
 	</li>
   </ul>
 </div>
-<!--<?php endif; ?>-->
 
-<!--<?php if($row['idba'] == 1) : ?>-->
 <div id="as3" class="tabcontent" style="display: none">
   <h3>MetaSPAdes</h3>
   <hr style="height:30px; color: black;">
@@ -270,14 +266,11 @@ float: left;
 	</li>
   </ul>
 </div>
-<!--<?php endif; ?>-->
 
-<!--<?php if($row['idba'] + $row['megahit'] + $row['metaspades'] > 1) : ?>-->
 <div id="asc" class="tabcontent" style="display: none">
   <h3>Assembler Comparison</h3>
   <hr style="height:30px; color: black;">
 </div>
-<!--<?php endif; ?>-->
 
 </body>
 
