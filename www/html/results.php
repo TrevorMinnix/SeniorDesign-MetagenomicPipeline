@@ -12,12 +12,10 @@
 	include "mysqli_con.php";
 
 	$query = htmlspecialchars($_GET["jobID"]);
-	echo $query;
 
 	if($statusSet = $con->query("SELECT * FROM jobStatus WHERE jobID  = '{$query}'")){
 		$row = $statusSet->fetch_assoc();
 		$statusSet->free();
-		echo $row['jobID'];
 	}
 ?>
 
@@ -147,10 +145,19 @@ float: left;
 </div>
 
 <ul class="nav nav-pills">
-  <li id="tab"><a data-toggle="pill" href="javascript:void(0)" class="tablinks" onclick="openCity(event, 'as1')">IDBA</a></li>
-  <li id="tab"><a data-toggle="pill" href="javascript:void(0)" class="tablinks" onclick="openCity(event, 'as2')">MEGAHIT</a></li>
-  <li id="tab"><a data-toggle="pill" href="javascript:void(0)" class="tablinks" onclick="openCity(event, 'as3')">MetaSPAdes</a></li>
-  <li id="tab"><a data-toggle="pill" href="javascript:void(0)" class="tablinks" onclick="openCity(event, 'asc')">Assembler Comparison</a></li>
+  <?php if($row['idba'] == 1) : ?>
+    <li id="tab"><a data-toggle="pill" href="javascript:void(0)" class="tablinks" onclick="openCity(event, 'as1')">IDBA</a></li>
+  <?php endif; ?>
+  <?php if($row['megahit'] == 1) : ?>
+    <li id="tab"><a data-toggle="pill" href="javascript:void(0)" class="tablinks" onclick="openCity(event, 'as2')">MEGAHIT</a></li>
+  <?php endif; ?>
+  <?php if($row['megahit'] == 1) : ?>
+    <li id="tab"><a data-toggle="pill" href="javascript:void(0)" class="tablinks" onclick="openCity(event, 'as3')">MetaSPAdes</a></li>
+  <?php endif; ?>
+  <?php if($row['megahit'] == 1) : ?>
+    <li id="tab"><a data-toggle="pill" href="javascript:void(0)" class="tablinks" onclick="openCity(event, 'asc')">Assembler Comparison</a></li>
+  <?php endif; ?>
+
 </ul>
 
 
