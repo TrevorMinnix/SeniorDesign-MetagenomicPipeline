@@ -165,7 +165,7 @@ float: left;
 <div id="as1" class="tabcontent">
   <h3>IDBA</h3>
   <hr style="height:30px; color: black;">
-  <a id="idbahref" href="#" download>Download assembled file.</a>
+  <a id="idbahref" href="#" download><h3>Download Assembly</h3></a>
   <ul>
 	<li>
 		<h3>Cumulative Plot</h3>
