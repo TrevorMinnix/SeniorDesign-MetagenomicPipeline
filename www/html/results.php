@@ -164,7 +164,9 @@ float: left;
 
 <div id="as1" class="tabcontent">
   <h3>IDBA</h3>
-  <hr style="height:30px; color: black;">
+  <hr style="height:30px; color: black
+  <?php if($row['idba'] != 1) ?> style="display: none" <?php endif; ?>
+  >
   <a id="idbahref" href="#" download><h3>Download Assembly</h3></a>
   <ul>
 	<li>
