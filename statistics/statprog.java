@@ -536,9 +536,9 @@ public class statprog implements Runnable {
 //				if (DebugMode && str.charAt(0) == '$')
 //					endOfFile = true;
 			}
-			System.out.println(str);
+			//System.out.println(str);
 			
-			if (!endOfFile && str.charAt(0) != '>' && str.charAt(0) != ';') {System.out.println("HERE1A");
+			if (!endOfFile && str.charAt(0) != '>' && str.charAt(0) != ';') {
 			
 				inContig = true;
 				
@@ -566,26 +566,23 @@ public class statprog implements Runnable {
 				}
 				
 				genome.get(genome.size() - 1).append(str.charAt(idx));
-				System.out.println("HERE1");
 			}
 			
 			// this executes when we are finished with the current contig
-			else if (inContig) {System.out.println("HERE2A");
+			else if (inContig) {
 				genome.get(genome.size() - 1).append("$");
 				genome.add(new StringBuilder(""));
 				inContig = false;
 				updateContigs(size);
 				
 				size = BigInteger.ZERO;
-				System.out.println("HERE2");
 			}
 			// this executes if we encounter a line we shouldn't be reading (starts with ; or >)
-			else {System.out.println("HERE3A");
+			else {
 				in.badLine = true;
 				while (in.badLine)
 					str = in.next();
 				--idx;
-				System.out.println("HERE3");
 			}
 			++idx;
 		} while (!endOfFile);
