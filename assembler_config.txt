@@ -16,3 +16,5 @@ statsPrefix=java -cp /home/student/SeniorDesign-MetagenomicPipeline/statistics/
 statsDefault=I=INPUT O=OUTPUT R=READS
 visualPath=python2 /home/student/SeniorDesign-MetagenomicPipeline/visualization.py
 visualDefault=INPUT OUTPUT
+comVisualPath=python2 /home/student/SeniorDesign-MetagenomicPipeline/combVisualization.py
+comVisualDefault=INPUT1 INPUT2 INPUT3 OUTPUT1 OUTPUT2 OUTPUT3 OUTPUTC
