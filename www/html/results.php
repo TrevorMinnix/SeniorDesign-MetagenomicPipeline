@@ -162,7 +162,7 @@ float: left;
 
 
 <?php if($row['idba'] == 1) : ?>
-<div id="as1" class="tabcontent">
+<div id="as1" class="tabcontent" style="display: none">
   <h3>IDBA</h3>
   <hr style="height:30px; color: black;">
   <a id="idbahref" href="#" download>Download assembled file.</a>
