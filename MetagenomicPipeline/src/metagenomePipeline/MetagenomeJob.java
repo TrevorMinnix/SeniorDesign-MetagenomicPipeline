@@ -4,6 +4,7 @@ public class MetagenomeJob extends pipeline.Job{
 	//metadata
 	String jobID;
 	public Boolean pairedEnd, idba, megahit, metaspades;
+	boolean idbaReady = false, megahitReady = false, metaspadesReady = false;
 	
 	//file paths
 	String inputForward, inputReverse, trimmedSE, trimmedForwardPaired, trimmedForwardUnpaired, trimmedReversePaired, trimmedReverseUnpaired, trimmedCombined;
@@ -47,5 +48,9 @@ public class MetagenomeJob extends pipeline.Job{
 		this.metaspadesReadMap = metaspadesReadMap;
 		this.metaspadesStats = metaspadesStats;
 		this.metaspadesVisual = metaspadesVisual;
+	}
+	
+	public String basePath(){
+		return inputForward.replaceAll("inputForward.fq", "");
 	}
 }
