@@ -171,28 +171,28 @@ float: left;
 	<li>
 		<h3>Cumulative Plot</h3>
 		<div>
-			<img src="CumulPlot.jpg" alt="No visualizations generated." id="idbacp">
+			<img src="CumulPlot.jpg" alt="Visualizations not ready." id="idbacp">
 		</div>
 	</li>
 	<br/>
 	<li>
 		<h3>Nx</h3>
 		<div>
-			<img src="Nx_Plot.jpg" alt="No visualizations generated." id="idbanx">
+			<img src="Nx_Plot.jpg" alt="Visualizations not ready." id="idbanx">
 		</div>
 	</li>
 	<br/>
 	<li>
 		<h3>Statistics Table</h3>
 		<div>
-			<img src="table.jpg" alt="No visualizations generated." id="idbast">
+			<img src="table.jpg" alt="Visualizations not ready." id="idbast">
 		</div> 
 	</li>
 	<br/>
 	<li>
 		<h3>GC Plot</h3>
 		<div>
-			<img src="GCPlot.jpg" alt="No visualizations generated." id="idbagp">
+			<img src="GCPlot.jpg" alt="Visualizations not ready." id="idbagp">
 		</div> 
 	</li>
   </ul>
@@ -206,28 +206,28 @@ float: left;
 	<li>
 		<h3>Cumulative Plot</h3>
 		<div>
-			<img src="CumulPlot.jpg" alt="No visualizations generated." id="mhcp">
+			<img src="CumulPlot.jpg" alt="Visualizations not ready." id="mhcp">
 		</div>
 	</li>
 	<br/>
 	<li>
 		<h3>Nx</h3>
 		<div>
-			<img src="Nx_Plot.jpg" alt="No visualizations generated." id="mhnx">
+			<img src="Nx_Plot.jpg" alt="Visualizations not ready." id="mhnx">
 		</div>
 	</li>
 	<br/>
 	<li>
 		<h3>Statistics Table</h3>
 		<div>
-			<img src="table.jpg" alt="No visualizations generated." id="mhst">
+			<img src="table.jpg" alt="Visualizations not ready." id="mhst">
 		</div> 
 	</li>
 	<br/>
 	<li>
 		<h3>GC Plot</h3>
 		<div>
-			<img src="GCPlot.jpg" alt="No visualizations generated." id="mhgp">
+			<img src="GCPlot.jpg" alt="Visualizations not ready." id="mhgp">
 		</div> 
 	</li>
   </ul>
@@ -241,28 +241,28 @@ float: left;
 	<li>
 		<h3>Cumulative Plot</h3>
 		<div>
-			<img src="CumulPlot.jpg" alt="No visualizations generated." id="mscp">
+			<img src="CumulPlot.jpg" alt="Visualizations not ready." id="mscp">
 		</div>
 	</li>
 	<br/>
 	<li>
 		<h3>Nx</h3>
 		<div>
-			<img src="Nx_Plot.jpg" alt="No visualizations generated." id="msnx">
+			<img src="Nx_Plot.jpg" alt="Visualizations not ready." id="msnx">
 		</div>
 	</li>
 	<br/>
 	<li>
 		<h3>Statistics Table</h3>
 		<div>
-			<img src="table.jpg" alt="No visualizations generated." id="msst">
+			<img src="table.jpg" alt="Visualizations not ready." id="msst">
 		</div> 
 	</li>
 	<br/>
 	<li>
 		<h3>GC Plot</h3>
 		<div>
-			<img src="GCPlot.jpg" alt="No visualizations generated." id="msgp">
+			<img src="GCPlot.jpg" alt="Visualizations not ready." id="msgp">
 		</div> 
 	</li>
   </ul>
