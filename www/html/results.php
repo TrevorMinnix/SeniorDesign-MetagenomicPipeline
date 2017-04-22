@@ -108,16 +108,16 @@ function makeSrc(){
 	document.getElementById("mshref").href = msaf;
 
 	var comSrc1 = prefix  + jid + "/CumulPlot.jpg";
-	document.getElementById("mscp").src = comSrc1;
+	document.getElementById("comcp").src = comSrc1;
 	
 	var comSrc2 = prefix  + jid + "/Nx_Plot.jpg";
-	document.getElementById("msnx").src = comSrc2;
+	document.getElementById("comnx").src = comSrc2;
 	
 	var comSrc3 = prefix  + jid + "/table.jpg";
-	document.getElementById("msst").src = comSrc3;
+	document.getElementById("comst").src = comSrc3;
 
 	var comSrc4 = prefix  + jid + "/GCPlot.jpg";
-	document.getElementById("msgp").src = comSrc4;
+	document.getElementById("comgp").src = comSrc4;
 }
 
 </script>
