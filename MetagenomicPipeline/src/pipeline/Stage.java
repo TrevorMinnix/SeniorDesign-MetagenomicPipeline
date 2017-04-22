@@ -30,6 +30,12 @@ public abstract class Stage <J extends Job> extends Thread{
 				emit();
 
 			}else{
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				nextJob();
 			}
 		}
