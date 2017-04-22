@@ -74,8 +74,8 @@ public class CombinedVisualStage extends MetagenomeStage{
 			config.load(input);
 			
 			//get properties
-			visualPath = config.getProperty("combinedVisualPath");
-			visualDefault = config.getProperty("combinedVisualDefault");
+			visualPath = config.getProperty("comVisualPath");
+			visualDefault = config.getProperty("comVisualDefault");
 		}catch(FileNotFoundException e){
 			e.printStackTrace();
 		}catch(IOException e){
@@ -100,19 +100,19 @@ public class CombinedVisualStage extends MetagenomeStage{
 		}
 		//idba
 		if(currentJob.idba){
-			command = command.replaceAll("INPUT1", currentJob.idbaVisual);
-			command = command.replaceAll("OUTPUT1", currentJob.idbaAssembly);
+			command = command.replaceAll("INPUT2", currentJob.idbaVisual);
+			command = command.replaceAll("OUTPUT2", currentJob.idbaAssembly);
 		}else{
-			command = command.replaceAll("INPUT1", "");
-			command = command.replaceAll("OUTPUT1", "");
+			command = command.replaceAll("INPUT2", "");
+			command = command.replaceAll("OUTPUT2", "");
 		}
 		//spades
 		if(currentJob.metaspades){
-			command = command.replaceAll("INPUT1", currentJob.metaspadesVisual);
-			command = command.replaceAll("OUTPUT1", currentJob.metaspadesAssembly);
+			command = command.replaceAll("INPUT3", currentJob.metaspadesVisual);
+			command = command.replaceAll("OUTPUT3", currentJob.metaspadesAssembly);
 		}else{
-			command = command.replaceAll("INPUT1", "");
-			command = command.replaceAll("OUTPUT1", "");
+			command = command.replaceAll("INPUT3", "");
+			command = command.replaceAll("OUTPUT3", "");
 		}
 		//combined
 		command = command.replaceAll("OUTPUTC", currentJob.basePath());
