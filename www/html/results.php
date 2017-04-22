@@ -11,7 +11,7 @@
 	//get status
 	include "mysqli_con.php";
 
-	$query = htmlspecialchars($_GET["jobID"]))
+	$query = htmlspecialchars($_GET["jobID"]);
 	echo $query;
 
 	if($statusSet = $con->query("SELECT * FROM jobStatus WHERE jobID  = '{$query}'")){
