@@ -11,12 +11,14 @@
 	//get status
 	include "mysqli_con.php";
 
+	$query = htmlspecialchars($_GET["jobID"]))
+	echo $query;
 
-	$statusSet = $con->query("SELECT * FROM jobStatus WHERE jobID  = " . htmlspecialchars($_GET["jobID"]));
-	$row = $statusSet->fetch_assoc();
-	$statusSet->free();
-
-	echo $row['jobID'];
+	if($statusSet = $con->query("SELECT * FROM jobStatus WHERE jobID  = '{$query}'")){
+		$row = $statusSet->fetch_assoc();
+		$statusSet->free();
+		echo $row['jobID'];
+	}
 ?>
 
 <head>
