@@ -1,120 +1,91 @@
 package metagenomePipeline;
+import pipeline.*;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Properties;
+public class MetagenomePipeline {
+	public static void main(String[] args) throws Exception{
+		DatabaseConnection db;
+		Pipeline<MetagenomeJob> pipeline;
+		MetagenomeStage[] stages;
+		JobGetter jobGetter;
+		
+		//pipeline stages
+		TrimmingStage trimming;
+		AssemblerStage assemblerIdba, assemblerMegahit, assemblerSpades;
+		StatsStage statsIdba, statsMegahit, statsSpades;
+		CombinedVisualStage visualCombined;
+		
+		//connect to database
+		db = new DatabaseConnection();
+		
+		//connect stages and put in array
+		visualCombined = new CombinedVisualStage(new MetagenomeStage[]{}, db);
+		statsIdba = new StatsStage(new MetagenomeStage[]{visualCombined}, db, "IDBA");
+		statsMegahit = new StatsStage(new MetagenomeStage[]{visualCombined}, db, "MEGAHIT");
+		statsSpades = new StatsStage(new MetagenomeStage[]{visualCombined}, db, "SPADES");
+		assemblerIdba = new AssemblerStage(new MetagenomeStage[]{statsIdba}, db, "IDBA");
+		assemblerMegahit = new AssemblerStage(new MetagenomeStage[]{statsMegahit}, db, "MEGAHIT");
+		assemblerSpades = new AssemblerStage(new MetagenomeStage[]{statsSpades}, db, "SPADES");
+		trimming = new TrimmingStage(new MetagenomeStage[]{assemblerIdba, assemblerMegahit, assemblerSpades}, db);
+		
+		stages = new MetagenomeStage[]{trimming, assemblerIdba, assemblerMegahit, assemblerSpades, statsIdba, statsMegahit, 
+				statsSpades, visualCombined};
+		
+		//put stages in pipeline
+		pipeline = new Pipeline<MetagenomeJob>(stages, trimming);
+		
+		//start job getter thread
+		jobGetter = new JobGetter(pipeline, db);
+		jobGetter.start();
+		
+		//run pipeline
+		pipeline.runPipeline();
+		
+		for(Thread t : stages){
+			t.join();
+		}
+		//test job
+//		MetagenomeJob job = new MetagenomeJob("testID");
+//		job.pairedEnd = true;
+//		job.inputForward = "/home/student/SeniorDesign-MetagenomicPipeline/TestData/simulatedReads1.fq";
+//		job.inputReverse = "/home/student/SeniorDesign-MetagenomicPipeline/TestData/simulatedReads2.fq";
+//		job.trimmedSE =  "/home/student/Testing/trimmedSE.fq";
+//		job.trimmedForwardPaired = "/home/student/Testing/trimmedFP.fq";
+//		job.trimmedForwardUnpaired = "/home/student/Testing/trimmedFU.fq";
+//		job.trimmedReversePaired = "/home/student/Testing/trimmedRP.fq";
+//		job.trimmedReverseUnpaired = "/home/student/Testing/trimmedRU.fq";
+//		job.trimmedCombined = "/home/student/Testing/trimmedC.fq";
+//		job.megahitAssembly = "/home/student/Testing/megahitAssembly/";
+//		job.megahitStats = "/home/student/SeniorDesign-MetagenomicPipeline/TestData/statistics.txt";
+//		job.megahitVisual = "/home/student/Testing/megahitAssembly/";
+//		job.idbaAssembly = "/home/student/Testing/idbaAssembly/";
+//		job.idbaStats = "/home/student/Testing/idbaStats.txt";
+//		job.idbaVisual = "/home/student/Testing/idbaAssembly/";
+//		job.metaspadesAssembly = "/home/student/Testing/spadesAssembly/";
+//		job.metaspadesStats = "/home/student/Testing/metaspadesStats.txt";
+//		job.metaspadesVisual = "/home/student/Testing/spadesAssembly/";
 
-public class CombinedVisualStage extends MetagenomeStage{
-	private static final String CONFIG = "/home/student/SeniorDesign-MetagenomicPipeline/assembler_config.txt";
-	
-	private String visualDefault;
-	private String visualPath;
-	private String command;
-	
-	public CombinedVisualStage(){
-		super();
-	}
-	
-	public CombinedVisualStage(MetagenomeStage[] nextStage, DatabaseConnection db) throws Exception{
-		super(nextStage, db);
+//		trimming.addJob(job);
+//		trimming.nextJob();
+//		trimming.process();
 		
-		//default command from text file
-		getProperties();
-	}
-
-	private boolean visual(){
-		//check if job is ready for all relevant assemblers
-		if((currentJob.megahit && !currentJob.megahitReady) || (currentJob.idba && !currentJob.idbaReady) || 
-				(currentJob.metaspades && !currentJob.metaspadesReady)){
-			return false;
-		}
+//		assemblerMegahit.addJob(job);
+//		assemblerMegahit.nextJob();
+//		assemblerMegahit.process();
 		
-		//build command by replacing files names in default string
-		buildCommand();
+//		assemblerSpades.addJob(job);
+//		assemblerSpades.nextJob();
+//		assemblerSpades.process();
 		
-		if(command != null){
-			System.out.println("Visual:");
-			try {
-				RunTool.runProgramAndWait(command);
-			} catch (IOException | InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
+//		assemblerIdba.addJob(job);
+//		assemblerIdba.nextJob();
+//		assemblerIdba.process();
 		
-		return true;
-	}
-	
-	@Override
-	protected void process(){
-		if(visual()){
-			//update database for each relevant visualization
-			if(currentJob.megahit){
-				db.updateVisualization(currentJob.jobID, "megahit", true);
-			}
-			if(currentJob.idba){
-				db.updateVisualization(currentJob.jobID, "idba", true);
-			}
-			if(currentJob.metaspades){
-				db.updateVisualization(currentJob.jobID, "metaspades", true);
-			}
-		}
+//		stats.addJob(job);
+//		stats.nextJob();
+//		stats.process();
 		
-		//if currentJob cannot be completed, add job to the back of the queue
-		this.addJob(currentJob);
-	}
-	
-	private void getProperties(){
-		Properties config = new Properties();
-		InputStream input;
-		try{
-			input = new FileInputStream(CONFIG);
-			config.load(input);
-			
-			//get properties
-			visualPath = config.getProperty("combinedVisualPath");
-			visualDefault = config.getProperty("combinedVisualDefault");
-		}catch(FileNotFoundException e){
-			e.printStackTrace();
-		}catch(IOException e){
-			e.printStackTrace();
-		}
-	}
-	
-	private void buildCommand(){
-		command = visualPath + " " + visualDefault;
-		
-		replacePath();
-	}
-	
-	private void replacePath(){
-		//megahit
-		if(currentJob.megahit){
-			command = command.replaceAll("INPUT1", currentJob.megahitVisual);
-			command = command.replaceAll("OUTPUT1", currentJob.megahitAssembly);
-		}else{
-			command = command.replaceAll("INPUT1", "");
-			command = command.replaceAll("OUTPUT1", "");
-		}
-		//idba
-		if(currentJob.idba){
-			command = command.replaceAll("INPUT1", currentJob.idbaVisual);
-			command = command.replaceAll("OUTPUT1", currentJob.idbaAssembly);
-		}else{
-			command = command.replaceAll("INPUT1", "");
-			command = command.replaceAll("OUTPUT1", "");
-		}
-		//spades
-		if(currentJob.metaspades){
-			command = command.replaceAll("INPUT1", currentJob.metaspadesVisual);
-			command = command.replaceAll("OUTPUT1", currentJob.metaspadesAssembly);
-		}else{
-			command = command.replaceAll("INPUT1", "");
-			command = command.replaceAll("OUTPUT1", "");
-		}
-		//combined
-		command = command.replaceAll("OUTPUTC", currentJob.basePath());
+//		visual.addJob(job);
+//		visual.nextJob();
+//		visual.process();
 	}
 }
