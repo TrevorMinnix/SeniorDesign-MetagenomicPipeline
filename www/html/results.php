@@ -236,7 +236,7 @@ float: left;
 <div id="as3" class="tabcontent" <?php if($row['idba'] == 1 || $row['megahit'] == 1): ?>style="display: none"<?php endif; ?>>
   <h3>MetaSPAdes</h3>
   <hr style="height:30px; color: black;">
-    <a id="mshref" href="" download style="display: none"><h3>Download Assembly</h3></a>
+    <a id="mshref" href="" download <?php if($row['metaspadesAssemblyStatus'] == 1): ?>style="display: none"<?php endif; ?>><h3>Download Assembly</h3></a>
   <ul>
 	<li>
 		<h3>Cumulative Plot</h3>
