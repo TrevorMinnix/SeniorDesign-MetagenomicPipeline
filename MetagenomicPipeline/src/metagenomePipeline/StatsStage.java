@@ -46,6 +46,19 @@ public class StatsStage extends MetagenomeStage{
 				e.printStackTrace();
 			}
 		}
+		
+		//update job for assembler
+		switch(assembler){
+		case IDBA:
+			currentJob.idbaReady = true;
+			break;
+		case MEGAHIT:
+			currentJob.megahitReady = true;
+			break;
+		case SPADES:
+			currentJob.metaspadesReady = true;
+			break;
+		}
 	}
 	
 	@Override
