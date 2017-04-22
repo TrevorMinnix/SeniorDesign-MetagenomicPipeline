@@ -151,10 +151,10 @@ float: left;
   <?php if($row['megahit'] == 1) : ?>
     <li id="tab"><a data-toggle="pill" href="javascript:void(0)" class="tablinks" onclick="openCity(event, 'as2')">MEGAHIT</a></li>
   <?php endif; ?>
-  <?php if($row['megahit'] == 1) : ?>
+  <?php if($row['metaspades'] == 1) : ?>
     <li id="tab"><a data-toggle="pill" href="javascript:void(0)" class="tablinks" onclick="openCity(event, 'as3')">MetaSPAdes</a></li>
   <?php endif; ?>
-  <?php if($row['megahit'] == 1) : ?>
+  <?php if($row['megahit'] + $row['idba'] + $row['metaspades'] > 1) : ?>
     <li id="tab"><a data-toggle="pill" href="javascript:void(0)" class="tablinks" onclick="openCity(event, 'asc')">Assembler Comparison</a></li>
   <?php endif; ?>
 
