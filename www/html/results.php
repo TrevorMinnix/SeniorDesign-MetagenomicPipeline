@@ -106,6 +106,18 @@ function makeSrc(){
 	
 	var msaf = prefix + jid + "/metaspades/contigs.fasta";
 	document.getElementById("mshref").href = msaf;
+
+	var comSrc1 = prefix  + jid + "/CumulPlot.jpg";
+	document.getElementById("mscp").src = comSrc1;
+	
+	var comSrc2 = prefix  + jid + "/Nx_Plot.jpg";
+	document.getElementById("msnx").src = comSrc2;
+	
+	var comSrc3 = prefix  + jid + "/table.jpg";
+	document.getElementById("msst").src = comSrc3;
+
+	var comSrc4 = prefix  + jid + "/GCPlot.jpg";
+	document.getElementById("msgp").src = comSrc4;
 }
 
 </script>
@@ -271,6 +283,35 @@ float: left;
 <div id="asc" class="tabcontent" style="display: none">
   <h3>Assembler Comparison</h3>
   <hr style="height:30px; color: black;">
+  <ul>
+	<li>
+		<h3>Cumulative Plot</h3>
+		<div>
+			<img src="CumulPlot.jpg" alt="Visualizations not ready." id="comcp">
+		</div>
+	</li>
+	<br/>
+	<li>
+		<h3>Nx</h3>
+		<div>
+			<img src="Nx_Plot.jpg" alt="Visualizations not ready." id="comnx">
+		</div>
+	</li>
+	<br/>
+	<li>
+		<h3>Statistics Table</h3>
+		<div>
+			<img src="table.jpg" alt="Visualizations not ready." id="comst">
+		</div> 
+	</li>
+	<br/>
+	<li>
+		<h3>GC Plot</h3>
+		<div>
+			<img src="GCPlot.jpg" alt="Visualizations not ready." id="comgp">
+		</div> 
+	</li>
+  </ul>
 </div>
 
 </body>
