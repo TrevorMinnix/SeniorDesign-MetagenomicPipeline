@@ -1,5 +1,7 @@
 <!DOCTYPE html>
 
+<html lang="en">
+
 <?php
 	//get status
 	include "mysqli_con.php";
@@ -11,8 +13,6 @@
 
 	//echo $row[0];
 ?>
-
-<html lang="en">
 
 <head>
 
