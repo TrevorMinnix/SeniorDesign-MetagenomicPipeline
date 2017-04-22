@@ -166,7 +166,7 @@ float: left;
 <div id="as1" class="tabcontent" <?php if($row['idba'] != 1): ?>style="display: none"<?php endif; ?>>
   <h3>IDBA</h3>
   <hr style="height:30px; color: black>
-  <a id="idbahref" href="#" download><h3>Download Assembly</h3></a>
+  <a id="idbahref" href="#" download <?php if($row['idbaAssemblyStatus'] != 1): ?>style="display: none"<?php endif; ?>><h3>Download Assembly</h3></a>
   <ul>
 	<li>
 		<h3>Cumulative Plot</h3>
@@ -201,7 +201,7 @@ float: left;
 <div id="as2" class="tabcontent" <?php if($row['idba'] == 1): ?>style="display: none"<?php endif; ?>>
   <h3>MEGAHIT</h3>
   <hr style="height:30px; color: black;">
-  <a id="mhhref" href="#" download><h3>Download Assembly</h3></a>
+  <a id="mhhref" href="#" download <?php if($row['megahitAssemblyStatus'] != 1): ?>style="display: none"<?php endif; ?>><h3>Download Assembly</h3></a>
   <ul>
 	<li>
 		<h3>Cumulative Plot</h3>
@@ -236,7 +236,7 @@ float: left;
 <div id="as3" class="tabcontent" <?php if($row['idba'] == 1 || $row['megahit'] == 1): ?>style="display: none"<?php endif; ?>>
   <h3>MetaSPAdes</h3>
   <hr style="height:30px; color: black;">
-    <a id="mshref" href="" download <?php if($row['metaspadesAssemblyStatus'] == 1): ?>style="display: none"<?php endif; ?>><h3>Download Assembly</h3></a>
+    <a id="mshref" href="" download <?php if($row['metaspadesAssemblyStatus'] != 1): ?>style="display: none"<?php endif; ?>><h3>Download Assembly</h3></a>
   <ul>
 	<li>
 		<h3>Cumulative Plot</h3>
