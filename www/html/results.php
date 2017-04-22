@@ -9,7 +9,7 @@
 
 	$row = $statusSet->fetch_object();
 
-	echo $row[0];
+	//echo $row[0];
 ?>
 
 <html lang="en">
