@@ -199,7 +199,7 @@ float: left;
   </ul>
 </div>
 
-<div id="as2" class="tabcontent" <?php if($row['idba'] != 1 && $row['megahit'] == 1): ?>style="display: none"<?php endif; ?>>
+<div id="as2" class="tabcontent" <?php if($row['idba'] == 1): ?>style="display: none"<?php endif; ?>>
   <h3>MEGAHIT</h3>
   <hr style="height:30px; color: black;">
   <a id="mhhref" href="#" download>Download assembled file.</a>
@@ -234,7 +234,7 @@ float: left;
   </ul>
 </div>
 
-<div id="as3" class="tabcontent" <?php if($row['idba'] != 1 && $row['megahit'] != 1 && $row['metaspades'] == 1): ?>style="display: none"<?php endif; ?>>
+<div id="as3" class="tabcontent" <?php if($row['idba'] == 1 || $row['megahit'] == 1): ?>style="display: none"<?php endif; ?>>
   <h3>MetaSPAdes</h3>
   <hr style="height:30px; color: black;">
   <a id="mshref" href="" download>Download assembled file.</a>
