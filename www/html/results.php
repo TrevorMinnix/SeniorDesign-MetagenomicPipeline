@@ -3,6 +3,11 @@
 <html lang="en">
 
 <?php
+	//error reporting
+	error_reporting(E_ALL);
+	ini_set('display_errors', TRUE);
+	ini_set('display_startup_errors', TRUE);
+
 	//get status
 	include "mysqli_con.php";
 
