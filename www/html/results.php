@@ -13,9 +13,8 @@
 
 
 	$statusSet = $con->query("SELECT * FROM jobStatus WHERE jobID  = " . htmlspecialchars($_GET["jobID"]));
-	$statusSet->close();
-
 	$row = $statusSet->fetch_assoc();
+	$statusSet->free();
 
 	echo $row['jobID'];
 ?>
