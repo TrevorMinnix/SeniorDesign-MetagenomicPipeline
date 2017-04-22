@@ -17,7 +17,6 @@
 		$row = $statusSet->fetch_assoc();
 		$statusSet->free();
 	}
-	echo $row['megahit'];
 ?>
 
 <head>
