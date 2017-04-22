@@ -15,15 +15,15 @@ public class RunTool {
 		System.out.println(command);
 		String[] splitCommand = command.split("\\s+");
 		ProcessBuilder builder = new ProcessBuilder(splitCommand);
-		builder.redirectErrorStream(true);
+		//builder.redirectErrorStream(true);
 		Process process = builder.start();
-		InputStream is = process.getInputStream();
-		BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+		//InputStream is = process.getInputStream();
+		//BufferedReader reader = new BufferedReader(new InputStreamReader(is));
 
 		process.waitFor();
 		
 		//String line = null;
-		while ((reader.readLine()) != null) {
-		}
+		//while ((reader.readLine()) != null) {
+		//}
 	}
 }
