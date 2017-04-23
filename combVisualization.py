@@ -9,6 +9,7 @@ def Create_table(cell_text, output_dir, comb_dir, labels):
     ext_scaling = 10.0
     lHeight_coeff = 0.10
     lWidth_coeff = 0.04
+    
     nrows = len(cell_text[0])
     
     row_height = lHeight_coeff * scaling
@@ -37,7 +38,7 @@ def Create_table(cell_text, output_dir, comb_dir, labels):
         
         plot.savefig(output_dir[i] +'table.jpg')
         
-        plot.cla()
+        plot.clf()
         plot.close()
     
     row_data = []
@@ -65,7 +66,7 @@ def Create_table(cell_text, output_dir, comb_dir, labels):
         
     plot.savefig(comb_dir +'table.jpg')
         
-    plot.cla()
+    plot.clf()
     plot.close()
 
 #Opens and reads the file containing statistics
@@ -137,7 +138,7 @@ def Nx_plot(nxArray, output_dir, comb_dir, labels):
         plot.grid(b = True)
         plot.title('Nx-Plot')
         plot.savefig(output_dir[i] + 'Nx_Plot.jpg')
-        plot.cla()
+        plot.clf()
         plot.close()
         
         plot.figure(2)
@@ -149,19 +150,19 @@ def Nx_plot(nxArray, output_dir, comb_dir, labels):
     plot.title('Nx-Plot')
     plot.legend(handles = handler)
     plot.savefig(comb_dir + 'Nx_Plot.jpg')
-    plot.cla()
+    plot.clf()
     plot.close()
 
 #Plots the cumulative length
 def CumulativePlot(contigSizes, output_dir, comb_dir, labels):
     handler = []
     for i in xrange(len(contigSizes)):
-        prevContig = 0
+        prevContig = 0.0
     
-        cumulContig = [0] * len(contigSizes[i])
+        cumulContig = [0.000] * len(contigSizes[i])
         for j in xrange(len(contigSizes[i])):
             prevContig += contigSizes[i][j]
-            cumulContig[j] = prevContig/1000
+            cumulContig[j] = float(prevContig/1000)
         
         plot.figure(1)
         
@@ -171,7 +172,7 @@ def CumulativePlot(contigSizes, output_dir, comb_dir, labels):
         plot.grid(b = True)
         plot.title('Cumulative Length')
         plot.savefig(output_dir[i]+'CumulPlot.jpg')
-        plot.cla()
+        plot.clf()
         plot.close()
         
         plot.figure(2)
@@ -184,7 +185,7 @@ def CumulativePlot(contigSizes, output_dir, comb_dir, labels):
     plot.title('Cumulative Length')
     plot.legend(handles = handler)
     plot.savefig(comb_dir+'CumulPlot.jpg')
-    plot.cla()
+    plot.clf()
     plot.close()
 
 #Plots a frequency graph of GC content
@@ -202,7 +203,7 @@ def GcPlot(gcCont, numWindows, output_dir, comb_dir, labels):
         plot.grid(b = True)
         plot.title('GC content')
         plot.savefig(output_dir[i]+'GCPlot.jpg')
-        plot.cla()
+        plot.clf()
         plot.close()
         
         plot.figure(2)
@@ -216,7 +217,7 @@ def GcPlot(gcCont, numWindows, output_dir, comb_dir, labels):
     plot.title('GC content')
     plot.legend(handles = handler)
     plot.savefig(comb_dir+'GCPlot.jpg')
-    plot.cla()
+    plot.clf()
     plot.close()
  
 def Visualize():
