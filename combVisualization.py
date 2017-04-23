@@ -162,7 +162,7 @@ def CumulativePlot(contigSizes, output_dir, comb_dir, labels):
         cumulContig = [0.000] * len(contigSizes[i])
         for j in xrange(len(contigSizes[i])):
             prevContig += contigSizes[i][j]
-            cumulContig[j] = float(prevContig/1000)
+            cumulContig[j] = float(prevContig/1000.0)
         
         plot.figure(1)
         
