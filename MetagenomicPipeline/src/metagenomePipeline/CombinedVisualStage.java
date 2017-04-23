@@ -60,10 +60,10 @@ public class CombinedVisualStage extends MetagenomeStage{
 			if(currentJob.metaspades){
 				db.updateVisualization(currentJob.jobID, "metaspades", true);
 			}
+		}else{
+			//if currentJob cannot be completed, add job to the back of the queue
+			this.addJob(currentJob);
 		}
-		
-		//if currentJob cannot be completed, add job to the back of the queue
-		this.addJob(currentJob);
 	}
 	
 	private void getProperties(){
@@ -92,24 +92,24 @@ public class CombinedVisualStage extends MetagenomeStage{
 	private void replacePath(){
 		//megahit
 		if(currentJob.megahit){
-			command = command.replaceAll("INPUT1", currentJob.megahitVisual);
-			command = command.replaceAll("OUTPUT1", currentJob.megahitAssembly);
+			command = command.replaceAll("INPUT1", currentJob.megahitStats);
+			command = command.replaceAll("OUTPUT1", currentJob.megahitVisual);
 		}else{
 			command = command.replaceAll("INPUT1", "");
 			command = command.replaceAll("OUTPUT1", "");
 		}
 		//idba
 		if(currentJob.idba){
-			command = command.replaceAll("INPUT2", currentJob.idbaVisual);
-			command = command.replaceAll("OUTPUT2", currentJob.idbaAssembly);
+			command = command.replaceAll("INPUT2", currentJob.idbaStats);
+			command = command.replaceAll("OUTPUT2", currentJob.idbaVisual);
 		}else{
 			command = command.replaceAll("INPUT2", "");
 			command = command.replaceAll("OUTPUT2", "");
 		}
 		//spades
 		if(currentJob.metaspades){
-			command = command.replaceAll("INPUT3", currentJob.metaspadesVisual);
-			command = command.replaceAll("OUTPUT3", currentJob.metaspadesAssembly);
+			command = command.replaceAll("INPUT3", currentJob.metaspadesStats);
+			command = command.replaceAll("OUTPUT3", currentJob.metaspadesVisual);
 		}else{
 			command = command.replaceAll("INPUT3", "");
 			command = command.replaceAll("OUTPUT3", "");
