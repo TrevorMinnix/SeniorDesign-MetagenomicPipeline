@@ -1,10 +1,13 @@
 package metagenomePipeline;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 public class MetagenomeJob extends pipeline.Job{
 	//metadata
 	String jobID;
 	public Boolean pairedEnd, idba, megahit, metaspades;
 	boolean idbaReady = false, megahitReady = false, metaspadesReady = false;
+	AtomicBoolean visualComplete = new AtomicBoolean(false);
 	
 	//file paths
 	String inputForward, inputReverse, trimmedSE, trimmedForwardPaired, trimmedForwardUnpaired, trimmedReversePaired, trimmedReverseUnpaired, trimmedCombined;

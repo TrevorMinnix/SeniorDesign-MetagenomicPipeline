@@ -31,6 +31,11 @@ public class CombinedVisualStage extends MetagenomeStage{
 			return false;
 		}
 		
+		//ensure one execution
+		if(!currentJob.visualComplete.compareAndSet(false, true)){
+			return true;
+		}
+		
 		//build command by replacing files names in default string
 		buildCommand();
 		
