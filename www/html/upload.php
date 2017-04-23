@@ -103,7 +103,7 @@ if($pairedEnd == 0){
 			 	$con->query("UPDATE job SET jobStatus = '1' WHERE jobID = '{$jobID}'");
 			 	//send email to results page
 
-	            $message = "The results for your metagenomic assembly pipeline job can be found at 10.171.204.144/html/results.html?jobID={$jobID}.";
+	            $message = "The results for your metagenomic assembly pipeline job can be found at 10.171.204.144/html/results.php?jobID={$jobID}.";
 	            $mailCommand = "python '/home/student/SeniorDesign-MetagenomicPipeline/www/html/sendmail.py' '{$_POST['email']}' 'Metagenomic Pipeline Results' '{$message}'";
 	            $mailingOutput = shell_exec($mailCommand);
 	            echo $message;
