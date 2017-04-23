@@ -194,7 +194,7 @@ def GcPlot(gcCont, numWindows, output_dir, comb_dir, labels):
     for i in xrange(len(gcCont)):
         gcHist = [0] * 100
         for gc in xrange(int(numWindows[i])):
-            gcHist[int(100*gcCont[i][gc]) - 1] += 1
+            gcHist[int(round(100.0*gcCont[i][gc])) - 1] += 1
         
         plot.figure(1)
         plot.plot(gcHist, linewidth = 0.5)
