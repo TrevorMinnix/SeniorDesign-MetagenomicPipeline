@@ -159,7 +159,7 @@ def CumulativePlot(contigSizes, output_dir, comb_dir, labels):
     for i in xrange(len(contigSizes)):
         prevContig = 0.0
     
-        cumulContig = [0.000] * len(contigSizes[i])
+        cumulContig = [0.0] * len(contigSizes[i])
         for j in xrange(len(contigSizes[i])):
             prevContig += contigSizes[i][j]
             cumulContig[j] = float(prevContig/1000.0)
@@ -230,11 +230,11 @@ def Visualize():
     
     for directory in directories:
         if 'idba' in directory.lower():
-            labels.append('IDBA')
+            labels.append('IDBA-UD')
         if 'megahit' in directory.lower():
             labels.append('MEGAHIT')
         if 'spades' in directory.lower():
-            labels.append('SPADES')
+            labels.append('MetaSPAdes')
     
     statistics, contigSizes, numWindows, gcCont, nxArray = openStatFile(statFiles)
     Create_table(statistics, directories, combDir, labels)
